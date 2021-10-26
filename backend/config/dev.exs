@@ -5,7 +5,7 @@ config :gotham, Gotham.Repo,
   username: "postgres",
   password: "postgres",
   database: "gotham_dev",
-  hostname: "localhost",
+  hostname: "172.17.0.1", # TODO: use docker container_name
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
