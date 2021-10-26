@@ -35,6 +35,7 @@ defmodule Gotham.MixProject do
     [
       {:phoenix, "~> 1.6.2"},
       {:phoenix_ecto, "~> 4.4"},
+      {:ecto_commons, "~> 0.3.3"},
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_dashboard, "~> 0.5"},
