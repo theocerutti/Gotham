@@ -20,6 +20,22 @@ export class UserService {
     }
   }
 
+  async getByEmail(email: string): Promise<User> {
+    try {
+      return await this.UserRepo.findOneOrFail({where: {email: email}});
+    } catch (error) {
+      throw new HttpException('Could not find user by email', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async getByUsername(username: string): Promise<User> {
+    try {
+      return await this.UserRepo.findOneOrFail({where: {username: username}});
+    } catch (error) {
+      throw new HttpException('Could not find user by username', HttpStatus.NOT_FOUND);
+    }
+  }
+
   async addUser(UserBody: UserBody): Promise<User> {
     let user: User = new User();
 

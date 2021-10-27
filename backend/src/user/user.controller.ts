@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { User } from '../model/user.entity';
 import { UserBody } from './user.request';
 import { UserService } from './user.service';
@@ -8,7 +8,18 @@ export class UserController {
   constructor(private serv: UserService) { }
 
   @Get()
-  public async getAll(): Promise<User[]> {
+  public async getAll(
+    @Query('email') email: string,
+    @Query('username') username: string,
+  ): Promise<User[] | User> {
+
+    if(email){
+      return await this.serv.getByEmail(email)
+    }
+    if(username){
+      return await this.serv.getByUsername(username)
+    }
+    
     return await this.serv.getAllUsers()
   }
 
