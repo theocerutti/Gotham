@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { getConnectionOptions } from 'typeorm';
 
 @Module({
   imports: [
@@ -10,10 +11,10 @@ import { UserModule } from './user/user.module';
         type: 'postgres',
         port: 5432,
         username: 'postgres',
-        password: 'postregs',
+        password: 'postgres',
         database: 'postgres',
-        entities: ['./model/user.entity.ts'],
         synchronize: true,
+        autoLoadEntities: true
       }),
       UserModule,
   ],
