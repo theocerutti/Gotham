@@ -1,9 +1,9 @@
-import {IsBoolean, IsDate} from "class-validator";
+import {IsBoolean, IsDateString} from "class-validator";
 
 export class ClockDTO {
   @IsBoolean()
-  public status: Boolean;
+  public status: boolean;
 
-  @IsDate()
+  @IsDateString()
   public time: Date;
 }

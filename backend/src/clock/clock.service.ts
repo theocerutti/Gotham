@@ -1,6 +1,6 @@
 import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import { WorkingTimeService } from './../working-time/working-time.service';
+import { WorkingTimeService } from '../working-time/working-time.service';
 import {Repository} from 'typeorm';
 import {Clock} from "../model/clock.entity";
 import {User} from "../model/user.entity";
@@ -14,6 +14,7 @@ export class ClockService {
 
   async create(user: User, clockDTO: ClockDTO): Promise<Clock> {
     let newClock = new Clock();
+    newClock.status = clockDTO.status;
     newClock.time = clockDTO.time;
     newClock.user = user;
     try {

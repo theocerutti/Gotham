@@ -3,7 +3,6 @@ import {
 } from 'class-validator';
 
 export class UserBody {
-
   @IsEmail()
   email: string;
 

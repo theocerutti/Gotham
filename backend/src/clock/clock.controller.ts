@@ -7,7 +7,7 @@ import {ClockDTO} from "./clock-requests";
 import {WorkingTimeDTO} from "../working-time/working-time.requests";
 import {WorkingTimeService} from "../working-time/working-time.service";
 
-@Controller('clock')
+@Controller('clocks')
 export class ClockController {
   constructor(private clockService: ClockService, private userService: UserService) {}
 
