@@ -3,9 +3,9 @@ import {WorkingTime} from "./workingtime.entity";
 import {Clock} from "./clock.entity";
 
 @Entity()
-export abstract class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({unique: true, nullable: false})
   username: string;

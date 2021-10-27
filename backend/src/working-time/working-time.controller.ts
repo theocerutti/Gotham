@@ -16,7 +16,7 @@ export class WorkingTimeController {
       @Param('userID') userID: number,
       @Query() query: WorkingTimeRequestQuery,
   ): Promise<WorkingTime[]> {
-    const user: User = await this.userService.getById(userID);
+    const user: User = await this.userService.getUserById(userID);
     // Filter by TimeRange
     if (query.end && query.start) {
       return user.workingtimes.filter(workingtime => {
@@ -29,7 +29,7 @@ export class WorkingTimeController {
 
   @Get(':userID/:id')
   public async getOne(@Param('userID') userID: number, @Param('id') id: number): Promise<WorkingTime> {
-    const user: User = await this.userService.getById(userID);
+    const user: User = await this.userService.getUserById(userID);
     const workingTime = user.workingtimes.find(workingtime => workingtime.id === id);
     if (!workingTime)
       throw new HttpException(`WorkingTime#${id} doesn't exists!`, HttpStatus.NOT_FOUND);
@@ -38,7 +38,7 @@ export class WorkingTimeController {
 
   @Post(':userID')
   public async create(@Param('userID') userID: number, @Body() workingTime: WorkingTimeDTO): Promise<WorkingTime> {
-    const user: User = await this.userService.getById(userID);
+    const user: User = await this.userService.getUserById(userID);
     return this.workingTimeService.create(user, workingTime);
   }
 

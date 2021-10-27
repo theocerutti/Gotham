@@ -13,13 +13,13 @@ export class ClockController {
 
   @Get(':userID')
   async getOne(@Param('userID') userID: number): Promise<Clock> {
-    const user: User = await this.userService.getById(userID);
+    const user: User = await this.userService.getUserById(userID);
     return user.clock;
   }
 
   @Post(':userID')
   async switchClock(@Param('userID') userID: number, @Body() clockDTO: ClockDTO): Promise<Clock> {
-    const user: User = await this.userService.getById(userID);
+    const user: User = await this.userService.getUserById(userID);
     let clock: Clock = user.clock;
     if (!clock) {
       clock = await this.clockService.create(user, clockDTO);
