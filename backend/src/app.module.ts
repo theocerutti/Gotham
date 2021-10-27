@@ -3,7 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { getConnectionOptions } from 'typeorm';
+import { WorkingTimeModule } from './working-time/working-time.module';
+import { ClockModule } from './clock/clock.module';
 
 @Module({
   imports: [
@@ -17,6 +18,8 @@ import { getConnectionOptions } from 'typeorm';
         autoLoadEntities: true
       }),
       UserModule,
+      WorkingTimeModule,
+      ClockModule,
   ],
   controllers: [AppController],
   providers: [AppService],
