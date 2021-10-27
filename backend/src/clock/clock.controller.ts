@@ -9,7 +9,7 @@ import {WorkingTimeService} from "../working-time/working-time.service";
 
 @Controller('clock')
 export class ClockController {
-  constructor(private clockService: ClockService, private userService: UserService, private workingTimeService: WorkingTimeService) {}
+  constructor(private clockService: ClockService, private userService: UserService) {}
 
   @Get(':userID')
   async getOne(@Param('userID') userID: number): Promise<Clock> {
@@ -32,7 +32,7 @@ export class ClockController {
       let workingTimeDTO = new WorkingTimeDTO();
       workingTimeDTO.start = clock.time;
       workingTimeDTO.end = clockDTO.time;
-      await this.workingTimeService.create(user, workingTimeDTO);
+      await this.clockService.createWorkingTime(user, workingTimeDTO);
     }
     return await this.clockService.update(clock);
   }
