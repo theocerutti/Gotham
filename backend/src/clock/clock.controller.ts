@@ -14,7 +14,7 @@ export class ClockController {
   @Get(':userID')
   async getOne(@Param('userID') userID: number): Promise<Clock> {
     const user: User = await this.userService.getUserById(userID);
-    return user.clock;
+    return await this.clockService.getClockFromUser(user);
   }
 
   @Post(':userID')
@@ -22,7 +22,7 @@ export class ClockController {
     const user: User = await this.userService.getUserById(userID);
     let clock: Clock = user.clock;
     if (!clock) {
-      clock = await this.clockService.create(user, clockDTO);
+      clock = await this.clockService.getClockFromUser(user);
     }
     if (clock.status) {
       clock.time = clockDTO.time;

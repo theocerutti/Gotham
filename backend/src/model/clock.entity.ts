@@ -12,7 +12,7 @@ export class Clock {
   @Column({default: true, nullable: false})
   status: boolean;
 
-  @OneToOne(() => User, user => user.clock, { nullable: false })
+  @OneToOne(() => User, user => user.clock, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User
 }

@@ -1,6 +1,6 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
-import {DeleteResult, Repository} from "typeorm";
+import {DeleteResult, Repository, UpdateResult} from "typeorm";
 import {WorkingTime} from "../model/workingtime.entity";
 import {User} from "../model/user.entity";
 import {WorkingTimeDTO} from "./working-time.requests";
@@ -22,9 +22,12 @@ export class WorkingTimeService {
     }
   }
 
-  async update(workingTimeDTO: WorkingTimeDTO): Promise<WorkingTime> {
+  async update(id: number, workingTimeDTO: WorkingTimeDTO): Promise<WorkingTime> {
     try {
-      return await this.WorkingTimeRepo.save(workingTimeDTO);
+      let workingtime = await this.WorkingTimeRepo.findOneOrFail(id);
+      workingtime.start = workingTimeDTO.start;
+      workingtime.end = workingTimeDTO.end;
+      return await this.WorkingTimeRepo.save(workingtime);
     } catch (error) {
       throw new HttpException(`Can't update workingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -36,5 +39,12 @@ export class WorkingTimeService {
     } catch (error) {
       throw new HttpException(`Can't delete WorkingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR)
     }
+  }
+
+  async getWorkingTimesFromUser(user: User): Promise<WorkingTime[]> {
+    return await this.WorkingTimeRepo.find({
+      relations: ['user'],
+      where: { user: { id: user.id } },
+    });
   }
 }

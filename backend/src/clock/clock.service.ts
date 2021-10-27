@@ -11,7 +11,6 @@ export class ClockService {
   @InjectRepository(Clock) private readonly ClockRepo: Repository<Clock>
   constructor( @Inject(forwardRef(() => WorkingTimeService)) private workingTimeService: WorkingTimeService) {}
 
-
   async create(user: User, clockDTO: ClockDTO): Promise<Clock> {
     let newClock = new Clock();
     newClock.status = clockDTO.status;
@@ -34,5 +33,12 @@ export class ClockService {
 
   async createWorkingTime(user, workingTimeDTO){
     return await this.workingTimeService.create(user, workingTimeDTO)
+  }
+
+  async getClockFromUser(user: User): Promise<Clock> {
+    return await this.ClockRepo.findOne({
+      relations: ['user'],
+      where: { user: { id: user.id } },
+    });
   }
 }

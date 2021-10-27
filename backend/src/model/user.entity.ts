@@ -13,9 +13,9 @@ export class User {
   @Column({unique: true, nullable: false})
   email: string;
 
-  @OneToMany(() => WorkingTime, workingtime => workingtime.user)
+  @OneToMany(() => WorkingTime, workingtime => workingtime.user, { onDelete: 'CASCADE' })
   workingtimes: WorkingTime[]
 
-  @OneToOne(() => Clock, clock => clock.user)
+  @OneToOne(() => Clock, clock => clock.user,{ onDelete: 'CASCADE' })
   clock: Clock
 }

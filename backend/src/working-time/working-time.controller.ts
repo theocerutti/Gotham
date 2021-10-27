@@ -18,19 +18,23 @@ export class WorkingTimeController {
   ): Promise<WorkingTime[]> {
     const user: User = await this.userService.getUserById(userID);
     // Filter by TimeRange
+    const workingTimes = await this.workingTimeService.getWorkingTimesFromUser(user);
     if (query.end && query.start) {
-      return user.workingtimes.filter(workingtime => {
-        return workingtime.start >= query.start && workingtime.end <= query.end;
+      return workingTimes.filter(workingtime => {
+        return workingtime.start >= new Date(query.start) && workingtime.end <= new Date(query.end);
       });
     }
     // Or send all workingtimes
-    return user.workingtimes;
+    return workingTimes;
   }
 
   @Get(':userID/:id')
-  public async getOne(@Param('userID') userID: number, @Param('id') id: number): Promise<WorkingTime> {
+  public async getOne(@Param('userID') userID: number, @Param('id') id: string): Promise<WorkingTime> {
     const user: User = await this.userService.getUserById(userID);
-    const workingTime = user.workingtimes.find(workingtime => workingtime.id === id);
+    const workingTimes = await this.workingTimeService.getWorkingTimesFromUser(user);
+    const workingTime = workingTimes.find(workingtime => {
+      return workingtime.id === parseInt(id)
+    });
     if (!workingTime)
       throw new HttpException(`WorkingTime#${id} doesn't exists!`, HttpStatus.NOT_FOUND);
     return workingTime;
@@ -44,7 +48,7 @@ export class WorkingTimeController {
 
   @Put(':id')
   public async update(@Param('id') id: number, @Body() workingTime: WorkingTimeDTO): Promise<WorkingTime> {
-    return this.workingTimeService.update(workingTime);
+    return this.workingTimeService.update(id, workingTime);
   }
 
   @Delete(':id')
