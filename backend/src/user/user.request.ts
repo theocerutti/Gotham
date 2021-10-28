@@ -6,6 +6,10 @@ export class UserDTO {
 
   @IsNotEmpty()
   username: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
 export class QueryUserDTO {

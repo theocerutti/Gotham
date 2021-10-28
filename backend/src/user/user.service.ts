@@ -48,6 +48,7 @@ export class UserService {
 
     user.username = userDTO.username
     user.email = userDTO.email
+    user.password = userDTO.password;
 
     try {
       return await this.UserRepo.save(user)

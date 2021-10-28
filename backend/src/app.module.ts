@@ -8,6 +8,8 @@ import {ClockModule} from './clock/clock.module';
 import {TeamModule} from './team/team.module';
 import {APP_GUARD} from "@nestjs/core";
 import {RolesGuard} from "./role/roles.guard";
+import {AuthModule} from './auth/auth.module';
+import {JwtAuthGuard} from "./auth/jwt-auth.guard";
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import {RolesGuard} from "./role/roles.guard";
     WorkingTimeModule,
     ClockModule,
     TeamModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -32,6 +35,10 @@ import {RolesGuard} from "./role/roles.guard";
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
 })
