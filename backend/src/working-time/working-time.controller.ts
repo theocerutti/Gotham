@@ -1,27 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpException,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-  Query
-} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from '@nestjs/common';
 import {WorkingTime} from "../model/workingtime.entity";
 import {WorkingTimeService} from "./working-time.service";
 import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.requests";
-import {UserService} from "../user/user.service";
-import {User} from "../model/user.entity";
-import {DeleteResult} from "typeorm";
 
 @Controller('workingtimes')
 export class WorkingTimeController {
-
-  constructor(private workingTimeService: WorkingTimeService, private userService: UserService) {
+  constructor(private workingTimeService: WorkingTimeService) {
   }
 
   @Get(':userID')
@@ -29,16 +13,11 @@ export class WorkingTimeController {
     @Param('userID', ParseIntPipe) userID: number,
     @Query() query: WorkingTimeRequestQuery,
   ): Promise<WorkingTime[]> {
-    const user: User = await this.userService.getById(userID);
-    // Filter by TimeRange
-    const workingTimes = await this.workingTimeService.getWorkingTimesFromUser(user);
     if (query.end && query.start) {
-      return workingTimes.filter(workingtime => {
-        return workingtime.start >= new Date(query.start) && workingtime.end <= new Date(query.end);
-      });
+      return await this.workingTimeService.getUserWorkingTimesFromTimeRange(userID, query);
+    } else {
+      return await this.workingTimeService.getUserWorkingTimes(userID);
     }
-    // Or send all workingtimes
-    return workingTimes;
   }
 
   @Get(':userID/:id')
@@ -46,14 +25,7 @@ export class WorkingTimeController {
     @Param('userID', ParseIntPipe) userID: number,
     @Param('id', ParseIntPipe) id: number
   ): Promise<WorkingTime> {
-    const user: User = await this.userService.getById(userID);
-    const workingTimes = await this.workingTimeService.getWorkingTimesFromUser(user);
-    const workingTime = workingTimes.find(workingtime => {
-      return workingtime.id === id
-    });
-    if (!workingTime)
-      throw new HttpException(`WorkingTime#${id} doesn't exists!`, HttpStatus.NOT_FOUND);
-    return workingTime;
+    return this.workingTimeService.getUserWorkingTime(userID, id);
   }
 
   @Post(':userID')
@@ -61,8 +33,7 @@ export class WorkingTimeController {
     @Param('userID', ParseIntPipe) userID: number,
     @Body() workingTime: WorkingTimeDTO
   ): Promise<WorkingTime> {
-    const user: User = await this.userService.getById(userID);
-    return this.workingTimeService.create(user, workingTime);
+    return this.workingTimeService.create(userID, workingTime);
   }
 
   @Put(':id')
@@ -74,7 +45,7 @@ export class WorkingTimeController {
   }
 
   @Delete(':id')
-  public async delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
+  public async delete(@Param('id', ParseIntPipe) id: number): Promise<WorkingTime> {
     return this.workingTimeService.deleteById(id);
   }
 }

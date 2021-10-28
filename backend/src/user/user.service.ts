@@ -1,4 +1,4 @@
-import {UserBody} from './user.request';
+import {UserDTO} from './user.request';
 import {User} from '../model/user.entity';
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
@@ -12,14 +12,18 @@ export class UserService {
   }
 
   async getAll(): Promise<User[]> {
-    return await this.UserRepo.find();
+    try {
+      return await this.UserRepo.find();
+    } catch (error) {
+      throw new HttpException(`Can't find all user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async getById(userID: number): Promise<User> {
     try {
       return await this.UserRepo.findOneOrFail(userID);
     } catch (error) {
-      throw new HttpException('Could not find user', HttpStatus.NOT_FOUND);
+      throw new HttpException(`Could not find user: ${error.message}`, HttpStatus.NOT_FOUND);
     }
   }
 
@@ -27,7 +31,7 @@ export class UserService {
     try {
       return await this.UserRepo.findOneOrFail({where: {email: email}});
     } catch (error) {
-      throw new HttpException('Could not find user by email', HttpStatus.NOT_FOUND);
+      throw new HttpException(`Could not find user by email: ${error.message}`, HttpStatus.NOT_FOUND);
     }
   }
 
@@ -35,15 +39,15 @@ export class UserService {
     try {
       return await this.UserRepo.findOneOrFail({where: {username: username}});
     } catch (error) {
-      throw new HttpException('Could not find user by username', HttpStatus.NOT_FOUND);
+      throw new HttpException(`Could not find user by username ${error.message}`, HttpStatus.NOT_FOUND);
     }
   }
 
-  async create(UserBody: UserBody): Promise<User> {
+  async create(userDTO: UserDTO): Promise<User> {
     let user: User = new User();
 
-    user.username = UserBody.username
-    user.email = UserBody.email
+    user.username = userDTO.username
+    user.email = userDTO.email
 
     try {
       return await this.UserRepo.save(user)
@@ -52,14 +56,14 @@ export class UserService {
     }
   }
 
-  async update(userID: number, UserBody: UserBody): Promise<User> {
+  async update(userID: number, userDTO: UserDTO): Promise<User> {
     let user: User = await this.getById(userID)
 
-    if (UserBody.username) {
-      user.username = UserBody.username
+    if (userDTO.username) {
+      user.username = userDTO.username
     }
-    if (UserBody.email) {
-      user.email = UserBody.email
+    if (userDTO.email) {
+      user.email = userDTO.email
     }
 
     try {

@@ -19,7 +19,6 @@ export class ClockService {
   async create(userId: number, clockDTO: ClockDTO): Promise<Clock> {
     const user = await this.userService.getById(userId);
     let newClock = new Clock();
-    newClock.status = clockDTO.status;
     newClock.time = clockDTO.time;
     newClock.user = user;
     try {
@@ -37,20 +36,28 @@ export class ClockService {
     }
   }
 
-  async createWorkingTime(userId: number, workingTimeDTO: WorkingTimeDTO) {
-    const user = await this.userService.getById(userId);
-    return await this.workingTimeService.create(user, workingTimeDTO)
+  async createWorkingTime(userID: number, workingTimeDTO: WorkingTimeDTO) {
+    try {
+      return await this.workingTimeService.create(userID, workingTimeDTO);
+    } catch (error) {
+      throw new HttpException(`Can't create working time: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  async getClockFromUserId(userId: number): Promise<Clock> {
-    const user = await this.userService.getById(userId);
-    return await this.ClockRepo.getClockFromUser(user);
+  async getUserClockById(userID: number): Promise<Clock> {
+    try {
+      return await this.ClockRepo.getUserClock(userID);
+    } catch (error) {
+      throw new HttpException(`Can't get user clock: ${error.message}`, HttpStatus.NOT_FOUND);
+    }
   }
 
   async switchClock(userID: number, clockDTO: ClockDTO): Promise<Clock> {
-    let clock: Clock = await this.getClockFromUserId(userID);
-    if (!clock) {
-      clock = await this.create(userID, clockDTO);
+    let clock: Clock = null;
+    try {
+      clock = await this.getUserClockById(userID);
+    } catch (error) { // not found
+      clock = await this.create(userID, clockDTO); // create it
     }
     if (clock.status) {
       clock.time = clockDTO.time;

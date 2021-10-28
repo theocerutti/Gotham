@@ -10,7 +10,7 @@ export class ClockController {
 
   @Get(':userID')
   async getOne(@Param('userID', ParseIntPipe) userID: number): Promise<Clock> {
-    return await this.clockService.getClockFromUserId(userID);
+    return await this.clockService.getUserClockById(userID);
   }
 
   @Post(':userID')
