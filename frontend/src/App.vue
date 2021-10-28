@@ -1,8 +1,10 @@
 <template>
-  <v-app>
-    <v-navigation-drawer />
+  <v-app dark>
+    <side-bar/>
     <v-main>
-      <router-view/>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -14,7 +16,11 @@ import SideBar from './components/SideBar.vue'
 export default {
   name: 'App',
 
-  data: () => ({
+  components: {
+    SideBar,
+  },
+
+data: () => ({
     //
   }),
 };
