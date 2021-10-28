@@ -11,11 +11,11 @@ export class UserService {
   ) {
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAll(): Promise<User[]> {
     return await this.UserRepo.find();
   }
 
-  async getUserById(userID: number): Promise<User> {
+  async getById(userID: number): Promise<User> {
     try {
       return await this.UserRepo.findOneOrFail(userID);
     } catch (error) {
@@ -39,7 +39,7 @@ export class UserService {
     }
   }
 
-  async addUser(UserBody: UserBody): Promise<User> {
+  async create(UserBody: UserBody): Promise<User> {
     let user: User = new User();
 
     user.username = UserBody.username
@@ -52,8 +52,8 @@ export class UserService {
     }
   }
 
-  async putUser(userID: number, UserBody: UserBody): Promise<User> {
-    let user: User = await this.getUserById(userID)
+  async update(userID: number, UserBody: UserBody): Promise<User> {
+    let user: User = await this.getById(userID)
 
     if (UserBody.username) {
       user.username = UserBody.username
@@ -69,8 +69,8 @@ export class UserService {
     }
   }
 
-  async deleteUser(userID: number): Promise<User> {
-    let user: User = await this.getUserById(userID)
+  async delete(userID: number): Promise<User> {
+    let user: User = await this.getById(userID)
 
     try {
       return await this.UserRepo.remove(user);

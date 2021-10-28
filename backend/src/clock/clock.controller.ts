@@ -1,39 +1,23 @@
-import {Body, Controller, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Get, Param, ParseIntPipe, Post} from '@nestjs/common';
 import {ClockService} from "./clock.service";
-import {User} from "../model/user.entity";
-import {UserService} from "../user/user.service";
 import {Clock} from "../model/clock.entity";
 import {ClockDTO} from "./clock-requests";
-import {WorkingTimeDTO} from "../working-time/working-time.requests";
-import {WorkingTimeService} from "../working-time/working-time.service";
 
 @Controller('clocks')
 export class ClockController {
-  constructor(private clockService: ClockService, private userService: UserService) {}
+  constructor(private clockService: ClockService) {
+  }
 
   @Get(':userID')
-  async getOne(@Param('userID') userID: number): Promise<Clock> {
-    const user: User = await this.userService.getUserById(userID);
-    return await this.clockService.getClockFromUser(user);
+  async getOne(@Param('userID', ParseIntPipe) userID: number): Promise<Clock> {
+    return await this.clockService.getClockFromUserId(userID);
   }
 
   @Post(':userID')
-  async switchClock(@Param('userID') userID: number, @Body() clockDTO: ClockDTO): Promise<Clock> {
-    const user: User = await this.userService.getUserById(userID);
-    let clock: Clock = await this.clockService.getClockFromUser(user);
-    if (!clock) {
-      clock = await this.clockService.create(user, clockDTO);
-    }
-    if (clock.status) {
-      clock.time = clockDTO.time;
-      clock.status = false;
-    } else {
-      clock.status = true;
-      let workingTimeDTO = new WorkingTimeDTO();
-      workingTimeDTO.start = clock.time;
-      workingTimeDTO.end = clockDTO.time;
-      await this.clockService.createWorkingTime(user, workingTimeDTO);
-    }
-    return await this.clockService.update(clock);
+  async switchClock(
+    @Param('userID', ParseIntPipe) userID: number,
+    @Body() clockDTO: ClockDTO
+  ): Promise<Clock> {
+    return await this.clockService.switchClock(userID, clockDTO);
   }
 }

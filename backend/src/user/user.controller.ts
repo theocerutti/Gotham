@@ -1,54 +1,53 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { User } from '../model/user.entity';
-import { UserBody } from './user.request';
-import { UserService } from './user.service';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from '@nestjs/common';
+import {User} from '../model/user.entity';
+import {UserBody} from './user.request';
+import {UserService} from './user.service';
 
 @Controller('users')
 export class UserController {
-  constructor(private serv: UserService) { }
+  constructor(private userService: UserService) {
+  }
 
   @Get()
   public async getAll(
     @Query('email') email: string,
     @Query('username') username: string,
   ): Promise<User[] | User> {
-
-    if(email){
-      return await this.serv.getByEmail(email)
+    if (email) {
+      return await this.userService.getByEmail(email)
     }
-    if(username){
-      return await this.serv.getByUsername(username)
+    if (username) {
+      return await this.userService.getByUsername(username)
     }
-    
-    return await this.serv.getAllUsers()
+    return await this.userService.getAll()
   }
 
   @Get(':userID')
-  public async getOneUser(@Param('userID') userID: number): Promise<User> {
-    return await this.serv.getUserById(userID)
+  public async getOne(@Param('userID', ParseIntPipe) userID: number): Promise<User> {
+    return await this.userService.getById(userID)
   }
 
   @Post()
-  public async addUser(
+  public async create(
     @Body() UserBody: UserBody,
-  ){
-    return await this.serv.addUser(UserBody)
+  ) {
+    return await this.userService.create(UserBody)
   }
 
   @Put(':userID')
-  public async putUser(
-    @Param('userID') userID: number,
+  public async update(
+    @Param('userID', ParseIntPipe) userID: number,
     @Body() UserBody: UserBody,
-  ){
-    return await this.serv.putUser(userID, UserBody)
+  ) {
+    return await this.userService.update(userID, UserBody)
   }
 
   @Delete(':userID')
-  public async deleteUser(
-    @Param('userID') userID: number,
-  ){
-    let user: User = await this.serv.deleteUser(userID)
-    if(user){
+  public async delete(
+    @Param('userID', ParseIntPipe) userID: number,
+  ) {
+    const user: User = await this.userService.delete(userID)
+    if (user) {
       return {user, "message": "Deleted successfully"}
     }
   }
