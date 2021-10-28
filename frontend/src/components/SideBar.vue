@@ -1,5 +1,7 @@
 <template>
-  <hello-world />
+  <v-navigation-drawer>
+    zkebfzfe
+  </v-navigation-drawer>
 </template>
 
 <script>
