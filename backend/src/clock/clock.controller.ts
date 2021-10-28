@@ -20,9 +20,9 @@ export class ClockController {
   @Post(':userID')
   async switchClock(@Param('userID') userID: number, @Body() clockDTO: ClockDTO): Promise<Clock> {
     const user: User = await this.userService.getUserById(userID);
-    let clock: Clock = user.clock;
+    let clock: Clock = await this.clockService.getClockFromUser(user);
     if (!clock) {
-      clock = await this.clockService.getClockFromUser(user);
+      clock = await this.clockService.create(user, clockDTO);
     }
     if (clock.status) {
       clock.time = clockDTO.time;
