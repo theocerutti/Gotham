@@ -10,7 +10,7 @@ import { ClockModule } from './clock/clock.module';
   imports: [
       TypeOrmModule.forRoot({
         type: 'postgres',
-        port: 5432,
+        port: 5433,
         username: 'postgres',
         password: 'postgres',
         database: 'postgres',
