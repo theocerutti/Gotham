@@ -1,15 +1,17 @@
 import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import { WorkingTimeService } from '../working-time/working-time.service';
-import {Repository} from 'typeorm';
 import {Clock} from "../model/clock.entity";
 import {User} from "../model/user.entity";
 import {ClockDTO} from "./clock-requests";
+import {ClockRepository} from "./clock.repository";
 
 @Injectable()
 export class ClockService {
-  @InjectRepository(Clock) private readonly ClockRepo: Repository<Clock>
-  constructor( @Inject(forwardRef(() => WorkingTimeService)) private workingTimeService: WorkingTimeService) {}
+  constructor(
+    @InjectRepository(ClockRepository) private readonly ClockRepo: ClockRepository,
+    @Inject(forwardRef(() => WorkingTimeService)) private workingTimeService: WorkingTimeService
+  ) {}
 
   async create(user: User, clockDTO: ClockDTO): Promise<Clock> {
     let newClock = new Clock();

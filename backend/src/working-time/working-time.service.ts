@@ -4,11 +4,14 @@ import {DeleteResult, Repository, UpdateResult} from "typeorm";
 import {WorkingTime} from "../model/workingtime.entity";
 import {User} from "../model/user.entity";
 import {WorkingTimeDTO} from "./working-time.requests";
-import {Clock} from "../model/clock.entity";
+import {WorkingTimeRepository} from "./working-time.repository";
 
 @Injectable()
 export class WorkingTimeService {
-  @InjectRepository(WorkingTime) private readonly WorkingTimeRepo: Repository<WorkingTime>
+  constructor(
+    @InjectRepository(WorkingTimeRepository) private readonly WorkingTimeRepo: Repository<WorkingTime>,
+  ) {
+  }
 
   async create(user: User, workingTimeDTO: WorkingTimeDTO): Promise<WorkingTime> {
     let newWorkingTime = new WorkingTime();
@@ -44,7 +47,7 @@ export class WorkingTimeService {
   async getWorkingTimesFromUser(user: User): Promise<WorkingTime[]> {
     return await this.WorkingTimeRepo.find({
       relations: ['user'],
-      where: { user: { id: user.id } },
+      where: {user: {id: user.id}},
     });
   }
 }

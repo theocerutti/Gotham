@@ -1,12 +1,15 @@
-import { UserBody } from './user.request';
-import { User } from '../model/user.entity';
+import {UserBody} from './user.request';
+import {User} from '../model/user.entity';
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {InjectRepository} from '@nestjs/typeorm';
+import {UserRepository} from "./user.repository";
 
 @Injectable()
 export class UserService {
-  @InjectRepository(User) private readonly UserRepo: Repository<User>
+  constructor(
+    @InjectRepository(UserRepository) private readonly UserRepo: UserRepository,
+  ) {
+  }
 
   async getAllUsers(): Promise<User[]> {
     return await this.UserRepo.find();
@@ -49,13 +52,13 @@ export class UserService {
     }
   }
 
-  async putUser(userID: number , UserBody: UserBody): Promise<User> {
+  async putUser(userID: number, UserBody: UserBody): Promise<User> {
     let user: User = await this.getUserById(userID)
 
-    if(UserBody.username){
+    if (UserBody.username) {
       user.username = UserBody.username
     }
-    if(UserBody.email){
+    if (UserBody.email) {
       user.email = UserBody.email
     }
 
