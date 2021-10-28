@@ -14,6 +14,7 @@ import { ClockModule } from './clock/clock.module';
         username: 'postgres',
         password: 'postgres',
         database: 'postgres',
+        synchronize: true,
         autoLoadEntities: true
       }),
       UserModule,
