@@ -5,6 +5,9 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {UserModule} from './user/user.module';
 import {WorkingTimeModule} from './working-time/working-time.module';
 import {ClockModule} from './clock/clock.module';
+import {TeamModule} from './team/team.module';
+import {APP_GUARD} from "@nestjs/core";
+import {RolesGuard} from "./role/roles.guard";
 
 @Module({
   imports: [
@@ -21,9 +24,16 @@ import {ClockModule} from './clock/clock.module';
     UserModule,
     WorkingTimeModule,
     ClockModule,
+    TeamModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 
 export class AppModule {

@@ -1,7 +1,7 @@
 import {Body, Controller, Get, Param, ParseIntPipe, Post} from '@nestjs/common';
 import {ClockService} from "./clock.service";
 import {Clock} from "../model/clock.entity";
-import {ClockDTO} from "./clock-requests";
+import {ClockDTO} from "./clock.requests";
 
 @Controller('clocks')
 export class ClockController {
