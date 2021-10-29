@@ -4,21 +4,44 @@ services:
   postgres:
     container_name: backend_db
     image: postgres
+    env_file:
+      - ./backend/.env
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
     ports:
       - "5433:5432"
     networks:
-      - postgres
+      - gotham_network
     restart: unless-stopped
 
+  backend:
+    container_name: gotham_backend
+    build: ./backend
+    depends_on:
+      - postgres
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./backend/.env
+    networks:
+      - gotham_network
+
+  frontend:
+    container_name: gotham_frontend
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./frontend/.env
+    networks:
+      - gotham_network
+
 networks:
-  postgres:
-    driver: bridge
+  gotham_network:
 
 volumes:
   postgres:
