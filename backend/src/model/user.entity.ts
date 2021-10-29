@@ -3,7 +3,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
-  ManyToOne,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -44,8 +44,8 @@ export class User {
   @OneToOne(() => Clock, clock => clock.user, {onDelete: 'CASCADE'})
   clock: Clock
 
-  @ManyToOne(() => Team, team => team.user)
-  team: Team
+  @ManyToMany(() => Team, team => team.users)
+  teams: Team[]
 
   @BeforeInsert()
   @BeforeUpdate()
