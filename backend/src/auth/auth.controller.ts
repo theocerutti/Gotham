@@ -1,14 +1,23 @@
-import {Body, Controller, Post, Res} from '@nestjs/common';
+import {Body, Controller, Get, Post, Res} from '@nestjs/common';
 import {AuthService} from "./auth.service";
 import {CreateUserDTO, LoginUserDTO} from "./auth.requests";
 import {SkipAuth} from "./skip-auth.decorators";
 import {User} from "../model/user.entity";
+import {CurrentUser} from "./current-user.decorator";
+import {Roles} from "../role/roles.decorator";
+import {Role} from "../role/role.utils";
 
 const TOKEN_AUTH_RES_HEADER = "token"
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {
+  }
+
+  @Get('ping')
+  @Roles(Role.User)
+  async ping(@CurrentUser() user: User) {
+    return user;
   }
 
   @SkipAuth()

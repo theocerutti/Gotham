@@ -4,6 +4,7 @@ import {User} from "../model/user.entity";
 import * as bcrypt from "bcrypt";
 import {JwtService} from '@nestjs/jwt';
 import {CreateUserDTO} from "./auth.requests";
+import {JwtPayload} from "./auth.utils";
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,7 @@ export class AuthService {
       throw new HttpException("Bad password", HttpStatus.UNAUTHORIZED);
     }
 
-    const payload = {username: user.username, sub: user.id};
+    const payload: JwtPayload = {username: user.username, userId: user.id, role: user.role};
     return this.jwtService.sign(payload);
   }
 

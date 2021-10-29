@@ -33,13 +33,13 @@ import {CurrentUserInterceptor} from "./auth/current-user.interceptor";
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-    {
+    { // first guard
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    { // second guard
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
     {
       provide: APP_INTERCEPTOR,

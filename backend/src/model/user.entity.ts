@@ -11,7 +11,7 @@ import {
 import {WorkingTime} from "./workingtime.entity";
 import {Clock} from "./clock.entity";
 import {Team} from "./team.entity";
-import {Role} from "../role/role.enum";
+import {Role} from "../role/role.utils";
 import * as bcrypt from "bcrypt";
 import {Exclude} from "class-transformer";
 import {IsNotEmpty, Length} from "class-validator";

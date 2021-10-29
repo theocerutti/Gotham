@@ -9,11 +9,8 @@ export class CurrentUserInterceptor implements NestInterceptor {
 
   async intercept(context: ExecutionContext, handler: CallHandler) {
     const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization.split(" ")[1]; // split to remove "Bearer"
-    const decodedToken = this.jwtService.decode(token);
-    const userId = decodedToken.sub;
-    if (userId) {
-      request.currentUser = await this.userService.getById(userId);
+    if (request.user) {
+      request.currentUser = await this.userService.getById(request.user.sub);
     }
     return handler.handle();
   }
