@@ -5,3 +5,7 @@ export type JwtPayload = {
   userId: number,
   role: Role,
 }
+
+export const jwtConstants = {
+  secret: 'secretKey', // TODO: get from env
+};
