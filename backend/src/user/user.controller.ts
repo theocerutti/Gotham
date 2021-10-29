@@ -1,7 +1,8 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Put} from '@nestjs/common';
 import {User} from '../model/user.entity';
-import {QueryUserDTO, UserDTO} from './user.request';
+import {UserDTO} from './user.request';
 import {UserService} from './user.service';
+import {CurrentUser} from "../auth/current-user.decorator";
 
 @Controller('users')
 export class UserController {
@@ -9,42 +10,22 @@ export class UserController {
   }
 
   @Get()
-  public async getAll(
-    @Query() userDTO: QueryUserDTO
-  ): Promise<User[] | User> {
-    if (userDTO.email) {
-      return await this.userService.getByEmail(userDTO.email)
-    }
-    if (userDTO.username) {
-      return await this.userService.getByUsername(userDTO.username)
-    }
-    return await this.userService.getAll()
+  public async getMe(@CurrentUser() user: User): Promise<User> {
+    return user;
   }
 
-  @Get(':userID')
-  public async getOne(@Param('userID', ParseIntPipe) userID: number): Promise<User> {
-    return await this.userService.getById(userID)
-  }
-
-  @Post()
-  public async create(
+  @Put()
+  public async updateMe(
+    @CurrentUser() user: User,
     @Body() userDTO: UserDTO,
-  ) {
-    return await this.userService.create(userDTO)
+  ): Promise<User> {
+    return await this.userService.update(user.id, userDTO)
   }
 
-  @Put(':userID')
-  public async update(
-    @Param('userID', ParseIntPipe) userID: number,
-    @Body() userDTO: UserDTO,
-  ) {
-    return await this.userService.update(userID, userDTO)
-  }
-
-  @Delete(':userID')
-  public async delete(
-    @Param('userID', ParseIntPipe) userID: number,
-  ) {
-    return await this.userService.delete(userID)
+  @Delete()
+  public async deleteMe(
+    @CurrentUser() user: User,
+  ): Promise<User> {
+    return await this.userService.delete(user.id)
   }
 }

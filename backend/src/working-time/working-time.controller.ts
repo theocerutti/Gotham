@@ -2,50 +2,61 @@ import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} fr
 import {WorkingTime} from "../model/workingtime.entity";
 import {WorkingTimeService} from "./working-time.service";
 import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.requests";
+import {CurrentUser} from "../auth/current-user.decorator";
+import {User} from "../model/user.entity";
 
 @Controller('workingtimes')
 export class WorkingTimeController {
   constructor(private workingTimeService: WorkingTimeService) {
   }
 
-  @Get(':userID')
-  public async getAllFromTimeRange(
-    @Param('userID', ParseIntPipe) userID: number,
-    @Query() query: WorkingTimeRequestQuery,
+  @Get()
+  public async getMeAll(
+    @CurrentUser() user: User,
+    @Query() query: WorkingTimeRequestQuery
   ): Promise<WorkingTime[]> {
     if (query.end && query.start) {
-      return await this.workingTimeService.getUserWorkingTimesFromTimeRange(userID, query);
+      return await this.workingTimeService.getUserWorkingTimesFromTimeRange(user.id, query);
     } else {
-      return await this.workingTimeService.getUserWorkingTimes(userID);
+      return await this.workingTimeService.getUserWorkingTimes(user.id);
     }
   }
 
-  @Get(':userID/:id')
-  public async getOne(
-    @Param('userID', ParseIntPipe) userID: number,
-    @Param('id', ParseIntPipe) id: number
+  @Get(':workingTimeId')
+  public async getMeOne(
+    @CurrentUser() user: User,
+    @Param('workingTimeId', ParseIntPipe) workingTimeId: number
   ): Promise<WorkingTime> {
-    return this.workingTimeService.getUserWorkingTime(userID, id);
+    return await this.workingTimeService.getUserWorkingTime(user.id, workingTimeId);
   }
 
-  @Post(':userID')
-  public async create(
-    @Param('userID', ParseIntPipe) userID: number,
+  @Put(':workingTimeId')
+  public async updateMeOne(
+    @CurrentUser() user: User,
+    @Param('workingTimeId', ParseIntPipe) workingTimeId: number,
+    @Body() workingTimeDTO: WorkingTimeDTO
+  ): Promise<WorkingTime> {
+    return await this.workingTimeService.updateByUserId(user.id, workingTimeId, workingTimeDTO)
+  }
+
+  @Post()
+  public async createMeOne(
+    @CurrentUser() user: User,
     @Body() workingTime: WorkingTimeDTO
   ): Promise<WorkingTime> {
-    return this.workingTimeService.create(userID, workingTime);
+    return this.workingTimeService.create(user.id, workingTime);
   }
 
-  @Put(':id')
-  public async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() workingTime: WorkingTimeDTO
+  @Delete()
+  public async deleteMeAll(@CurrentUser() user: User): Promise<WorkingTime[]> {
+    return await this.workingTimeService.deleteAllByUserId(user.id);
+  }
+
+  @Delete(':workingTimeId')
+  public async deleteMeOne(
+    @CurrentUser() user: User,
+    @Param('workingTimeId', ParseIntPipe) workingTimeId: number,
   ): Promise<WorkingTime> {
-    return this.workingTimeService.update(id, workingTime);
-  }
-
-  @Delete(':id')
-  public async delete(@Param('id', ParseIntPipe) id: number): Promise<WorkingTime> {
-    return this.workingTimeService.deleteById(id);
+    return await this.workingTimeService.deleteByUserId(user.id, workingTimeId);
   }
 }

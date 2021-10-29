@@ -13,39 +13,6 @@ export class WorkingTimeService {
   ) {
   }
 
-  async create(userID: number, workingTimeDTO: WorkingTimeDTO): Promise<WorkingTime> {
-    const user = await this.userService.getById(userID);
-    let newWorkingTime = new WorkingTime();
-    newWorkingTime.start = workingTimeDTO.start;
-    newWorkingTime.end = workingTimeDTO.end;
-    newWorkingTime.user = user;
-    try {
-      return await this.WorkingTimeRepo.save(newWorkingTime);
-    } catch (error) {
-      throw new HttpException(`Can't create workingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async update(id: number, workingTimeDTO: WorkingTimeDTO): Promise<WorkingTime> {
-    try {
-      let workingtime = await this.WorkingTimeRepo.findOneOrFail(id);
-      workingtime.start = workingTimeDTO.start;
-      workingtime.end = workingTimeDTO.end;
-      return await this.WorkingTimeRepo.save(workingtime);
-    } catch (error) {
-      throw new HttpException(`Can't update workingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async deleteById(id: number): Promise<WorkingTime> {
-    try {
-      const workingTime = await this.WorkingTimeRepo.findOneOrFail(id); // check if exists
-      return await this.WorkingTimeRepo.remove(workingTime);
-    } catch (error) {
-      throw new HttpException(`Can't delete WorkingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR)
-    }
-  }
-
   async getUserWorkingTimes(userID: number): Promise<WorkingTime[]> {
     try {
       return await this.WorkingTimeRepo.getUserWorkingTimes(userID);
@@ -73,6 +40,74 @@ export class WorkingTimeService {
       });
     } catch (error) {
       throw new HttpException(`Can't get user working time from timerange: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async updateByUserId(userID: number, workingTimeId: number, workingTimeDTO: WorkingTimeDTO): Promise<WorkingTime> {
+    const user = await this.userService.getById(userID);
+    const userWorkingTimes = await this.WorkingTimeRepo.getUserWorkingTimes(userID);
+    const workingTime = userWorkingTimes.find(workingTime => workingTime.id === workingTimeId);
+    if (workingTime)
+      throw new HttpException("No working time found!", HttpStatus.NOT_FOUND);
+    const newWorkingTime = new WorkingTime();
+    newWorkingTime.start = workingTimeDTO.start;
+    newWorkingTime.end = workingTimeDTO.end;
+    newWorkingTime.user = user;
+    try {
+      return await this.WorkingTimeRepo.save(newWorkingTime);
+    } catch (error) {
+      throw new HttpException(`Can't update workingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async deleteAllByUserId(userID: number): Promise<WorkingTime[]> {
+    try {
+      const userWorkingTimes = await this.getUserWorkingTimes(userID);
+      return await this.WorkingTimeRepo.remove(userWorkingTimes);
+    } catch (error) {
+      throw new HttpException(`Can't delete all workingtimes: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async deleteByUserId(userID: number, workingTimeId: number): Promise<WorkingTime> {
+    try {
+      const workingTime = await this.getUserWorkingTime(userID, workingTimeId);
+      return await this.WorkingTimeRepo.remove(workingTime);
+    } catch (error) {
+      throw new HttpException(`Can't delete workingtime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async create(userID: number, workingTimeDTO: WorkingTimeDTO): Promise<WorkingTime> {
+    const user = await this.userService.getById(userID);
+    const newWorkingTime = new WorkingTime();
+    newWorkingTime.start = workingTimeDTO.start;
+    newWorkingTime.end = workingTimeDTO.end;
+    newWorkingTime.user = user;
+    try {
+      return await this.WorkingTimeRepo.save(newWorkingTime);
+    } catch (error) {
+      throw new HttpException(`Can't create workingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async update(id: number, workingTimeDTO: WorkingTimeDTO): Promise<WorkingTime> {
+    try {
+      const workingtime = await this.WorkingTimeRepo.findOneOrFail(id);
+      workingtime.start = workingTimeDTO.start;
+      workingtime.end = workingTimeDTO.end;
+      return await this.WorkingTimeRepo.save(workingtime);
+    } catch (error) {
+      throw new HttpException(`Can't update workingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async deleteById(id: number): Promise<WorkingTime> {
+    try {
+      const workingTime = await this.WorkingTimeRepo.findOneOrFail(id); // check if exists
+      return await this.WorkingTimeRepo.remove(workingTime);
+    } catch (error) {
+      throw new HttpException(`Can't delete WorkingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 }
