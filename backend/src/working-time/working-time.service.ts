@@ -23,9 +23,8 @@ export class WorkingTimeService {
 
   async getUserWorkingTime(userID: number, workingTimeID: number): Promise<WorkingTime> {
     try {
-      const user = await this.userService.getById(userID); // check if exists
       return await this.WorkingTimeRepo.findOneOrFail(workingTimeID, {
-        where: {user: {id: user.id}}
+        where: {user: {id: userID}}
       })
     } catch (error) {
       throw new HttpException(`Can't get user working time: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
