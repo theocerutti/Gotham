@@ -19,7 +19,6 @@ export class AuthService {
   ): Promise<string> | undefined {
     const user: User = await this.userService.getByUsername(username)
 
-    console.log("ICI", password, user);
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
       throw new HttpException("Bad password", HttpStatus.UNAUTHORIZED);
     }

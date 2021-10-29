@@ -12,16 +12,10 @@ export class AuthController {
   }
 
   @SkipAuth()
-  @Post('ping')
-  async pong(@Res() res): Promise<string> {
-    return 'pong'
-  }
-
-  @SkipAuth()
   @Post('login')
   async login(
     @Body() body: LoginUserDTO,
-    @Res() res
+    @Res({passthrough: true}) res
   ): Promise<string> {
     const newTokenPromise = this.authService.login(
       body.username,
@@ -36,7 +30,7 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() body: CreateUserDTO,
-    @Res() res
+    @Res({passthrough: true}) res
   ): Promise<User> {
     const userPromise = await this.authService.register(body);
     const user = await userPromise;

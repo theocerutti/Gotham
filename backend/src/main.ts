@@ -19,7 +19,14 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
-  await app.listen(process.env.PORT);
+
+  // Enable Cors
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+  await app.listen(process.env.PORT || 4000);
 }
 
 bootstrap();
