@@ -1,8 +1,10 @@
-import {Body, Controller, Delete, Get, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {User} from '../model/user.entity';
 import {UserDTO} from './user.request';
 import {UserService} from './user.service';
 import {CurrentUser} from "../auth/current-user.decorator";
+import {Roles} from "../role/roles.decorator";
+import {Role} from "../role/role.utils";
 
 @Controller('users')
 export class UserController {
@@ -27,5 +29,11 @@ export class UserController {
     @CurrentUser() user: User,
   ): Promise<User> {
     return await this.userService.delete(user.id)
+  }
+
+  @Post('promote/:userId')
+  @Roles(Role.GeneralManager)
+  public async promoteUser(@Param('userId') userId: number): Promise<User> {
+    return await this.userService.promoteUser(userId);
   }
 }

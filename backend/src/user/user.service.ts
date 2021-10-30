@@ -3,6 +3,7 @@ import {User} from '../model/user.entity';
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {UserRepository} from "./user.repository";
+import {Role} from "../role/role.utils";
 
 @Injectable()
 export class UserService {
@@ -89,6 +90,16 @@ export class UserService {
       return await this.UserRepo.remove(user);
     } catch (error) {
       throw new HttpException(`Could not remove user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async promoteUser(userId: number): Promise<User> {
+    try {
+      const user: User = await this.getById(userId);
+      user.role = Role.Manager;
+      return await this.UserRepo.save(user);
+    } catch (error) {
+      throw new HttpException(`Can't promote user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
