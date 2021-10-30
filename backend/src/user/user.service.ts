@@ -27,6 +27,14 @@ export class UserService {
     }
   }
 
+  async getByIds(userIds: number[]): Promise<User[]> {
+    try {
+      return await this.UserRepo.findByIds(userIds);
+    } catch (error) {
+      throw new HttpException(`Can't get users: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async getByEmail(email: string): Promise<User> {
     try {
       return await this.UserRepo.findOneOrFail({where: {email: email}});
@@ -44,7 +52,7 @@ export class UserService {
   }
 
   async create(userDTO: UserDTO): Promise<User> {
-    let user: User = new User();
+    const user: User = new User();
 
     user.username = userDTO.username
     user.email = userDTO.email
@@ -58,7 +66,7 @@ export class UserService {
   }
 
   async update(userID: number, userDTO: UserDTO): Promise<User> {
-    let user: User = await this.getById(userID)
+    const user: User = await this.getById(userID)
 
     if (userDTO.username) {
       user.username = userDTO.username
@@ -75,7 +83,7 @@ export class UserService {
   }
 
   async delete(userID: number): Promise<User> {
-    let user: User = await this.getById(userID)
+    const user: User = await this.getById(userID)
 
     try {
       return await this.UserRepo.remove(user);

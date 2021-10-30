@@ -1,8 +1,11 @@
-import {Controller, Get, Param, ParseIntPipe} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post} from '@nestjs/common';
 import {TeamService} from "./team.service";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
 import {Team} from "../model/team.entity";
+import {CreateTeamDTO} from "./team.requests";
+import {Role} from "../role/role.utils";
+import {Roles} from "../role/roles.decorator";
 
 @Controller('team')
 export class TeamController {
@@ -14,11 +17,49 @@ export class TeamController {
     return await this.teamService.getUserTeams(user.id);
   }
 
-  @Get('teamId')
+  @Get(':teamId')
   async getMeOne(
     @CurrentUser() user: User,
     @Param('teamId', ParseIntPipe) teamId: number,
   ): Promise<Team> {
     return await this.teamService.getUserTeam(user.id, teamId)
+  }
+
+  @Post()
+  @Roles(Role.GeneralManager, Role.Manager)
+  async create(
+    @CurrentUser() user: User,
+    @Body() createTeamDTO: CreateTeamDTO
+  ): Promise<Team> {
+    return await this.teamService.createTeam(user.id, createTeamDTO);
+  }
+
+  @Delete(':teamId')
+  @Roles(Role.GeneralManager, Role.Manager)
+  async delete(
+    @CurrentUser() user: User,
+    @Param('teamId') teamId: number
+  ): Promise<Team> {
+    return await this.teamService.deleteTeam(teamId, user.id);
+  }
+
+  @Post(':teamId/:userId')
+  @Roles(Role.GeneralManager, Role.Manager)
+  async addTeamUser(
+    @CurrentUser() user: User,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<Team> {
+    return await this.teamService.addUser(user.id, userId, teamId);
+  }
+
+  @Delete(':teamId/:userId')
+  @Roles(Role.GeneralManager, Role.Manager)
+  async removeTeamUser(
+    @CurrentUser() user: User,
+    @Param('teamId', ParseIntPipe) teamId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<Team> {
+    return await this.teamService.removeUser(user.id, userId, teamId);
   }
 }

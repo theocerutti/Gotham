@@ -9,4 +9,11 @@ export class TeamRepository extends Repository<Team> {
       where: {user: {id: userId}},
     })
   }
+
+  async getUserTeam(teamId: number, userId: number) {
+    return await this.findOneOrFail(teamId, {
+      relations: ['user'],
+      where: {user: {id: userId}},
+    });
+  }
 }
