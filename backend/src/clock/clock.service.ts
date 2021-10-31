@@ -18,7 +18,7 @@ export class ClockService {
 
   async create(userId: number, clockDTO: ClockDTO): Promise<Clock> {
     const user = await this.userService.getById(userId);
-    let newClock = new Clock();
+    const newClock = new Clock();
     newClock.time = clockDTO.time;
     newClock.user = user;
     try {
@@ -64,7 +64,7 @@ export class ClockService {
       clock.status = false;
     } else {
       clock.status = true;
-      let workingTimeDTO = new WorkingTimeDTO();
+      const workingTimeDTO = new WorkingTimeDTO();
       workingTimeDTO.start = clock.time;
       workingTimeDTO.end = clockDTO.time;
       await this.createWorkingTime(userID, workingTimeDTO);

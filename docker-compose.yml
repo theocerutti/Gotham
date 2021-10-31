@@ -21,6 +21,8 @@ services:
     build: ./backend
     depends_on:
       - postgres
+    volumes:
+      - ./backend:/app
     ports:
       - "4000:4000"
     env_file:
