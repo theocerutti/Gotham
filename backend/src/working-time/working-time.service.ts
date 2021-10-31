@@ -31,7 +31,7 @@ export class WorkingTimeService {
     }
   }
 
-  async getUserWorkingTimesFromTimeRange(userID: number, query: WorkingTimeRequestQuery) {
+  async getUserWorkingTimesFromTimeRange(userID: number, query: WorkingTimeRequestQuery): Promise<WorkingTime[]> {
     try {
       const workingTimes = await this.getUserWorkingTimes(userID);
       return workingTimes.filter(workingtime => {

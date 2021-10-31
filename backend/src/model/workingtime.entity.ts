@@ -12,8 +12,8 @@ export class WorkingTime {
   @Column({nullable: false})
   end: Date;
 
-  @Column()
-  description: string;
+  @Column({nullable: true})
+  description?: string;
 
   @ManyToOne(() => User, user => user.workingtimes, {nullable: false, onDelete: 'CASCADE'})
   user: User

@@ -15,6 +15,7 @@ import {Role} from "../role/role.utils";
 import * as bcrypt from "bcrypt";
 import {Exclude} from "class-transformer";
 import {IsNotEmpty, Length} from "class-validator";
+import {ApiHideProperty} from "@nestjs/swagger";
 
 @Entity()
 export class User {
@@ -28,6 +29,7 @@ export class User {
 
   @IsNotEmpty()
   @Exclude()
+  @ApiHideProperty()
   @Length(4, 16)
   @Column({nullable: false})
   password: string;
@@ -38,12 +40,15 @@ export class User {
   @Column({nullable: false, default: Role.User})
   role: Role
 
+  @ApiHideProperty()
   @OneToMany(() => WorkingTime, workingtime => workingtime.user, {onDelete: 'CASCADE'})
   workingtimes: WorkingTime[]
 
+  @ApiHideProperty()
   @OneToOne(() => Clock, clock => clock.user, {onDelete: 'CASCADE'})
   clock: Clock
 
+  @ApiHideProperty()
   @ManyToMany(() => Team, team => team.users)
   teams: Team[]
 

@@ -1,5 +1,7 @@
 import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {User} from "./user.entity";
+import {ApiHideProperty} from "@nestjs/swagger";
+import {Exclude} from "class-transformer";
 
 @Entity()
 export class Clock {
@@ -14,5 +16,7 @@ export class Clock {
 
   @OneToOne(() => User, user => user.clock, {nullable: false, onDelete: 'CASCADE'})
   @JoinColumn()
+  @Exclude()
+  @ApiHideProperty()
   user: User
 }

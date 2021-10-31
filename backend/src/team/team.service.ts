@@ -23,9 +23,7 @@ export class TeamService {
 
   async getUserTeam(userId: number, teamId: number): Promise<Team> {
     try {
-      return await this.TeamRepository.findOneOrFail(teamId, {
-        where: {user: {id: userId}}
-      })
+      return await this.TeamRepository.getUserTeam(teamId, userId);
     } catch (error) {
       throw new HttpException(`Can't get user team: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -36,7 +34,7 @@ export class TeamService {
       const users = await this.userService.getByIds(createTeamDTO.userIds);
       const team = new Team();
       team.users = users;
-      return await this.TeamRepository.create(team);
+      return await this.TeamRepository.save(team);
     } catch (error) {
       throw new HttpException(`Can't create team: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -55,7 +53,7 @@ export class TeamService {
     try {
       const team = await this.TeamRepository.getUserTeam(teamId, managerUserId);
       const user = await this.userService.getById(userId);
-      team.users.push(user);
+      team.addUser(user);
       return await this.TeamRepository.save(team);
     } catch (error) {
       throw new HttpException(`Can't add user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);

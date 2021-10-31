@@ -10,8 +10,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   handleRequest(err, user, info) {
-    if (!user) // there is no user
-      throw new HttpException(info, HttpStatus.BAD_REQUEST);
+    if (err || !user)
+      throw new HttpException(`Unauthorized: ${info.message}`, HttpStatus.UNAUTHORIZED);
     if (user) return user;
     throw new UnauthorizedException();
   }

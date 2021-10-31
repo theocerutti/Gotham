@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UnauthorizedException} from '@nestjs/common';
 import {User} from '../model/user.entity';
 import {UserDTO} from './user.dto';
 import {UserService} from './user.service';
@@ -37,6 +37,21 @@ export class UserController {
   @Roles(Role.GeneralManager)
   public async promoteUser(@Param('userId', ParseIntPipe) userId: number): Promise<User> {
     return await this.userService.promoteUser(userId);
+  }
+
+  @Get(':userId')
+  public async getUser(
+    @CurrentUser() currentUser: User,
+    @Param('userId', ParseIntPipe) userId: number
+  ): Promise<User> {
+    // TODO: manager can get general manager user?
+    // can a manager get a user that is not in its team
+    const user = await this.userService.getById(userId);
+    if (currentUser.id === user.id)
+      return user;
+    if (user.role === Role.User)
+      throw new UnauthorizedException();
+    return user;
   }
 
   @Delete(':userId')
