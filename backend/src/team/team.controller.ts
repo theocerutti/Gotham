@@ -38,7 +38,7 @@ export class TeamController {
   @Roles(Role.GeneralManager, Role.Manager)
   async delete(
     @CurrentUser() user: User,
-    @Param('teamId') teamId: number
+    @Param('teamId', ParseIntPipe) teamId: number
   ): Promise<Team> {
     return await this.teamService.deleteTeam(teamId, user.id);
   }

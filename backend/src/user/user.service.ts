@@ -84,7 +84,7 @@ export class UserService {
   }
 
   async delete(userID: number): Promise<User> {
-    const user: User = await this.getById(userID)
+    const user: User = await this.getById(userID);
 
     try {
       return await this.UserRepo.remove(user);

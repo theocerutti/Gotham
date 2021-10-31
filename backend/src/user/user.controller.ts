@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from '@nestjs/common';
 import {User} from '../model/user.entity';
 import {UserDTO} from './user.request';
 import {UserService} from './user.service';
@@ -33,7 +33,13 @@ export class UserController {
 
   @Post('promote/:userId')
   @Roles(Role.GeneralManager)
-  public async promoteUser(@Param('userId') userId: number): Promise<User> {
+  public async promoteUser(@Param('userId', ParseIntPipe) userId: number): Promise<User> {
     return await this.userService.promoteUser(userId);
+  }
+
+  @Delete(':userId')
+  @Roles(Role.GeneralManager)
+  public async deleteUser(@Param('userId', ParseIntPipe) userId: number): Promise<User> {
+    return await this.userService.delete(userId);
   }
 }
