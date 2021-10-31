@@ -51,6 +51,7 @@ export class WorkingTimeService {
     const newWorkingTime = new WorkingTime();
     newWorkingTime.start = workingTimeDTO.start;
     newWorkingTime.end = workingTimeDTO.end;
+    newWorkingTime.description = workingTimeDTO.description;
     newWorkingTime.user = user;
     try {
       return await this.WorkingTimeRepo.save(newWorkingTime);
@@ -82,6 +83,7 @@ export class WorkingTimeService {
     const newWorkingTime = new WorkingTime();
     newWorkingTime.start = workingTimeDTO.start;
     newWorkingTime.end = workingTimeDTO.end;
+    newWorkingTime.description = workingTimeDTO.description;
     newWorkingTime.user = user;
     try {
       return await this.WorkingTimeRepo.save(newWorkingTime);
@@ -95,6 +97,7 @@ export class WorkingTimeService {
       const workingtime = await this.WorkingTimeRepo.findOneOrFail(id);
       workingtime.start = workingTimeDTO.start;
       workingtime.end = workingTimeDTO.end;
+      workingtime.description = workingTimeDTO.description;
       return await this.WorkingTimeRepo.save(workingtime);
     } catch (error) {
       throw new HttpException(`Can't update workingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,4 +1,4 @@
-import {IsDate, IsDateString, IsOptional} from "class-validator";
+import {IsDateString, IsOptional, IsString} from "class-validator";
 
 export class WorkingTimeRequestQuery {
   @IsDateString()
@@ -16,4 +16,8 @@ export class WorkingTimeDTO {
 
   @IsDateString()
   public end: Date;
+
+  @IsString()
+  @IsOptional()
+  public description: string;
 }
