@@ -4,6 +4,7 @@ import {Clock} from "../model/clock.entity";
 import {ClockDTO} from "./clock.requests";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
+import {WorkingTime} from "../model/workingtime.entity";
 
 @Controller('clocks')
 export class ClockController {
@@ -19,7 +20,7 @@ export class ClockController {
   async switchUserClock(
     @CurrentUser() user: User,
     @Body() clockDTO: ClockDTO
-  ): Promise<Clock> {
+  ): Promise<WorkingTime[]> {
     return await this.clockService.switchClock(user.id, clockDTO);
   }
 }
