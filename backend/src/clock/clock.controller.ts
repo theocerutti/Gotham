@@ -5,7 +5,7 @@ import {ClockDTO} from "./clock.dto";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
 import {WorkingTime} from "../model/workingtime.entity";
-import {ApiTags} from "@nestjs/swagger";
+import {ApiOperation, ApiTags} from "@nestjs/swagger";
 
 @Controller('clocks')
 @ApiTags('clocks')
@@ -13,11 +13,13 @@ export class ClockController {
   constructor(private clockService: ClockService) {
   }
 
+  @ApiOperation({summary: "Get user clock"})
   @Get()
   async getUserClock(@CurrentUser() user: User): Promise<Clock> {
     return await this.clockService.getUserClockById(user.id);
   }
 
+  @ApiOperation({summary: "Switch user clock to register working times"})
   @Post()
   async switchUserClock(
     @CurrentUser() user: User,

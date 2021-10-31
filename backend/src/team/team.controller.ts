@@ -6,7 +6,7 @@ import {Team} from "../model/team.entity";
 import {CreateTeamDTO} from "./team.dto";
 import {Role} from "../role/role.utils";
 import {Roles} from "../role/roles.decorator";
-import {ApiTags} from "@nestjs/swagger";
+import {ApiOperation, ApiTags} from "@nestjs/swagger";
 
 @Controller('team')
 @ApiTags('team')
@@ -14,11 +14,13 @@ export class TeamController {
   constructor(private teamService: TeamService) {
   }
 
+  @ApiOperation({summary: "Get all my teams"})
   @Get()
   async getMeAll(@CurrentUser() user: User): Promise<Team[]> {
     return await this.teamService.getUserTeams(user.id);
   }
 
+  @ApiOperation({summary: "Get a team by id"})
   @Get(':teamId')
   async getMeOne(
     @CurrentUser() user: User,
@@ -27,8 +29,9 @@ export class TeamController {
     return await this.teamService.getUserTeam(user.id, teamId)
   }
 
-  @Post()
+  @ApiOperation({summary: "Create a team (manager/generalManager)"})
   @Roles(Role.GeneralManager, Role.Manager)
+  @Post()
   async create(
     @CurrentUser() user: User,
     @Body() createTeamDTO: CreateTeamDTO
@@ -36,8 +39,9 @@ export class TeamController {
     return await this.teamService.createTeam(user.id, createTeamDTO);
   }
 
-  @Delete(':teamId')
+  @ApiOperation({summary: "Delete a team by id (manager/generalManager)"})
   @Roles(Role.GeneralManager, Role.Manager)
+  @Delete(':teamId')
   async delete(
     @CurrentUser() user: User,
     @Param('teamId', ParseIntPipe) teamId: number
@@ -45,8 +49,9 @@ export class TeamController {
     return await this.teamService.deleteTeam(teamId, user.id);
   }
 
-  @Post(':teamId/:userId')
+  @ApiOperation({summary: "Add a user to a team (manager/generalManager)"})
   @Roles(Role.GeneralManager, Role.Manager)
+  @Post(':teamId/:userId')
   async addTeamUser(
     @CurrentUser() user: User,
     @Param('teamId', ParseIntPipe) teamId: number,
@@ -55,8 +60,9 @@ export class TeamController {
     return await this.teamService.addUser(user.id, userId, teamId);
   }
 
-  @Delete(':teamId/:userId')
+  @ApiOperation({summary: "Remove a user from a team (manager/generalManager)"})
   @Roles(Role.GeneralManager, Role.Manager)
+  @Delete(':teamId/:userId')
   async removeTeamUser(
     @CurrentUser() user: User,
     @Param('teamId', ParseIntPipe) teamId: number,

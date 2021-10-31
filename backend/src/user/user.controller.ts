@@ -5,7 +5,7 @@ import {UserService} from './user.service';
 import {CurrentUser} from "../auth/current-user.decorator";
 import {Roles} from "../role/roles.decorator";
 import {Role} from "../role/role.utils";
-import {ApiTags} from "@nestjs/swagger";
+import {ApiOperation, ApiTags} from "@nestjs/swagger";
 
 @Controller('users')
 @ApiTags('users')
@@ -13,11 +13,13 @@ export class UserController {
   constructor(private userService: UserService) {
   }
 
+  @ApiOperation({summary: "Get me"})
   @Get()
   public async getMe(@CurrentUser() user: User): Promise<User> {
     return user;
   }
 
+  @ApiOperation({summary: "Update me"})
   @Put()
   public async updateMe(
     @CurrentUser() user: User,
@@ -26,6 +28,7 @@ export class UserController {
     return await this.userService.update(user.id, userDTO)
   }
 
+  @ApiOperation({summary: "Delete me"})
   @Delete()
   public async deleteMe(
     @CurrentUser() user: User,
@@ -33,12 +36,14 @@ export class UserController {
     return await this.userService.delete(user.id)
   }
 
+  @ApiOperation({summary: "Promote a user to manager (generalManager)"})
   @Post('promote/:userId')
   @Roles(Role.GeneralManager)
   public async promoteUser(@Param('userId', ParseIntPipe) userId: number): Promise<User> {
     return await this.userService.promoteUser(userId);
   }
 
+  @ApiOperation({summary: "Get a user by id (manager/generalManager)"})
   @Get(':userId')
   public async getUser(
     @CurrentUser() currentUser: User,
@@ -54,6 +59,7 @@ export class UserController {
     return user;
   }
 
+  @ApiOperation({summary: "Delete a user by id (generalManager)"})
   @Delete(':userId')
   @Roles(Role.GeneralManager)
   public async deleteUser(@Param('userId', ParseIntPipe) userId: number): Promise<User> {

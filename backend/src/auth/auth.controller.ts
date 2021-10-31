@@ -3,7 +3,7 @@ import {AuthService} from "./auth.service";
 import {CreateUserDTO, LoginUserDTO} from "./auth.dto";
 import {SkipAuth} from "./skip-auth.decorators";
 import {User} from "../model/user.entity";
-import {ApiTags} from "@nestjs/swagger";
+import {ApiOperation, ApiTags} from "@nestjs/swagger";
 
 const TOKEN_AUTH_RES_HEADER = "token"
 
@@ -13,6 +13,7 @@ export class AuthController {
   constructor(private authService: AuthService) {
   }
 
+  @ApiOperation({summary: "Login a user"})
   @SkipAuth()
   @Post('login')
   async login(
@@ -28,6 +29,7 @@ export class AuthController {
     return newTokenPromise;
   }
 
+  @ApiOperation({summary: "Register a user"})
   @SkipAuth()
   @Post('register')
   async register(
