@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from '@nestjs/common';
 import {WorkingTime} from "../model/workingtime.entity";
 import {WorkingTimeService} from "./working-time.service";
-import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.requests";
+import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.dto";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
 import {ApiTags} from "@nestjs/swagger";

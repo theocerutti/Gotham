@@ -3,7 +3,7 @@ import {UserService} from "../user/user.service";
 import {User} from "../model/user.entity";
 import * as bcrypt from "bcrypt";
 import {JwtService} from '@nestjs/jwt';
-import {CreateUserDTO} from "./auth.requests";
+import {CreateUserDTO} from "./auth.dto";
 import {JwtPayload} from "./auth.utils";
 
 @Injectable()

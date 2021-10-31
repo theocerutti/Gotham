@@ -1,4 +1,4 @@
-import {UserDTO} from './user.request';
+import {UserDTO} from './user.dto';
 import {User} from '../model/user.entity';
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';

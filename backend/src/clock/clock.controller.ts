@@ -1,7 +1,7 @@
 import {Body, Controller, Get, Post} from '@nestjs/common';
 import {ClockService} from "./clock.service";
 import {Clock} from "../model/clock.entity";
-import {ClockDTO} from "./clock.requests";
+import {ClockDTO} from "./clock.dto";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
 import {WorkingTime} from "../model/workingtime.entity";

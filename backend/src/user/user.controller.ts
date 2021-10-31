@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from '@nestjs/common';
 import {User} from '../model/user.entity';
-import {UserDTO} from './user.request';
+import {UserDTO} from './user.dto';
 import {UserService} from './user.service';
 import {CurrentUser} from "../auth/current-user.decorator";
 import {Roles} from "../role/roles.decorator";

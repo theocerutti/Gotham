@@ -1,7 +1,7 @@
 import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {WorkingTime} from "../model/workingtime.entity";
-import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.requests";
+import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.dto";
 import {WorkingTimeRepository} from "./working-time.repository";
 import {UserService} from "../user/user.service";
 

@@ -3,7 +3,7 @@ import {TeamService} from "./team.service";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
 import {Team} from "../model/team.entity";
-import {CreateTeamDTO} from "./team.requests";
+import {CreateTeamDTO} from "./team.dto";
 import {Role} from "../role/role.utils";
 import {Roles} from "../role/roles.decorator";
 import {ApiTags} from "@nestjs/swagger";

@@ -2,7 +2,7 @@ import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs
 import {InjectRepository} from "@nestjs/typeorm";
 import {TeamRepository} from "./team.repository";
 import {Team} from "../model/team.entity";
-import {CreateTeamDTO} from "./team.requests";
+import {CreateTeamDTO} from "./team.dto";
 import {UserService} from "../user/user.service";
 
 @Injectable()

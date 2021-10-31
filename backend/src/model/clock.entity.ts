@@ -1,4 +1,4 @@
-import {PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn} from 'typeorm';
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {User} from "./user.entity";
 
 @Entity()
@@ -12,7 +12,7 @@ export class Clock {
   @Column({default: true, nullable: false})
   status: boolean;
 
-  @OneToOne(() => User, user => user.clock, { nullable: false, onDelete: 'CASCADE' })
+  @OneToOne(() => User, user => user.clock, {nullable: false, onDelete: 'CASCADE'})
   @JoinColumn()
   user: User
 }
