@@ -4,8 +4,10 @@ import {WorkingTimeService} from "./working-time.service";
 import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.requests";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
+import {ApiTags} from "@nestjs/swagger";
 
 @Controller('workingtimes')
+@ApiTags('workingtimes')
 export class WorkingTimeController {
   constructor(private workingTimeService: WorkingTimeService) {
   }

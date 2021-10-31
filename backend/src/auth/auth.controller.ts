@@ -6,10 +6,12 @@ import {User} from "../model/user.entity";
 import {CurrentUser} from "./current-user.decorator";
 import {Roles} from "../role/roles.decorator";
 import {Role} from "../role/role.utils";
+import {ApiTags} from "@nestjs/swagger";
 
 const TOKEN_AUTH_RES_HEADER = "token"
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private authService: AuthService) {
   }

@@ -5,8 +5,10 @@ import {ClockDTO} from "./clock.requests";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
 import {WorkingTime} from "../model/workingtime.entity";
+import {ApiTags} from "@nestjs/swagger";
 
 @Controller('clocks')
+@ApiTags('clocks')
 export class ClockController {
   constructor(private clockService: ClockService) {
   }

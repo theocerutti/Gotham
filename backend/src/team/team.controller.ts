@@ -6,8 +6,10 @@ import {Team} from "../model/team.entity";
 import {CreateTeamDTO} from "./team.requests";
 import {Role} from "../role/role.utils";
 import {Roles} from "../role/roles.decorator";
+import {ApiTags} from "@nestjs/swagger";
 
 @Controller('team')
+@ApiTags('team')
 export class TeamController {
   constructor(private teamService: TeamService) {
   }

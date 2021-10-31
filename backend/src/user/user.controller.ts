@@ -5,8 +5,10 @@ import {UserService} from './user.service';
 import {CurrentUser} from "../auth/current-user.decorator";
 import {Roles} from "../role/roles.decorator";
 import {Role} from "../role/role.utils";
+import {ApiTags} from "@nestjs/swagger";
 
 @Controller('users')
+@ApiTags('users')
 export class UserController {
   constructor(private userService: UserService) {
   }
