@@ -5,6 +5,8 @@ import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.dto";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
+import {Roles} from "../role/roles.decorator";
+import {Role} from "../role/role.utils";
 
 @Controller('workingtimes')
 @ApiTags('workingtimes')
@@ -66,5 +68,12 @@ export class WorkingTimeController {
     @Param('workingTimeId', ParseIntPipe) workingTimeId: number,
   ): Promise<WorkingTime> {
     return await this.workingTimeService.deleteByUserId(user.id, workingTimeId);
+  }
+
+  @ApiOperation({summary: "Get all working times from a user (manager, generalManager)"})
+  @Roles(Role.Manager, Role.GeneralManager)
+  @Get('/user/:userId')
+  public async getAllFromUser(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.workingTimeService.getUserWorkingTimes(userId);
   }
 }

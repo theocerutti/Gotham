@@ -11,7 +11,7 @@ export class TeamRepository extends Repository<Team> {
         'user',
         'user.id = :userId',
         {userId}
-      )
+      ).leftJoinAndSelect('user.workingtimes', 'workingtimes')
       .getMany();
   }
 
