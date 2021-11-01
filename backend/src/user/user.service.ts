@@ -1,7 +1,7 @@
-import {UserDTO} from './user.dto';
-import {User} from '../model/user.entity';
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
+import {UserDTO} from "./user.dto";
+import {User} from "../model/user.entity";
+import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {InjectRepository} from "@nestjs/typeorm";
 import {UserRepository} from "./user.repository";
 import {Role} from "../role/role.utils";
 
@@ -55,29 +55,29 @@ export class UserService {
   async create(userDTO: UserDTO): Promise<User> {
     const user: User = new User();
 
-    user.username = userDTO.username
-    user.email = userDTO.email
+    user.username = userDTO.username;
+    user.email = userDTO.email;
     user.password = userDTO.password;
 
     try {
-      return await this.UserRepo.save(user)
+      return await this.UserRepo.save(user);
     } catch (error) {
       throw new HttpException(`Could not create user : ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async update(userID: number, userDTO: UserDTO): Promise<User> {
-    const user: User = await this.getById(userID)
+    const user: User = await this.getById(userID);
 
     if (userDTO.username) {
-      user.username = userDTO.username
+      user.username = userDTO.username;
     }
     if (userDTO.email) {
-      user.email = userDTO.email
+      user.email = userDTO.email;
     }
 
     try {
-      return await this.UserRepo.save(user)
+      return await this.UserRepo.save(user);
     } catch (error) {
       throw new HttpException(`Could not update user : ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }

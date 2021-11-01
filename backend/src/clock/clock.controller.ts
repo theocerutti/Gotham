@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post} from '@nestjs/common';
+import {Body, Controller, Get, Post} from "@nestjs/common";
 import {ClockService} from "./clock.service";
 import {Clock} from "../model/clock.entity";
 import {ClockDTO} from "./clock.dto";
@@ -7,8 +7,8 @@ import {User} from "../model/user.entity";
 import {WorkingTime} from "../model/workingtime.entity";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
 
-@Controller('clocks')
-@ApiTags('clocks')
+@Controller("clocks")
+@ApiTags("clocks")
 export class ClockController {
   constructor(private clockService: ClockService) {
   }

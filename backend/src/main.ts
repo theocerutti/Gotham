@@ -1,12 +1,12 @@
-import {NestFactory, Reflector} from '@nestjs/core';
-import {AppModule} from './app.module';
-import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
+import {NestFactory, Reflector} from "@nestjs/core";
+import {AppModule} from "./app.module";
+import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import {ClassSerializerInterceptor, ValidationPipe} from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // Set /api route everywhere
-  app.setGlobalPrefix('/api');
+  app.setGlobalPrefix("/api");
 
   // Setup class-validator
   app.useGlobalPipes(new ValidationPipe());
@@ -14,16 +14,16 @@ async function bootstrap() {
 
   // Setup Swagger
   const config = new DocumentBuilder()
-    .setTitle('TimeManger')
-    .setVersion('1.0')
+    .setTitle("Time Manager")
+    .setDescription("EPITECH Project: A clone of Clockify!")
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup("swagger", app, document);
 
   // Enable Cors
   app.enableCors({
     origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     credentials: true,
   });
   await app.listen(process.env.PORT || 4000);

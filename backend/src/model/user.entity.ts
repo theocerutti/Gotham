@@ -7,7 +7,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
-} from 'typeorm';
+} from "typeorm";
 import {WorkingTime} from "./workingtime.entity";
 import {Clock} from "./clock.entity";
 import {Team} from "./team.entity";
@@ -38,19 +38,19 @@ export class User {
   email: string;
 
   @Column({nullable: false, default: Role.User})
-  role: Role
+  role: Role;
 
   @ApiHideProperty()
-  @OneToMany(() => WorkingTime, workingtime => workingtime.user, {onDelete: 'CASCADE'})
-  workingtimes: WorkingTime[]
+  @OneToMany(() => WorkingTime, workingtime => workingtime.user, {onDelete: "CASCADE"})
+  workingtimes: WorkingTime[];
 
   @ApiHideProperty()
-  @OneToOne(() => Clock, clock => clock.user, {onDelete: 'CASCADE'})
-  clock: Clock
+  @OneToOne(() => Clock, clock => clock.user, {onDelete: "CASCADE"})
+  clock: Clock;
 
   @ApiHideProperty()
   @ManyToMany(() => Team, team => team.users)
-  teams: Team[]
+  teams: Team[];
 
   @BeforeInsert()
   @BeforeUpdate()
@@ -60,7 +60,7 @@ export class User {
       if (saltRounds === 0) {
         this.password = bcrypt.hashSync(this.password, 10);
       }
-      const salt = bcrypt.genSaltSync(10)
+      const salt = bcrypt.genSaltSync(10);
       this.password = bcrypt.hashSync(this.password, salt);
     } catch (error) {
       this.password = bcrypt.hashSync(this.password, 10);

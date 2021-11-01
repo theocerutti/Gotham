@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from "@nestjs/common";
 import {WorkingTime} from "../model/workingtime.entity";
 import {WorkingTimeService} from "./working-time.service";
 import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.dto";
@@ -8,8 +8,8 @@ import {ApiOperation, ApiTags} from "@nestjs/swagger";
 import {Roles} from "../role/roles.decorator";
 import {Role} from "../role/role.utils";
 
-@Controller('workingtimes')
-@ApiTags('workingtimes')
+@Controller("workingtimes")
+@ApiTags("workingtimes")
 export class WorkingTimeController {
   constructor(private workingTimeService: WorkingTimeService) {
   }
@@ -28,22 +28,22 @@ export class WorkingTimeController {
   }
 
   @ApiOperation({summary: "Get a working time by id"})
-  @Get(':workingTimeId')
+  @Get(":workingTimeId")
   public async getMeOne(
     @CurrentUser() user: User,
-    @Param('workingTimeId', ParseIntPipe) workingTimeId: number
+    @Param("workingTimeId", ParseIntPipe) workingTimeId: number
   ): Promise<WorkingTime> {
     return await this.workingTimeService.getUserWorkingTime(user.id, workingTimeId);
   }
 
   @ApiOperation({summary: "Update a working time"})
-  @Put(':workingTimeId')
+  @Put(":workingTimeId")
   public async updateMeOne(
     @CurrentUser() user: User,
-    @Param('workingTimeId', ParseIntPipe) workingTimeId: number,
+    @Param("workingTimeId", ParseIntPipe) workingTimeId: number,
     @Body() workingTimeDTO: WorkingTimeDTO
   ): Promise<WorkingTime> {
-    return await this.workingTimeService.updateByUserId(user.id, workingTimeId, workingTimeDTO)
+    return await this.workingTimeService.updateByUserId(user.id, workingTimeId, workingTimeDTO);
   }
 
   @ApiOperation({summary: "Create a working time"})
@@ -62,18 +62,18 @@ export class WorkingTimeController {
   }
 
   @ApiOperation({summary: "Delete a working time"})
-  @Delete(':workingTimeId')
+  @Delete(":workingTimeId")
   public async deleteMeOne(
     @CurrentUser() user: User,
-    @Param('workingTimeId', ParseIntPipe) workingTimeId: number,
+    @Param("workingTimeId", ParseIntPipe) workingTimeId: number,
   ): Promise<WorkingTime> {
     return await this.workingTimeService.deleteByUserId(user.id, workingTimeId);
   }
 
   @ApiOperation({summary: "Get all working times from a user (manager, generalManager)"})
   @Roles(Role.Manager, Role.GeneralManager)
-  @Get('/user/:userId')
-  public async getAllFromUser(@Param('userId', ParseIntPipe) userId: number) {
+  @Get("/user/:userId")
+  public async getAllFromUser(@Param("userId", ParseIntPipe) userId: number) {
     return await this.workingTimeService.getUserWorkingTimes(userId);
   }
 }

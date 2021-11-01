@@ -1,8 +1,8 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
+import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {UserService} from "../user/user.service";
 import {User} from "../model/user.entity";
 import * as bcrypt from "bcrypt";
-import {JwtService} from '@nestjs/jwt';
+import {JwtService} from "@nestjs/jwt";
 import {CreateUserDTO} from "./auth.dto";
 import {JwtPayload} from "./auth.utils";
 
@@ -18,7 +18,7 @@ export class AuthService {
     username: string,
     password: string
   ): Promise<string> | undefined {
-    const user: User = await this.userService.getByUsername(username)
+    const user: User = await this.userService.getByUsername(username);
 
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
       throw new HttpException("Bad password", HttpStatus.UNAUTHORIZED);

@@ -7,5 +7,5 @@ export type JwtPayload = {
 }
 
 export const jwtConstants = {
-  secret: 'secretKey', // TODO: get from env
+  secret: "secretKey", // TODO: get from env
 };

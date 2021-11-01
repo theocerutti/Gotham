@@ -1,4 +1,4 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
+import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {WorkingTime} from "../model/workingtime.entity";
 import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.dto";
@@ -25,7 +25,7 @@ export class WorkingTimeService {
     try {
       return await this.WorkingTimeRepo.findOneOrFail(workingTimeID, {
         where: {user: {id: userID}}
-      })
+      });
     } catch (error) {
       throw new HttpException(`Can't get user working time: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -109,7 +109,7 @@ export class WorkingTimeService {
       const workingTime = await this.WorkingTimeRepo.findOneOrFail(id); // check if exists
       return await this.WorkingTimeRepo.remove(workingTime);
     } catch (error) {
-      throw new HttpException(`Can't delete WorkingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException(`Can't delete WorkingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

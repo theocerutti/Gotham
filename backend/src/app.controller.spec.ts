@@ -1,8 +1,8 @@
-import {AppController} from './app.controller';
+import {AppController} from "./app.controller";
 
-describe('AppController', () => {
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
+describe("AppController", () => {
+  describe("root", () => {
+    it("should return \"Hello World!\"", () => {
     });
     expect(true).toBe(true);
   });

@@ -1,14 +1,14 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UnauthorizedException} from '@nestjs/common';
-import {User} from '../model/user.entity';
-import {UserDTO} from './user.dto';
-import {UserService} from './user.service';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UnauthorizedException} from "@nestjs/common";
+import {User} from "../model/user.entity";
+import {UserDTO} from "./user.dto";
+import {UserService} from "./user.service";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {Roles} from "../role/roles.decorator";
 import {Role} from "../role/role.utils";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
 
-@Controller('users')
-@ApiTags('users')
+@Controller("users")
+@ApiTags("users")
 export class UserController {
   constructor(private userService: UserService) {
   }
@@ -25,7 +25,7 @@ export class UserController {
     @CurrentUser() user: User,
     @Body() userDTO: UserDTO,
   ): Promise<User> {
-    return await this.userService.update(user.id, userDTO)
+    return await this.userService.update(user.id, userDTO);
   }
 
   @ApiOperation({summary: "Delete me"})
@@ -33,21 +33,21 @@ export class UserController {
   public async deleteMe(
     @CurrentUser() user: User,
   ): Promise<User> {
-    return await this.userService.delete(user.id)
+    return await this.userService.delete(user.id);
   }
 
   @ApiOperation({summary: "Promote a user to manager (generalManager)"})
-  @Post('promote/:userId')
+  @Post("promote/:userId")
   @Roles(Role.GeneralManager)
-  public async promoteUser(@Param('userId', ParseIntPipe) userId: number): Promise<User> {
+  public async promoteUser(@Param("userId", ParseIntPipe) userId: number): Promise<User> {
     return await this.userService.promoteUser(userId);
   }
 
   @ApiOperation({summary: "Get a user by id (manager/generalManager)"})
-  @Get(':userId')
+  @Get(":userId")
   public async getUser(
     @CurrentUser() currentUser: User,
-    @Param('userId', ParseIntPipe) userId: number
+    @Param("userId", ParseIntPipe) userId: number
   ): Promise<User> {
     // TODO: manager can get general manager user?
     // can a manager get a user that is not in its team
@@ -60,9 +60,9 @@ export class UserController {
   }
 
   @ApiOperation({summary: "Delete a user by id (generalManager)"})
-  @Delete(':userId')
+  @Delete(":userId")
   @Roles(Role.GeneralManager)
-  public async deleteUser(@Param('userId', ParseIntPipe) userId: number): Promise<User> {
+  public async deleteUser(@Param("userId", ParseIntPipe) userId: number): Promise<User> {
     return await this.userService.delete(userId);
   }
 }

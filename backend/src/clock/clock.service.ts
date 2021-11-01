@@ -1,6 +1,6 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {WorkingTimeService} from '../working-time/working-time.service';
+import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from "@nestjs/common";
+import {InjectRepository} from "@nestjs/typeorm";
+import {WorkingTimeService} from "../working-time/working-time.service";
 import {Clock} from "../model/clock.entity";
 import {ClockDTO} from "./clock.dto";
 import {ClockRepository} from "./clock.repository";

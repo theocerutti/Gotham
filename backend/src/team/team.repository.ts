@@ -1,17 +1,17 @@
-import {EntityNotFoundError, EntityRepository, Repository} from 'typeorm';
+import {EntityNotFoundError, EntityRepository, Repository} from "typeorm";
 import {Team} from "../model/team.entity";
 
 @EntityRepository(Team)
 export class TeamRepository extends Repository<Team> {
   async getUserTeams(userId: number): Promise<Team[]> {
     return await this
-      .createQueryBuilder('team')
+      .createQueryBuilder("team")
       .leftJoinAndSelect(
-        'team.users',
-        'user',
-        'user.id = :userId',
+        "team.users",
+        "user",
+        "user.id = :userId",
         {userId}
-      ).leftJoinAndSelect('user.workingtimes', 'workingtimes')
+      ).leftJoinAndSelect("user.workingtimes", "workingtimes")
       .getMany();
   }
 
