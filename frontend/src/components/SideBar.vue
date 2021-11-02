@@ -32,14 +32,22 @@
             icon: 'mdi-home',
             title: 'Dashboard',
             path: '/',
-            active: true
           },
           {
             icon: 'mdi-account',
             title: 'My account',
             path: '/my-account',
-            active: false
           },
+          {
+            icon: 'mdi-login',
+            title: 'Login',
+            path: '/login',
+          },
+          {
+            icon: 'mdi-account-plus',
+            title: 'Register',
+            path: '/register',
+          }
         ]
       }
     }

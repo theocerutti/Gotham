@@ -1,10 +1,10 @@
 <template>
-  <v-container class="d-flex flex-wrap">
-      <employee-working-time class="pa-2 width-45" />
-      <team-working-time class="pa-2 width-45" />
-      <team-working-time class="pa-2 width-45" />
-      <employee-working-time class="pa-2 width-45" />
-  </v-container>
+  <v-card class="d-flex flex-wrap justify">
+      <employee-working-time class="ma-2 width-45" />
+      <team-working-time class="ma-2 width-45" />
+      <team-working-time class="ma-2 width-45" />
+      <employee-working-time class="ma-2 width-45" />
+  </v-card>
 </template>
 
 
@@ -30,5 +30,9 @@
 <style scoped>
   .width-45{
     width: 45%
+  }
+
+  .justify{
+    justify-content: center;
   }
 </style>
