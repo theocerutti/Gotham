@@ -35,11 +35,17 @@
             active: true
           },
           {
+            icon: 'mdi-calendar',
+            title: 'Arrival & Departure',
+            path: '/departure',
+            active: false,
+          },
+          {
             icon: 'mdi-account',
             title: 'My account',
             path: '/my-account',
             active: false
-          },
+          }
         ]
       }
     }

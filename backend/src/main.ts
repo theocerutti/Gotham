@@ -11,6 +11,12 @@ async function bootstrap() {
   // Setup class-validator
   app.useGlobalPipes(new ValidationPipe());
 
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
   // Setup Swagger
   const config = new DocumentBuilder()
     .setTitle('TimeManger')
