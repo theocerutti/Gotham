@@ -1,8 +1,9 @@
-import {UserDTO} from './user.request';
-import {User} from '../model/user.entity';
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
+import {UserDTO} from "./user.dto";
+import {User} from "../model/user.entity";
+import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {InjectRepository} from "@nestjs/typeorm";
 import {UserRepository} from "./user.repository";
+import {Role} from "../role/role.utils";
 
 @Injectable()
 export class UserService {
@@ -27,6 +28,14 @@ export class UserService {
     }
   }
 
+  async getByIds(userIds: number[]): Promise<User[]> {
+    try {
+      return await this.UserRepo.findByIds(userIds);
+    } catch (error) {
+      throw new HttpException(`Can't get users: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async getByEmail(email: string): Promise<User> {
     try {
       return await this.UserRepo.findOneOrFail({where: {email: email}});
@@ -44,42 +53,53 @@ export class UserService {
   }
 
   async create(userDTO: UserDTO): Promise<User> {
-    let user: User = new User();
+    const user: User = new User();
 
-    user.username = userDTO.username
-    user.email = userDTO.email
+    user.username = userDTO.username;
+    user.email = userDTO.email;
+    user.password = userDTO.password;
 
     try {
-      return await this.UserRepo.save(user)
+      return await this.UserRepo.save(user);
     } catch (error) {
       throw new HttpException(`Could not create user : ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async update(userID: number, userDTO: UserDTO): Promise<User> {
-    let user: User = await this.getById(userID)
+    const user: User = await this.getById(userID);
 
     if (userDTO.username) {
-      user.username = userDTO.username
+      user.username = userDTO.username;
     }
     if (userDTO.email) {
-      user.email = userDTO.email
+      user.email = userDTO.email;
     }
 
     try {
-      return await this.UserRepo.save(user)
+      return await this.UserRepo.save(user);
     } catch (error) {
       throw new HttpException(`Could not update user : ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async delete(userID: number): Promise<User> {
-    let user: User = await this.getById(userID)
+    const user: User = await this.getById(userID);
 
     try {
       return await this.UserRepo.remove(user);
     } catch (error) {
       throw new HttpException(`Could not remove user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async promoteUser(userId: number): Promise<User> {
+    try {
+      const user: User = await this.getById(userId);
+      user.role = Role.Manager;
+      return await this.UserRepo.save(user);
+    } catch (error) {
+      throw new HttpException(`Can't promote user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

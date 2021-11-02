@@ -1,4 +1,4 @@
-import {PrimaryGeneratedColumn, Column, Entity, ManyToOne} from 'typeorm';
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {User} from "./user.entity";
 
 @Entity()
@@ -12,6 +12,12 @@ export class WorkingTime {
   @Column({nullable: false})
   end: Date;
 
-  @ManyToOne(() => User, user => user.workingtimes, { nullable: false, onDelete: 'CASCADE' })
-  user: User
+  @Column({nullable: true})
+  description?: string;
+
+  @Column({nullable: false, default: false})
+  billable: boolean;
+
+  @ManyToOne(() => User, user => user.workingtimes, {nullable: false, onDelete: "CASCADE"})
+  user: User;
 }

@@ -1,8 +1,8 @@
 <template>
-  <v-app dark>
+  <v-app>
     <side-bar/>
     <v-main>
-      <v-container fluid>
+      <v-container fill-height fluid>
         <router-view></router-view>
       </v-container>
     </v-main>

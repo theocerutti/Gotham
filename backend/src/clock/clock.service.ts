@@ -1,11 +1,12 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {WorkingTimeService} from '../working-time/working-time.service';
+import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from "@nestjs/common";
+import {InjectRepository} from "@nestjs/typeorm";
+import {WorkingTimeService} from "../working-time/working-time.service";
 import {Clock} from "../model/clock.entity";
-import {ClockDTO} from "./clock-requests";
+import {ClockDTO} from "./clock.dto";
 import {ClockRepository} from "./clock.repository";
 import {UserService} from "../user/user.service";
-import {WorkingTimeDTO} from "../working-time/working-time.requests";
+import {WorkingTimeDTO} from "../working-time/working-time.dto";
+import {WorkingTime} from "../model/workingtime.entity";
 
 @Injectable()
 export class ClockService {
@@ -18,7 +19,7 @@ export class ClockService {
 
   async create(userId: number, clockDTO: ClockDTO): Promise<Clock> {
     const user = await this.userService.getById(userId);
-    let newClock = new Clock();
+    const newClock = new Clock();
     newClock.time = clockDTO.time;
     newClock.user = user;
     try {
@@ -52,7 +53,7 @@ export class ClockService {
     }
   }
 
-  async switchClock(userID: number, clockDTO: ClockDTO): Promise<Clock> {
+  async switchClock(userID: number, clockDTO: ClockDTO): Promise<WorkingTime[]> {
     let clock: Clock = null;
     try {
       clock = await this.getUserClockById(userID);
@@ -64,11 +65,12 @@ export class ClockService {
       clock.status = false;
     } else {
       clock.status = true;
-      let workingTimeDTO = new WorkingTimeDTO();
+      const workingTimeDTO = new WorkingTimeDTO();
       workingTimeDTO.start = clock.time;
       workingTimeDTO.end = clockDTO.time;
       await this.createWorkingTime(userID, workingTimeDTO);
     }
-    return await this.update(clock);
+    await this.update(clock);
+    return await this.workingTimeService.getUserWorkingTimes(userID);
   }
 }
