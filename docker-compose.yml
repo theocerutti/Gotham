@@ -37,6 +37,8 @@ services:
       - backend
     ports:
       - "8080:8080"
+    volumes:
+      - ./frontend:/app
     env_file:
       - ./frontend/.env
     networks:
