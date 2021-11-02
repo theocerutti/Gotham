@@ -1,4 +1,4 @@
-import {IsDateString, IsOptional, IsString} from "class-validator";
+import {IsBoolean, IsDateString, IsOptional, IsString} from "class-validator";
 
 export class WorkingTimeRequestQuery {
   @IsDateString()
@@ -20,4 +20,8 @@ export class WorkingTimeDTO {
   @IsString()
   @IsOptional()
   public description: string;
+
+  @IsBoolean()
+  @IsOptional()
+  public billable: boolean;
 }
