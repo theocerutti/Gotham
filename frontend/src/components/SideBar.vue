@@ -4,12 +4,12 @@
       <v-subheader>GOTHAM</v-subheader>
       <v-list-item-group>
         <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.path" 
+            v-for="(item, i) in items"
+            :key="i"
+            :to="item.path"
         >
           <v-list-item-icon>
-            <v-icon>{{item.icon}}</v-icon>
+            <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="item.title"></v-list-item-title>
@@ -22,41 +22,41 @@
 </template>
 
 <script>
-  export default {
-    name: 'SideBar',
+export default {
+  name: "SideBar",
 
-    data () {
-      return {
-        items: [
-          {
-            icon: 'mdi-home',
-            title: 'Dashboard',
-            path: '/',
-          },
-          {
-            icon: 'mdi-calendar',
-            title: 'Arrival & Departure',
-            path: '/departure',
-            active: false,
-          },
-          {
-            icon: 'mdi-account',
-            title: 'My account',
-            path: '/my-account',
-            active: false
-          },
-          {
-            icon: 'mdi-login',
-            title: 'Login',
-            path: '/login',
-          },
-          {
-            icon: 'mdi-account-plus',
-            title: 'Register',
-            path: '/register',
-          }
-        ]
-      }
-    }
+  data() {
+    return {
+      items: [
+        {
+          icon: "mdi-home",
+          title: "Dashboard",
+          path: "/",
+        },
+        {
+          icon: "mdi-clock",
+          title: "Time Tracker",
+          path: "/time-tracker",
+          active: false,
+        },
+        {
+          icon: "mdi-account",
+          title: "My account",
+          path: "/my-account",
+          active: false
+        },
+        {
+          icon: "mdi-login",
+          title: "Login",
+          path: "/login",
+        },
+        {
+          icon: "mdi-account-plus",
+          title: "Register",
+          path: "/register",
+        }
+      ]
+    };
   }
+};
 </script>

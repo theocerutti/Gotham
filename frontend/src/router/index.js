@@ -4,6 +4,7 @@ import Dashboard from '../views/Dashboard.vue'
 import Account from '../views/Account.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import TimeTracker from '../views/TimeTracker.vue'
 
 Vue.use(VueRouter)
 
@@ -19,22 +20,22 @@ const routes = [
     component: Account
   },
   {
-    path: '/departure',
-    name: 'Departure',
-    component: () => import('../views/Departure.vue')
+    path: '/time-tracker',
+    name: 'Time Tracker',
+    component: TimeTracker
   },
   {
     path: '/login',
     name: 'Login',
     component: Login
   },
-  { 
+  {
     path: '/register',
     name: Register,
     component: Register
   },
 
-  { path: '*', redirect: '/' }
+  {path: '*', redirect: '/'}
 ]
 
 const router = new VueRouter({

@@ -9,7 +9,7 @@
           <v-text-field label="Password Verification" v-model="passwordVerif"></v-text-field>
         </v-row>
         <v-row class="d-flex justify-content">
-          
+
         </v-row>
       </v-container>
     </v-card>
@@ -39,7 +39,7 @@ export default ({
       },
     ],
   }),
-  
+
 })
 </script>
 
@@ -47,7 +47,7 @@ export default ({
 
 <style scoped>
   .w-50{
-    width: 50%;    
+    width: 50%;
   }
 
   /* .full-w-h{

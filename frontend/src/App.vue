@@ -2,7 +2,7 @@
   <v-app>
     <side-bar/>
     <v-main>
-      <v-container fill-height fluid>
+      <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -11,16 +11,16 @@
 
 <script>
 
-import SideBar from './components/SideBar.vue'
+import SideBar from "./components/SideBar.vue";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     SideBar,
   },
 
-data: () => ({
+  data: () => ({
     //
   }),
 };
