@@ -49,9 +49,12 @@ export default {
   },
   computed: {
       allWorkingTimes() {
-          return this.$store.getters.getterWorkingTimes;
+          return this.$store.getters.getterMyWorkingTimes;
       }
   },
+  mounted() {
+      this.$store.dispatch('getMyWorkingTimes')
+  }
 //   created() {
 //     this.$store.dispatch('getWorkingTimesById')    
 //   }

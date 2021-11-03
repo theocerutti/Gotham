@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Axios from 'axios'
 import api from '../config-api'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    myWorkingTimes: [],
     workingTimes: [],
     users: [],
     clock: {},
@@ -45,6 +45,9 @@ export default new Vuex.Store({
     SET_WORKINGTIMES(state, payload) {
       state.workingTimes = payload.data.data;
     },
+    SET_MY_WORKINGTIMES(state, payload) {
+      state.myWorkingTimes = payload.data;
+    },
     LOGIN(state, payload) {
       console.log("LOGIN mut ", payload)
       console.log("state", state)
@@ -57,7 +60,7 @@ export default new Vuex.Store({
 
     setUser ({ commit }, payload) {
       console.log('action set user', payload)
-      Axios
+      api
         .post('http://localhost:4000/api/users', payload)
         .then((response) => {
           commit('SET_USER', response)
@@ -71,15 +74,15 @@ export default new Vuex.Store({
         })
     },
     updateUser ({ commit }, payload) {
-      Axios
+      api
         .put('http://localhost:4000/api/users/' + this.state.userId, payload)
         .then((response) => {
           commit('SET_USER', response)
         })
     },
     deleteUser ({ commit }) {
-      Axios
-        .delete('http://localhost:4000/api/users/' + this.state.userId)
+      api
+        .delete('http://localhost:4000/api/users/')
         .then((response) => {
           commit('DELETE_USER', response)
         })
@@ -94,7 +97,7 @@ export default new Vuex.Store({
     },
 
     getAllUsers ({ commit }) {
-      Axios
+      api
         .get('http://localhost:4000/api/users')
         .then((response) => {
           commit('SET_ALL_USERS', response)
@@ -102,12 +105,12 @@ export default new Vuex.Store({
     },
     
     User_register ({ commit }, payload) {
-      Axios
+      api
         .post('http://localhost:4000/api/auth/register', payload)
     },
 
     User_login ({ commit }, payload) {
-      Axios
+      api
         .post('http://localhost:4000/api/auth/login', payload)
         .then(response => {
           commit('LOGIN', response)
@@ -123,11 +126,11 @@ export default new Vuex.Store({
         .post('http://localhost:4000/api/clocks', payload)
         .then((response) => {
           commit('SET_CLOCK', response)
-          this.dispatch('getWorkingTimesById')
+          this.dispatch('getMyWorkingTimes')
         })
     },
     async getClockByUserId ({ commit }) {
-      await Axios
+      await api
         .get('http://localhost:4000/api/clocks/user/' + this.state.userId)
         .then((response) => {
           commit('SET_CLOCK', response)
@@ -135,7 +138,7 @@ export default new Vuex.Store({
     },
 
     getClock () {
-      Axios
+      api
         .get('http://localhost:4000/api/clocks')
         .then((response) => {
           console.log("getclockresp", response)
@@ -149,10 +152,17 @@ export default new Vuex.Store({
 
       payload.working_time['user_id'] = this.state.userId;
 
-      Axios
+      api
         .post('http://localhost:4000/api/workingtimes', payload)
         .then((response) => {
           commit('SET_WORKINGTIME', response)
+        })
+    },
+    getMyWorkingTimes ({ commit }, payload) {
+      api
+        .get('http://localhost:4000/api/workingtimes')
+        .then((response) => {
+          commit('SET_MY_WORKINGTIMES', response)
         })
     },
     getWorkingTimesById( {commit} ) {
@@ -166,6 +176,9 @@ export default new Vuex.Store({
   getters: {
     getterWorkingTimes: state => {
       return state.workingTimes;
+    },
+    getterMyWorkingTimes: state => {
+      return state.myWorkingTimes;
     },
     getterAllUserInfos: state => {
       return {

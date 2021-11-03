@@ -60,7 +60,7 @@ export default {
             //   }
             // })
             this.$store.dispatch('createClock', {
-              time: this.startDateTime,
+              time: this.endDateTime,
             })
       },
       clock() {

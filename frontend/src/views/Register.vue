@@ -47,7 +47,9 @@ export default ({
         username: this.username,
         password: this.password,
         email: this.email
-      })
+      }).then(
+        this.$router.push({ name: 'Login' })
+      )
     }
   }
   
