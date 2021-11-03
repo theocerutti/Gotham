@@ -1,27 +1,17 @@
 <template>
   <v-app>
-    <side-bar/>
-    <v-main>
-      <v-container>
-        <router-view></router-view>
-      </v-container>
-    </v-main>
+    <NotificationContainer/>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-
-import SideBar from './components/SideBar.vue'
+import NotificationContainer from "./components/NotificationContainer";
 
 export default {
-  name: 'App',
-
+  name: "App",
   components: {
-    SideBar,
+    NotificationContainer
   },
-
-data: () => ({
-    //
-  }),
 };
 </script>

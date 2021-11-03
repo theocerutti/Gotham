@@ -1,46 +1,63 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Dashboard from '../views/Dashboard.vue'
-import Account from '../views/Account.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Dashboard from "../views/Dashboard.vue";
+import Auth from "@/views/Auth";
+import Container from "@/views/Container";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-const routes = [
-  {
-    path: '/',
-    name: 'Dashboard',
-    component: Dashboard
-  },
-  {
-    path: '/my-account',
-    name: 'MyAccount',
-    component: Account
-  },
-  {
-    path: '/departure',
-    name: 'Departure',
-    component: () => import('../views/Departure.vue')
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  { 
-    path: '/register',
-    name: Register,
-    component: Register
-  },
+const createRouter = (store) => {
+  const authGuard = (to, from, next) => {
+    if (!store.getters.isLogged) {
+      next("/auth");
+    } else {
+      next();
+    }
+  };
 
-  { path: '*', redirect: '/' }
-]
+  const routes = [
+    {
+      path: "/auth",
+      name: "Auth",
+      component: Auth
+    },
+    {
+      path: "/",
+      name: "Container",
+      component: Container,
+      beforeEnter: authGuard,
+      redirect: "/time-tracker",
+      children: [
+        {
+          path: "/",
+          name: "Dashboard",
+          component: () => import("../views/Dashboard")
+        },
+        {
+          path: "/my-account",
+          name: "MyAccount",
+          component: () => import("../views/Account")
+        },
+        {
+          path: "/time-tracker",
+          name: "Time Tracker",
+          component: () => import("../views/TimeTracker")
+        },
+      ]
+    },
+    {
+      path: "/404",
+      name: "Page404",
+      component: () => import("../views/statusPage/Page404")
+    },
+    {path: "*", redirect: "/404"}
+  ];
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+  return new VueRouter({
+    mode: "history",
+    base: process.env.BASE_URL, // TODO: get from env?
+    routes
+  });
+};
 
-export default router
+export default createRouter;
