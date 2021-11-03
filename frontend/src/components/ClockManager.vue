@@ -9,7 +9,7 @@
               <v-btn v-else @click="refresh" class="stopButton">
                   stop clock
               </v-btn>
-            <div v-if = "startDateTime !== null" class="time">
+            <div v-if="startDateTime !== null" class="time">
               <p >Start: {{ startDateTime }}</p>
               <p v-if="!clockIn">End: {{ endDateTime }}</p>
               <p v-if="!clockIn" class="total">Total duration: {{ duration.toFixed(2) }} H</p>
@@ -51,25 +51,24 @@ export default {
       refresh() {
             this.clockIn = false;
             this.endDateFormat= new Date();
-            this.endDateTime = this.getTimeNow();
-            console.log("GOT THIS WORKING TIME: start :", this.startDateTime, ", end :", this.endDateTime);
+            this.endDateTime = new Date().toISOString();
             this.duration = (this.endDateFormat.getTime() - this.startDateFormat.getTime())/1000/3600;
-            console.log(this.duration)
-             this.$store.dispatch('createWorkingTime', {
-              working_time: {
-                start: this.startDateTime,
-                end: this.endDateTime,
-              }
+            //  this.$store.dispatch('createWorkingTime', {
+            //   working_time: {
+            //     start: this.startDateTime,
+            //     end: this.endDateTime,
+            //   }
+            // })
+            this.$store.dispatch('createClock', {
+              time: this.startDateTime,
             })
-            
       },
       clock() {
         this.clockIn = true;
         this.startDateFormat = new Date();
-        this.startDateTime = this.getTimeNow();
+        this.startDateTime = new Date().toISOString();
         this.$store.dispatch('createClock', {
             time: this.startDateTime,
-            status: true,
         })
       },
   },

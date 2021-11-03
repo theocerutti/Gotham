@@ -29,6 +29,10 @@ export default {
   computed: {
     
   },
+  mounted() {
+      if (!this.$store.getters.isLogged)
+        this.$router.push({ name: 'Login' })
+  },
   created() {
 
   }

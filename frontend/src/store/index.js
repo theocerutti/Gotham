@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
-
+import api from '../config-api'
 
 Vue.use(Vuex)
 
@@ -10,9 +10,13 @@ export default new Vuex.Store({
     workingTimes: [],
     users: [],
     clock: {},
+
     userName: '',
     userEmail: '',
-    userId: null
+    userId: null,
+    userRole: '',
+
+    loginToken: '',
   },
   mutations: {
     SET_USER (state, payload) {
@@ -20,6 +24,7 @@ export default new Vuex.Store({
       state.userName = payload.data.username
       state.userEmail = payload.data.email
       state.userId = payload.data.id
+      state.userRole = payload.data.role
     },
     SET_ALL_USERS(state, payload) {
       state.users = payload.data
@@ -39,6 +44,11 @@ export default new Vuex.Store({
     },
     SET_WORKINGTIMES(state, payload) {
       state.workingTimes = payload.data.data;
+    },
+    LOGIN(state, payload) {
+      console.log("LOGIN mut ", payload)
+      console.log("state", state)
+      state.loginToken = payload.data;
     }
   },
   actions: {
@@ -49,6 +59,13 @@ export default new Vuex.Store({
       console.log('action set user', payload)
       Axios
         .post('http://localhost:4000/api/users', payload)
+        .then((response) => {
+          commit('SET_USER', response)
+        })
+    },
+    getUser ({ commit }) {
+      api
+        .get('http://localhost:4000/api/users')
         .then((response) => {
           commit('SET_USER', response)
         })
@@ -69,7 +86,7 @@ export default new Vuex.Store({
     },
     async getUserById ({ commit }, payload) {
       console.log("GET USER")
-      await Axios
+      await api
         .get('http://localhost:4000/api/users/' + payload)
         .then((response) => {
           commit('SET_USER', response)
@@ -83,16 +100,30 @@ export default new Vuex.Store({
           commit('SET_ALL_USERS', response)
         })
     },
+    
+    User_register ({ commit }, payload) {
+      Axios
+        .post('http://localhost:4000/api/auth/register', payload)
+    },
+
+    User_login ({ commit }, payload) {
+      Axios
+        .post('http://localhost:4000/api/auth/login', payload)
+        .then(response => {
+          commit('LOGIN', response)
+          this.dispatch('getUser')
+        })
+    },
 
     // CLOCK DISSET_ALL_USERSPATCHES 
 
     createClock ({ commit }, payload) {
-      payload['userID'] = this.state.userId
 
-      Axios
+      api
         .post('http://localhost:4000/api/clocks', payload)
         .then((response) => {
           commit('SET_CLOCK', response)
+          this.dispatch('getWorkingTimesById')
         })
     },
     async getClockByUserId ({ commit }) {
@@ -125,7 +156,7 @@ export default new Vuex.Store({
         })
     },
     getWorkingTimesById( {commit} ) {
-      Axios
+      api
         .get('http://localhost:4000/api/workingtimes/user/' + this.state.userId)
         .then((response) => {
           commit('SET_WORKINGTIMES', response)
@@ -148,6 +179,12 @@ export default new Vuex.Store({
     },
     getterAllUsers: state => {
       return state.users;
+    },
+    isLogged: state => {
+      if (state.loginToken.length > 20)
+        return true;
+      else
+        return false;
     }
   },
   modules: {

@@ -2,7 +2,7 @@
   <v-app>
     <side-bar/>
     <v-main>
-      <v-container fill-height fluid>
+      <v-container>
         <router-view></router-view>
       </v-container>
     </v-main>

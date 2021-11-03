@@ -127,7 +127,9 @@ export default {
       }
   },
   async created() {
-    await this.$store.dispatch('getUserById', 2)
+    const userInfos = this.$store.getters.getterAllUserInfos;
+    console.log("userInfos ", userInfos)
+    await this.$store.dispatch('getUserById', userInfos.id)
     const user = this.$store.getters.getterAllUserInfos;
     console.log("USER", user)
 

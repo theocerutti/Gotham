@@ -24,6 +24,10 @@
     data: () => ({
       
     }),
+    mounted() {
+      if (!this.$store.getters.isLogged)
+        this.$router.push({ name: 'Login' })
+    }
   }
 </script>
 

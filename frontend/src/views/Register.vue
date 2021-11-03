@@ -5,11 +5,13 @@
         <v-row class="d-flex flex-column align-items">
           <v-text-field label="Username" v-model="username" :rules="rulesUsername"></v-text-field>
           <v-text-field label="Email" v-model="email" :rules="rulesEmail"></v-text-field>
-          <v-text-field label="Password" v-mh-2odel="password"></v-text-field>
-          <v-text-field label="Password Verification" v-model="passwordVerif"></v-text-field>
+          <v-text-field :type="'password'" label="Password" v-model="password"></v-text-field>
+          <v-text-field :type="'password'" label="Password Verification" v-model="passwordVerif"></v-text-field>
         </v-row>
         <v-row class="d-flex justify-content">
-          
+        <v-btn @click="register">
+          REGISTER
+        </v-btn>
         </v-row>
       </v-container>
     </v-card>
@@ -32,13 +34,22 @@ export default ({
     ],
     rulesEmail: [
       value => !!value || 'Required.',
-      value => (value || '').length <= 20 || 'Max 20 characters',
+      value => (value || '').length <= 30 || 'Max 30 characters',
       value => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         return pattern.test(value) || 'Invalid e-mail.'
       },
     ],
   }),
+  methods: {
+    register() {
+      this.$store.dispatch('User_register', {
+        username: this.username,
+        password: this.password,
+        email: this.email
+      })
+    }
+  }
   
 })
 </script>
