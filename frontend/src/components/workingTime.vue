@@ -1,12 +1,17 @@
 <template>
   <div>
-      <div class="wt">
-      <h2 style="margin:10px">{{ dataOfWt.name }}</h2>
-        <div>
-          <p>Start:  {{ dataOfWt.start }} </p>
-          <p>End:  {{ dataOfWt.end }} </p>
-        </div>
-      </div> 
+      <v-card color="#F2F6F8" class="wt">
+        <v-row>
+          <v-col>{{ dataOfWt.description }}</v-col>
+          <v-col>Team</v-col>
+          <v-col>{{ dataOfWt.name }}</v-col>
+          <v-col>€</v-col>
+          <v-col><strong>Start:</strong> {{ dataOfWt.start }}</v-col>
+          <v-col><strong>End:</strong> {{ dataOfWt.end }}</v-col>
+          <v-col>Total: {{ dataOfWt.duration }} H</v-col>
+          <v-btn icon color="#C6D2D9" @click="deleteWorkingTime"><v-icon >mdi-delete</v-icon></v-btn>
+        </v-row>
+      </v-card>
   </div>
 </template>
 
@@ -28,7 +33,8 @@ export default {
 
       },
       deleteWorkingTime() {
-
+        console.log(this.dataOfWt)
+        this.dataOfWt = {}
       },
   }
 }
@@ -36,11 +42,10 @@ export default {
 
 <style scoped>
 .wt {
-  padding:10px;
-  border:0;
-  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-  border-radius:10px;
-  margin: 15px;
+  color:black;
+}
+.wtDate {
+  margin-bottom: 10px;
 }
 p {
   margin:10px;

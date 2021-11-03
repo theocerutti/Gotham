@@ -2,6 +2,7 @@
   <v-navigation-drawer app dark class="lighten-3">
     <v-list>
       <v-subheader>GOTHAM</v-subheader>
+      <v-icon rounded @click="changeTheme">mdi-delete</v-icon>
       <v-list-item-group>
         <v-list-item
           v-for="(item, i) in items"
@@ -34,8 +35,8 @@
             path: '/',
           },
           {
-            icon: 'mdi-calendar',
-            title: 'Arrival & Departure',
+            icon: 'mdi-clock',
+            title: 'Time Tracker',
             path: '/departure',
             active: false,
           },
@@ -56,6 +57,11 @@
             path: '/register',
           }
         ]
+      }
+    },
+    methods: {
+      changeTheme() {
+        this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       }
     }
   }

@@ -2,10 +2,17 @@
     <div>
         <v-card class="container">
             <h1>Your working times</h1>
-            <div v-for="wt in allWorkingTimes" :key="wt" class="workingTime">
+             <v-card color="#C6D2D9">
+                <v-row>
+                    <v-col md="10">Today</v-col>
+                    <v-col>Total: 7h</v-col>
+                </v-row>
+            </v-card>
+            <div v-for="wt in allWorkTimes" :key="wt" class="workingTime">
                 <WorkingTime :dataOfWt="wt"/>
             </div>
         </v-card>
+        <v-divider></v-divider>
     </div>
 </template>
 
@@ -25,19 +32,25 @@ export default {
           workingTimes: '',
           allWorkTimes: [
               {
-                  name: 'wt1',
+                  name: 'Mock-up',
                   start: '19:22',
-                  end: '00:12'
+                  end: '00:12',
+                  description: "Making mock-up using Figma",
+                  duration: "2"
               },
               {
-                  name: 'wt2',
+                  name: 'API',
                   start: '09:22',
-                  end: '18:12'
+                  end: '18:12',
+                  description: "Convert Elixir API in Nest API",
+                  duration: "3"
               },
               {
-                  name: 'wt3',
+                  name: 'Front-end',
                   start: '13:22',
-                  end: '18:12'
+                  end: '18:12',
+                  description: "Making Front-end using Vuetify",
+                  duration: "2"
               }
           ]
       }
@@ -70,7 +83,7 @@ h1 {
     margin: 20px;
 }
 .workingTime {
-    margin: 20px;
-    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    background: #F2F6F8;
+    color: black;
 }
 </style>
