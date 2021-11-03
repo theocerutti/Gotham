@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Axios from "axios";
-
+import helloWorldStore from "./hello-world";
 
 Vue.use(Vuex);
 
@@ -17,6 +17,7 @@ export default new Vuex.Store({
     userId: null
   },
   mutations: {
+    ...helloWorldStore.mutations,
     SET_USER(state, payload) {
       console.log("SET_USER mutation payl: ", payload);
       state.userName = payload.data.username;
@@ -44,9 +45,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-
+    ...helloWorldStore.actions,
     // USER DISPATCHES
-
     setUser({commit}, payload) {
       console.log("action set user", payload);
       Axios
@@ -135,6 +135,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    ...helloWorldStore.getters,
     getCurrentUserWorkingTimes: state => {
       return state.currentUser.workingTimes;
     },
