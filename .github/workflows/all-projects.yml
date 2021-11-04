@@ -33,5 +33,6 @@ jobs:
     needs: [ ci-backend, ci-frontend ]
     runs-on: self-hosted
     steps:
+      - run: sudo rm -rf /home/ubuntu/actions-runner/_work/Gotham/Gotham
       - uses: actions/checkout@v2
       - run: docker-compose down -v && docker-compose up -d
