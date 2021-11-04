@@ -12,7 +12,7 @@ export default {
         id: null,
         name: null,
         email: null,
-        workingTimes: [],
+        workingTimes: null,
       };
     }
   },
@@ -30,5 +30,9 @@ export default {
         });
     },
   },
-  getters: {},
+  getters: {
+    currentUser: state => {
+      return state.currentUser;
+    }
+  },
 };

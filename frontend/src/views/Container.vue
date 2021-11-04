@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <notifications position="bottom right"/>
     <navigation/>
     <v-main>
       <v-container fluid>

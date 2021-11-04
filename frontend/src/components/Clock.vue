@@ -2,7 +2,7 @@
   <v-card elevation="2">
     <v-row align="center" class="pa-1">
       <v-col class="pa-0 px-4" :cols="manual ? 4 : 7">
-        <v-text-field :value="description" placeholder="What have you worked on?" hide-details="true" solo-inverted dense flat/>
+        <v-text-field v-model="description" placeholder="What have you worked on?" hide-details="true" solo-inverted dense flat/>
       </v-col>
       <v-col cols="1">
         <v-menu offset-y min-width="290px">
@@ -124,9 +124,6 @@ const defaultClockData = {
 
 export default {
   name: "Clock",
-  props: {
-    addWorkingTime: Function,
-  },
   data: () => ({
     ...defaultClockData,
     manual: false,
@@ -187,18 +184,18 @@ export default {
         end_time = this.mergeDateAndDuration(this.date, this.end_time);
       } else {
         end_time = new Date();
-        start_time = moment.utc(moment.now() + this.counter * 1000).toDate();
+        start_time = moment.utc(moment.now() - this.counter * 1000).toDate();
       }
       return {
+        billable: this.billable,
         description: this.description,
-        start_time,
-        end_time,
+        start: moment(start_time).toISOString(),
+        end: moment(end_time).toISOString(),
         projectId: this.projectId
       };
     },
     add() {
-      if (this.addWorkingTime)
-        this.addWorkingTime(this.formatWorkingTimeData());
+      this.$store.dispatch("createWorkingTime", this.formatWorkingTimeData());
       this.reset();
     },
     reset() {

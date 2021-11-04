@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import VuexPersistence from "vuex-persist";
 import userStore from "./user";
 import authStore from "./auth";
+import workingTimeStore from "./workingTime";
 
 Vue.use(Vuex);
 
@@ -18,7 +19,7 @@ export default new Vuex.Store({
       id: null,
       name: null,
       email: null,
-      workingTimes: [],
+      workingTimes: null,
     },
     auth: {
       loginToken: "",
@@ -27,14 +28,17 @@ export default new Vuex.Store({
   mutations: {
     ...userStore.mutations,
     ...authStore.mutations,
+    ...workingTimeStore.mutations,
   },
   actions: {
     ...userStore.actions,
     ...authStore.actions,
+    ...workingTimeStore.actions,
   },
   getters: {
     ...userStore.getters,
     ...authStore.getters,
+    ...workingTimeStore.getters,
   },
   modules: {}
 });

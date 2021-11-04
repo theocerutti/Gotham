@@ -1,9 +1,18 @@
 <template>
   <div>
-    <div v-for="(workingTime, i) in workingTimes" :key="i">
-      <v-col>
+    <div v-if="workingTimes === null">
+      <div class="mt-10">
+        <v-progress-circular color="blue" indeterminate/>
+      </div>
+    </div>
+    <div v-else-if="workingTimes.length === 0">
+      <div>You don't have any working times!</div>
+      <div>Use the clock to create one!</div>
+    </div>
+    <div v-else class="mt-8">
+      <div v-for="(workingTime, i) in workingTimes" :key="i">
         <WorkingTime :workingTime="workingTime" class="mt-4"/>
-      </v-col>
+      </div>
     </div>
   </div>
 </template>
@@ -15,34 +24,15 @@ import WorkingTime from "./WorkingTime.vue";
 export default {
   components: {WorkingTime},
   name: "WorkingTimes",
-  data() {
-    return {
-      workingTimes: [
-        {
-          name: "Mock-up",
-          start: "19:22",
-          end: "00:12",
-          description: "Making mock-up using Figma",
-          duration: "2"
-        },
-        {
-          name: "API",
-          start: "09:22",
-          end: "18:12",
-          description: "Convert Elixir API in Nest API",
-          duration: "3"
-        },
-        {
-          name: "Front-end",
-          start: "13:22",
-          end: "18:12",
-          description: "Making Front-end using Vuetify",
-          duration: "2"
-        }
-      ]
-    };
+  data: () => ({}),
+  computed: {
+    workingTimes() {
+      return this.$store.getters.currentUser.workingTimes;
+    }
   },
-  computed: {},
+  mounted() {
+    this.$store.dispatch("getAllWorkingTimes");
+  }
 };
 </script>
 

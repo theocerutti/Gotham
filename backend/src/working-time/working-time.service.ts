@@ -46,16 +46,15 @@ export class WorkingTimeService {
     const user = await this.userService.getById(userID);
     const userWorkingTimes = await this.WorkingTimeRepo.getUserWorkingTimes(userID);
     const workingTime = userWorkingTimes.find(workingTime => workingTime.id === workingTimeId);
-    if (workingTime)
+    if (!workingTime)
       throw new HttpException("No working time found!", HttpStatus.NOT_FOUND);
-    const newWorkingTime = new WorkingTime();
-    newWorkingTime.start = workingTimeDTO.start;
-    newWorkingTime.end = workingTimeDTO.end;
-    newWorkingTime.description = workingTimeDTO.description;
-    newWorkingTime.billable = workingTimeDTO.billable;
-    newWorkingTime.user = user;
+    workingTime.start = workingTimeDTO.start;
+    workingTime.end = workingTimeDTO.end;
+    workingTime.description = workingTimeDTO.description;
+    workingTime.billable = workingTimeDTO.billable;
+    workingTime.user = user;
     try {
-      return await this.WorkingTimeRepo.save(newWorkingTime);
+      return await this.WorkingTimeRepo.save(workingTime);
     } catch (error) {
       throw new HttpException(`Can't update workingTime: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }

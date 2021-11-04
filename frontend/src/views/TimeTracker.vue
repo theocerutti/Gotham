@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <Clock class="mt-5"/>
+    <v-divider class="my-10"/>
     <WorkingTimes class="mt-8"/>
   </v-container>
 </template>
@@ -17,7 +18,6 @@ export default ({
   },
 });
 </script>
-
 
 <style scoped>
 </style>
