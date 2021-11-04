@@ -1,11 +1,7 @@
 <template>
-    <div>
-        <v-card id="departure-container">
-            <clock-manager/>
-        </v-card>
-        <v-card id="workingtimes-container">
-            <working-times/>
-        </v-card>
+    <div class="container">
+        <clock-manager class="clockManager"/>
+        <working-times class="workingTimes"/>   
     </div>
 </template>
 
@@ -37,14 +33,14 @@ export default {
 
 <style scoped>
 
-#workingtimes-container {
-    margin-top: 50px;
+.container {
+    
 }
-
-#departure-container, #workingtimes-container {
-  background-color: rgb(87, 81, 81) !important;
-  padding: 30px;
-  height: 100%;
+.clockManager {
+  margin-top:50px;
+}
+.workingTimes { 
+  margin-top:50px;  
 }
 
 </style>

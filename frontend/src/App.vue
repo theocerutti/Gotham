@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app color="success">
     <side-bar/>
     <v-main>
       <v-container>

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <v-card class="container">
+      <v-card>
           <h1>Clock Manager</h1>
           <div class="clockManager">
               <v-btn v-if="!clockIn" @click="clock" class="startButton" >

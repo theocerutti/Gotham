@@ -1,8 +1,8 @@
 <template>
-  <v-navigation-drawer app dark class="lighten-3">
+  <v-navigation-drawer app dark color="secondary">
     <v-list>
-      <v-subheader>GOTHAM</v-subheader>
-      <v-icon rounded @click="changeTheme">mdi-delete</v-icon>
+      <v-subheader class="accent--text">GOTHAM</v-subheader>
+      <v-btn rounded @click="changeTheme" color="blueVersion">Theme</v-btn>
       <v-list-item-group>
         <v-list-item
           v-for="(item, i) in items"
@@ -10,10 +10,10 @@
           :to="item.path" 
         >
           <v-list-item-icon>
-            <v-icon>{{item.icon}}</v-icon>
+            <v-icon color="accent">{{item.icon}}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
+            <v-list-item-title v-text="item.title" class="accent--text"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>

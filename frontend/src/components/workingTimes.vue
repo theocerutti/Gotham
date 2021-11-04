@@ -1,18 +1,18 @@
 <template>
     <div>
-        <v-card class="container">
-            <h1>Your working times</h1>
-             <v-card color="#C6D2D9">
-                <v-row>
-                    <v-col md="10">Today</v-col>
-                    <v-col>Total: 7h</v-col>
-                </v-row>
+        <h1>This week</h1>
+            <v-card color="primary">
+                <v-card-text style="font-size:1.4em">
+                    <v-row class="info--text">
+                        <v-col md="10">Today</v-col>
+                        <v-col>Total: 7h</v-col>
+                    </v-row>
+                </v-card-text>
             </v-card>
-            <div v-for="wt in allWorkTimes" :key="wt" class="workingTime">
-                <WorkingTime :dataOfWt="wt"/>
-            </div>
-        </v-card>
-        <v-divider></v-divider>
+        <div v-for="wt in allWorkTimes" :key="wt">
+            <WorkingTime :dataOfWt="wt"/>
+            <v-divider class="grey"></v-divider>
+        </div>
     </div>
 </template>
 
@@ -36,21 +36,21 @@ export default {
                   start: '19:22',
                   end: '00:12',
                   description: "Making mock-up using Figma",
-                  duration: "2"
+                  duration: "2:00"
               },
               {
                   name: 'API',
                   start: '09:22',
                   end: '18:12',
                   description: "Convert Elixir API in Nest API",
-                  duration: "3"
+                  duration: "3:00"
               },
               {
                   name: 'Front-end',
                   start: '13:22',
                   end: '18:12',
                   description: "Making Front-end using Vuetify",
-                  duration: "2"
+                  duration: "2:00"
               }
           ]
       }
@@ -72,18 +72,7 @@ export default {
 </script>
 
 <style scoped>
-
-
-.container {
-    height: 80%;
-    width: 100%;
-    background-color: rgb(102, 97, 97) !important;
-}
 h1 {
     margin: 20px;
-}
-.workingTime {
-    background: #F2F6F8;
-    color: black;
 }
 </style>
