@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app flat>
-      <v-app-bar-nav-icon @click.stop="sidebarMenu = !sidebarMenu" ></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="sidebarMenu = !sidebarMenu"></v-app-bar-nav-icon>
       <v-toolbar-title>Gotham</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon href="/my-account" class="mr-5">
@@ -30,7 +30,7 @@
         <v-list-item-group>
           <v-list-item v-for="(item, i) in items" :key="i" :to="item.path">
             <v-list-item-icon>
-              <v-icon>{{item.icon}}</v-icon>
+              <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title v-text="item.title"></v-list-item-title>
@@ -44,58 +44,45 @@
 </template>
 
 <script>
-  export default {
-    name: 'SideBar',
+export default {
+  name: "SideBar",
 
-    data() {
-      return {
-        items: [{
-            icon: 'mdi-home',
-            title: 'Dashboard',
-            path: '/',
-          },
-          {
-            icon: 'mdi-calendar',
-            title: 'Arrival & Departure',
-            path: '/departure',
-            active: false,
-          },
-          {
-            icon: 'mdi-account',
-            title: 'My account',
-            path: '/my-account',
-            active: false
-          },
-          {
-            icon: 'mdi-login',
-            title: 'Login',
-            path: '/login',
-          },
-          {
-            icon: 'mdi-account-plus',
-            title: 'Register',
-            path: '/register',
-          }
-        ],
+  data() {
+    return {
+      items: [
+        {
+          icon: "mdi-home",
+          title: "Dashboard",
+          path: "/",
+        },
+        {
+          icon: "mdi-clock",
+          title: "Time Tracker",
+          path: "/time-tracker",
+          active: false,
+        },
+        {
+          icon: "mdi-account",
+          title: "My account",
+          path: "/my-account",
+          active: false
+        },
+      ],
+      darkMode: null,
+      menu: false,
+      sidebarMenu: true
+    };
+  },
 
-        darkMode: null,
-        menu: false,
-        sidebarMenu: true
-      }
-    },
+  mounted() {
+    this.darkMode = JSON.parse(localStorage.getItem("dark_theme"));
+  },
 
-    mounted() {
-      this.darkMode = JSON.parse(localStorage.getItem("dark_theme"));
-      console.log(' this.darkMode :',  this.darkMode )
-      console.log('this.darkMode :', typeof(this.darkMode))
-    },
-
-    methods: {
-      toggle_dark_mode: function() {
-          this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-          localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
-      }
+  methods: {
+    toggle_dark_mode: function () {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
     }
-
   }
+};
 </script>

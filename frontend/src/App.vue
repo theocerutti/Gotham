@@ -1,47 +1,32 @@
 <template>
   <v-app>
-      <navigation/>
-      <v-main>
-        <v-container>
-          <router-view></router-view>
-        </v-container>
-      </v-main>
+    <NotificationContainer/>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-
-import Navigation from './components/Navigation.vue'
+import NotificationContainer from "./components/NotificationContainer";
 
 export default {
-  name: 'App',
-
+  name: "App",
   components: {
-    Navigation,
+    NotificationContainer
   },
-
   mounted() {
     const darkTheme = localStorage.getItem("dark_theme");
     if (darkTheme) {
-        if (darkTheme === "true") {
-            this.$vuetify.theme.dark = true;
-        } else {
-            this.$vuetify.theme.dark = false;
-        }
+      this.$vuetify.theme.dark = darkTheme === "true";
     } else if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
     ) {
-        this.$vuetify.theme.dark = true;
-        localStorage.setItem(
-            "dark_theme",
-            this.$vuetify.theme.dark.toString()
-        );
+      this.$vuetify.theme.dark = true;
+      localStorage.setItem(
+        "dark_theme",
+        this.$vuetify.theme.dark.toString()
+      );
     }
   },
-
-  data: () => ({
-
-    }),
-  };
+};
 </script>

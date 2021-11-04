@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card id="account-container">
-      <user />
+      <user/>
     </v-card>
     <v-card id="team-container" style="margin-top: 50px;">
       <team-manager/>
@@ -10,34 +10,17 @@
 </template>
 
 <script>
-import TeamManager from '../components/TeamManager.vue'
-import User from '../components/User.vue'
+import TeamManager from "../components/TeamManager.vue";
+import User from "../components/User.vue";
 
 export default {
-  components: { User, TeamManager },
-  name: 'MyAccount',
-  props: {
-  },
-  data() {
-      return {
-          
-      }
-  },
-  methods: {
-     
-  },
-  computed: {
-    
-  },
-  created() {
-    this.$store.dispatch('getAllUsers');
-  }
-}
+  components: {User, TeamManager},
+  name: "MyAccount",
+};
 </script>
 
 <style scoped>
-
-#team-container {
+#team-container {
   margin-top: 50px !important;
 }
 
@@ -46,6 +29,4 @@ export default {
   padding: 30px;
   height: 100%;
 }
-
-
 </style>

@@ -17,7 +17,7 @@ export class AuthService {
   async login(
     username: string,
     password: string
-  ): Promise<string> | undefined {
+  ): Promise<{ token: string, user: User }> | undefined {
     const user: User = await this.userService.getByUsername(username);
 
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     const payload: JwtPayload = {username: user.username, userId: user.id, role: user.role};
-    return this.jwtService.sign(payload);
+    return {token: this.jwtService.sign(payload), user};
   }
 
   async register(createUserDTO: CreateUserDTO): Promise<User> {

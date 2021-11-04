@@ -19,14 +19,13 @@ export class AuthController {
   async login(
     @Body() body: LoginUserDTO,
     @Res({passthrough: true}) res
-  ): Promise<string> {
-    const newTokenPromise = this.authService.login(
+  ): Promise<User> {
+    const info = await this.authService.login(
       body.username,
       body.password
     );
-    const newToken = await newTokenPromise;
-    res.setHeader(TOKEN_AUTH_RES_HEADER, newToken);
-    return newTokenPromise;
+    res.setHeader(TOKEN_AUTH_RES_HEADER, info.token);
+    return info.user;
   }
 
   @ApiOperation({summary: "Register a user"})
@@ -38,12 +37,11 @@ export class AuthController {
   ): Promise<User> {
     const userPromise = await this.authService.register(body);
     const user = await userPromise;
-    const newTokenPromise = this.authService.login(
+    const info = await this.authService.login(
       user.username,
       body.password
     );
-    const newToken = await newTokenPromise;
-    res.setHeader(TOKEN_AUTH_RES_HEADER, newToken);
+    res.setHeader(TOKEN_AUTH_RES_HEADER, info.token);
     return user;
   }
 }

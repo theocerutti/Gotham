@@ -14,7 +14,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     credentials: true,
   });
 
@@ -29,7 +29,9 @@ async function bootstrap() {
   // Enable Cors
   app.enableCors({
     origin: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    methods: "*",
+    allowedHeaders: "*",
+    exposedHeaders: "*",
     credentials: true,
   });
   await app.listen(process.env.PORT || 4000);
