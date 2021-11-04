@@ -1,27 +1,47 @@
 <template>
   <v-app>
-    <side-bar/>
-    <v-main>
-      <v-container fill-height fluid>
-        <router-view></router-view>
-      </v-container>
-    </v-main>
+      <navigation/>
+      <v-main>
+        <v-container>
+          <router-view></router-view>
+        </v-container>
+      </v-main>
   </v-app>
 </template>
 
 <script>
 
-import SideBar from './components/SideBar.vue'
+import Navigation from './components/Navigation.vue'
 
 export default {
   name: 'App',
 
   components: {
-    SideBar,
+    Navigation,
   },
 
-data: () => ({
-    //
-  }),
-};
+  mounted() {
+    const darkTheme = localStorage.getItem("dark_theme");
+    if (darkTheme) {
+        if (darkTheme === "true") {
+            this.$vuetify.theme.dark = true;
+        } else {
+            this.$vuetify.theme.dark = false;
+        }
+    } else if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+        this.$vuetify.theme.dark = false;
+        localStorage.setItem(
+            "dark_theme",
+            this.$vuetify.theme.dark.toString()
+        );
+    }
+  },
+
+  data: () => ({
+
+    }),
+  };
 </script>
