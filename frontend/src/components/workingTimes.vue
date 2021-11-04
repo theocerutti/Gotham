@@ -3,7 +3,7 @@
         <h1>This week</h1>
             <v-card color="primary">
                 <v-card-text style="font-size:1.4em">
-                    <v-row class="info--text">
+                    <v-row class="grey--text">
                         <v-col md="10">Today</v-col>
                         <v-col>Total: 7h</v-col>
                     </v-row>

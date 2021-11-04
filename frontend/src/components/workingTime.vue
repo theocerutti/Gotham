@@ -1,10 +1,10 @@
 <template>
   <div>
       <v-card color="secondary">
-        <v-card-text style="font-size:1.05em" class="accent--text">
+        <v-card-text style="font-size:1.05em" class="blackWhite--text">
           <v-row>
-            <v-col md="2">{{ dataOfWt.name }}</v-col>
-            <v-col md="5" class="blueVersion--text">{{ dataOfWt.description }}</v-col>
+            <v-col md="2" class="accent--text">{{ dataOfWt.name }}</v-col>
+            <v-col md="5" class="blue--text">{{ dataOfWt.description }}</v-col>
             <v-col md="1"><v-divider vertical></v-divider> € <v-divider vertical></v-divider></v-col>
             <v-col md="2">{{ dataOfWt.start }}         -        {{ dataOfWt.end }}</v-col>
             <v-col>{{ dataOfWt.duration }}</v-col>

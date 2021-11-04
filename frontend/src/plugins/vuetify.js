@@ -12,19 +12,19 @@ export default new Vuetify({
       light: {
         primary: colors.grey.lighten1,
         secondary: colors.grey.lighten4,
-        accent: colors.shades.black, 
-        error: colors.red.accent3,
-        success: colors.grey.lighten5,
-        info: colors.grey.darken4,
-        blueVersion: colors.blue 
+        blackWhite: colors.shades.black,
+        accent: colors.teal.lighten1, 
+        greyVariant: colors.grey.lighten5,
+        grey: colors.grey.darken4,
+        blue: colors.blue 
       },
       dark: {
         primary: colors.shades.black,
         secondary: colors.grey.darken4,
-        accent: colors.grey.lighten3,
-        success: colors.grey.darken3,
-        info: colors.grey.lighten4,
-        blueVersion: colors.lightBlue
+        blackWhite: colors.grey.lighten3,
+        greyVariant: colors.grey.darken3,
+        grey: colors.grey.lighten4,
+        blue: colors.lightBlue
       },
     },
   },
