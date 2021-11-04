@@ -12,7 +12,7 @@
                               placeholder="Username"></v-text-field>
                 <v-text-field v-model="password" solo prepend-inner-icon="mdi-lock"
                               placeholder="Password"></v-text-field>
-                <v-btn @click="signIn" style="margin-left: 38%;" color="#64aacf">
+                <v-btn @click="signIn" color="#64aacf">
                   sign in
                 </v-btn>
               </v-card>
@@ -23,7 +23,7 @@
                 <v-card-text class="text-center">
                   If you did not already registered, you can create account by clicking here !
                 </v-card-text>
-                <v-btn @click="currentAction = 'register'" style="margin-left: 31%;" color="#497d98">
+                <v-btn @click="currentAction = 'register'" color="#497d98">
                   Sign up now !
                 </v-btn>
               </v-card>

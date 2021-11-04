@@ -1,84 +1,45 @@
 <template>
-  <!--  <v-card class="container">
-      <div v-if="!isUser || editUser">
-        <h1>Welcome</h1>
-        <p>
-          Username :
-          <input
-            placeholder="User Name"
-            id="username"
-            v-model="username"
-            type="text"
-            name="name"
-          >
-        </p>
-
-        <p>
-          Email :
-          <input
-            placeholder="Email"
-            id="email"
-            v-model="email"
-            type="email"
-            name="email"
-          >
-        </p>
-        <v-btn v-if="!editUser" color="blue" outlined @click="createUser">
-          Create user
-        </v-btn>
-        <v-btn v-else-if="editUser" color="blue" outlined @click="saveUpdateUser">
-          Save user
-        </v-btn>
-      </div>
-      <div v-else-if="isUser">
-        <h1>Welcome {{ username }}</h1>
-        <p>
-          Username :
-          <input
-            readonly
-            placeholder="User Name"
-            id="lastName"
-            v-model="username"
-            type="text"
-            name="name"
-          >
-        </p>
-
-        <p>
-          Email :
-          <input
-            readonly
-            placeholder="Email"
-            id="email"
-            v-model="email"
-            type="email"
-            name="email"
-          >
-        </p>
-        <v-btn
-          class="mx-2"
-          fab
-          dark
-          color="cyan"
-          @click="updateUser"
-        >
-          <v-icon dark>
-            mdi-pencil
-          </v-icon>
-        </v-btn>
-        <v-btn
-          class="mx-2"
-          fab
-          dark
-          color="cyan"
-          @click="deleteUser"
-        >
-          <v-icon dark>
-            mdi-delete
-          </v-icon>
-        </v-btn>
-      </div>
-    </v-card>-->
+  <div>
+    <v-container>
+      <v-row>
+        <v-col :cols="6">
+          <v-card height="450px" width="500px" id="card-user-infos" style="padding: 15px">
+            <v-card-title>Welcome {{ username }}</v-card-title>
+            <v-text-field style="width: 300px; margin-left: 25px" v-model="username" solo
+                          prepend-inner-icon="mdi-account" placeholder="Username"></v-text-field>
+            <v-text-field style="width: 300px; margin-left: 25px" v-model="email" solo prepend-inner-icon="mdi-email"
+                          placeholder="Email"></v-text-field>
+            <v-row dense>
+              <v-col :cols="4">
+                <v-card width="130px" height="110px">
+                  <v-btn color="#64aacf" style="margin-left: 33px; margin-top: 33px">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                </v-card>
+              </v-col>
+              <v-col :cols="4">
+                <v-card width="130px" height="110px">
+                  <v-btn color="#64aacf" style="margin-left: 33px; margin-top: 33px">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-card>
+              </v-col>
+              <v-col :cols="4">
+                <v-card width="130px" height="110px">
+                  <v-btn class="text-center" color="#64aacf" disabled style="margin-left: 33px; margin-top: 33px">
+                    <v-icon>mdi-account</v-icon>
+                  </v-btn>
+                  <v-card-text class="text-center">employee</v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <v-col :cols="6">
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -125,51 +86,21 @@ export default {
       this.$store.dispatch("deleteUser");
     }
   },
-  /*  async created() {
-      const userInfos = this.$store.getters.getterAllUserInfos;
-      console.log("userInfos ", userInfos);
-      await this.$store.dispatch("getUserById", userInfos.id);
-      const user = this.$store.getters.getterAllUserInfos;
-      console.log("USER", user);
-
-      if (user.username) {
-        this.username = user.username;
-        this.email = user.email;
-        this.isUser = true;
-      }
-    }*/
+  async created() {
+    const userInfos = this.$store.getters.getterAllUserInfos;
+    await this.$store.dispatch("getUserById", userInfos.id);
+    const user = this.$store.getters.getterAllUserInfos;
+    if (user.username) {
+      this.username = user.username;
+      this.email = user.email;
+      this.isUser = true;
+    }
+  }
 };
 </script>
 
 <style scoped>
-
-input::placeholder {
-  color: white;
-}
-
-input {
-  color: white;
-}
-
-.container {
-  height: 80%;
-  width: 100%;
-  background-color: rgb(102, 97, 97) !important;
-}
-
-h1 {
-  margin: 20px;
-}
-
-input {
-  padding: 10px;
-  border: 0;
-  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-  border-radius: 10px;
-  margin: 15px;
-}
-
-button {
-  margin: 20px;
+#card-user-infos {
+  width: 40%;
 }
 </style>
