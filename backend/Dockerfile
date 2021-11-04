@@ -8,7 +8,6 @@ RUN npm install
 
 COPY src src
 COPY test test
-COPY assets assets
 COPY .env ./
 COPY nest-cli.json ./
 COPY ts*.json ./
