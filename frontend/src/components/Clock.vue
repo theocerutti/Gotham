@@ -106,6 +106,7 @@
 
 <script>
 import moment from "moment";
+import {getDateFromTime, mergeDateAndDuration} from "@/utils/date";
 
 const defaultClockData = {
   description: "",
@@ -134,8 +135,8 @@ export default {
     },
     getTimer() {
       if (this.manual) {
-        const start_d = this.getDateFromTime(this.start_time);
-        const end_d = this.getDateFromTime(this.end_time);
+        const start_d = getDateFromTime(this.start_time);
+        const end_d = getDateFromTime(this.end_time);
         return moment(moment(end_d).diff(moment(start_d))).subtract(1, "hour").format("HH:mm:ss");
       } else {
         return moment.utc(this.counter * 1000).format("HH:mm:ss");
@@ -143,16 +144,6 @@ export default {
     },
   },
   methods: {
-    getDateFromTime(time) {
-      const date = new Date();
-      if (!time)
-        return date;
-      const [hours, minutes, seconds] = time.split(":");
-      date.setHours(+hours || 0);
-      date.setMinutes(+minutes || 0);
-      date.setSeconds(+seconds || 0);
-      return date;
-    },
     switchClock() {
       if (this.manual) {
         this.add();
@@ -168,20 +159,13 @@ export default {
         }
       }
     },
-    mergeDateAndDuration(date, duration) {
-      const d = new Date(date);
-      const time = this.getDateFromTime(duration);
-      d.setHours(time.getHours());
-      d.setMinutes(time.getMinutes());
-      return d;
-    },
     formatWorkingTimeData() {
       let start_time = null;
       let end_time = new Date();
       if (this.manual) {
         // clone date
-        start_time = this.mergeDateAndDuration(this.date, this.start_time);
-        end_time = this.mergeDateAndDuration(this.date, this.end_time);
+        start_time = mergeDateAndDuration(this.date, this.start_time);
+        end_time = mergeDateAndDuration(this.date, this.end_time);
       } else {
         end_time = new Date();
         start_time = moment.utc(moment.now() - this.counter * 1000).toDate();

@@ -26,11 +26,41 @@
       <v-col cols="2" align="center">
         <v-row align="center">
           <v-col>
-            <v-text-field v-model="start_time" readonly hide-details="true" solo-inverted dense flat/>
+            <v-menu
+              ref="start_time"
+              v-model="show_start_time_picker"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="start_time"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field @blur="updateWorkingTime" v-model="start_time" v-bind="attrs" v-on="on" readonly hide-details="true" solo-inverted dense flat/>
+              </template>
+              <v-time-picker :max="end_time" format="24hr" v-if="show_start_time_picker" full-width v-model="start_time" @click:minute="$refs.start_time.save(start_time)"></v-time-picker>
+            </v-menu>
           </v-col>
           <div class="px-1">-</div>
           <v-col>
-            <v-text-field v-model="end_time" readonly hide-details="true" solo-inverted dense flat/>
+            <v-menu
+              ref="end_time"
+              v-model="show_end_time_picker"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="end_time"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field @blur="updateWorkingTime" v-model="end_time" v-bind="attrs" v-on="on" readonly hide-details="true" solo-inverted dense flat/>
+              </template>
+              <v-time-picker :min="start_time" format="24hr" v-if="show_end_time_picker" full-width v-model="end_time" @click:minute="$refs.end_time.save(end_time)"></v-time-picker>
+            </v-menu>
           </v-col>
         </v-row>
       </v-col>
@@ -45,6 +75,7 @@
 
 <script>
 import moment from "moment";
+import {mergeDateAndDuration} from "@/utils/date";
 
 export default {
   name: "WorkingTime",
@@ -54,11 +85,21 @@ export default {
     show_end_time_picker: false,
   }),
   computed: {
-    start_time() {
-      return moment(this.workingTime.start).format("HH:mm:ss");
+    start_time: {
+      get() {
+        return moment(this.workingTime.start).format("HH:mm:ss");
+      },
+      set(value) {
+        this.workingTime.start = mergeDateAndDuration(this.workingTime.start, value);
+      }
     },
-    end_time() {
-      return moment(this.workingTime.end).format("HH:mm:ss");
+    end_time: {
+      get() {
+        return moment(this.workingTime.end).format("HH:mm:ss");
+      },
+      set(value) {
+        this.workingTime.end = mergeDateAndDuration(this.workingTime.end, value);
+      }
     },
   },
   methods: {
