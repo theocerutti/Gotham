@@ -35,4 +35,4 @@ jobs:
     steps:
       - run: sudo rm -rf "/home/ubuntu/actions-runner/_work/Gotham/Gotham/backend"
       - uses: actions/checkout@v2
-      - run: docker-compose down -v && docker-compose up -d
+      - run: docker-compose down -v && docker-compose up --build -d

@@ -22,7 +22,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./backend:/app
+      - ./backend/src:/app/src
       - /app/node_modules
     ports:
       - "4000:4000"
@@ -39,7 +39,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./frontend:/app
+      - ./frontend/src:/app/src
       - /app/node_modules
     env_file:
       - ./frontend/.env

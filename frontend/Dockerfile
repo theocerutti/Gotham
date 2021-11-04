@@ -6,6 +6,9 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY src src
+COPY vue.config.js ./
+COPY .env ./
+COPY public public
 
 CMD [ "npm", "run", "serve" ]
