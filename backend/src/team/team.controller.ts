@@ -17,13 +17,7 @@ export class TeamController {
   @ApiOperation({summary: "Get all my teams"})
   @Get()
   async getMeAll(@CurrentUser() user: User): Promise<Team[]> {
-    return await this.teamService.getUserTeams(129);
-  }
-
-  @ApiOperation({summary: "Get all teams"})
-  @Get("all")
-  async getAll(): Promise<Team[]> {
-    return await this.teamService.getAllTeams();
+    return await this.teamService.getUserTeams(user.id);
   }
 
   @ApiOperation({summary: "Get a team by id"})
@@ -33,6 +27,27 @@ export class TeamController {
     @Param("teamId", ParseIntPipe) teamId: number,
   ): Promise<Team> {
     return await this.teamService.getUserTeam(user.id, teamId);
+  }
+
+  @ApiOperation({summary: "Get all teams"})
+  @Roles(Role.GeneralManager, Role.Manager)
+  @Get("all")
+  async getAll(): Promise<Team[]> {
+    return await this.teamService.getAllTeams();
+  }
+
+  @ApiOperation({summary: "Get team by id"})
+  @Roles(Role.GeneralManager, Role.Manager)
+  @Get("one/:teamId")
+  async getOne(@Param("teamId", ParseIntPipe) teamId: number): Promise<Team> {
+    return await this.teamService.getTeamById(teamId);
+  }
+
+  @ApiOperation({summary: "Get all team of a user"})
+  @Roles(Role.GeneralManager, Role.Manager)
+  @Get("all/:userId")
+  async getOneTeamByUserId(@Param("userId", ParseIntPipe) userId: number): Promise<Team[]> {
+    return await this.teamService.getUserTeams(userId);
   }
 
   @ApiOperation({summary: "Create a team (manager/generalManager)"})

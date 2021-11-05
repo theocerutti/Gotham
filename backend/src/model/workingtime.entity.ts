@@ -13,7 +13,7 @@ export class WorkingTime {
   end: Date;
 
   @Column({nullable: true})
-  description?: string;
+  description: string;
 
   @Column({nullable: false, default: false})
   billable: boolean;

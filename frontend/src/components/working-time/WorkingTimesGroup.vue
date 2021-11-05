@@ -41,7 +41,7 @@ export default {
           sameElse: "DD/MM/YYYY"
         });
       else
-        return moment(startDate).format("ddd, MMM D");
+        return moment(startDate).format("ddd, MMM D yyyy");
     },
   },
 };

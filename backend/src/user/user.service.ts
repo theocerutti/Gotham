@@ -36,11 +36,14 @@ export class UserService {
     }
   }
 
-  async getByEmail(email: string): Promise<User> {
+  async getUserTeamsIds(userId: number): Promise<number[]> {
     try {
-      return await this.UserRepo.findOneOrFail({where: {email: email}});
+      const user = await this.UserRepo.findOneOrFail(userId, {
+        relations: ["teams"]
+      });
+      return user.teams.map(team => team.id);
     } catch (error) {
-      throw new HttpException(`Could not find user by email: ${error.message}`, HttpStatus.NOT_FOUND);
+      throw new HttpException(`Can't get team ids: ${error.message}`, HttpStatus.NOT_FOUND);
     }
   }
 
