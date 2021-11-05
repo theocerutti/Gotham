@@ -2,23 +2,25 @@
   <v-card class="mt-5">
     <v-row class="px-2" align="center">
       <v-col cols="4">
-        <v-text-field @blur="updateWorkingTime" v-model="workingTime.description" placeholder="No description" hide-details="true" solo-inverted dense flat/>
+        <v-text-field @blur="updateWorkingTime" v-model="workingTime.description" placeholder="No description"
+                      hide-details="true" solo-inverted dense flat/>
       </v-col>
       <v-col cols="1">
         <v-menu offset-y min-width="290px">
           <template v-slot:activator="{ on }">
             <v-row v-on="on" class="project-picker-button">
               <v-icon class="pr-1">mdi-plus-box</v-icon>
-              <div>Project</div>
+              <div>Team</div>
             </v-row>
           </template>
-          <div>HERE MODAL PROJECT</div>
+          <div>HERE MODAL TEAM</div>
         </v-menu>
       </v-col>
       <v-spacer/>
       <v-divider vertical/>
       <v-col cols="1" align="center" class="icon-cell-col">
-        <v-btn icon @click="workingTime.billable = !workingTime.billable; updateWorkingTime()" :color="workingTime.billable ? '#058FCE' : ''">
+        <v-btn icon @click="workingTime.billable = !workingTime.billable; updateWorkingTime()"
+               :color="workingTime.billable ? '#058FCE' : ''">
           <v-icon>mdi-currency-usd</v-icon>
         </v-btn>
       </v-col>
@@ -38,9 +40,11 @@
               min-width="290px"
             >
               <template v-slot:activator="{ on, attrs }">
-                <v-text-field @blur="updateWorkingTime" v-model="start_time" v-bind="attrs" v-on="on" readonly hide-details="true" solo-inverted dense flat/>
+                <v-text-field @blur="updateWorkingTime" v-model="start_time" v-bind="attrs" v-on="on" readonly
+                              hide-details="true" solo-inverted dense flat/>
               </template>
-              <v-time-picker :max="end_time" format="24hr" v-if="show_start_time_picker" full-width v-model="start_time" @click:minute="$refs.start_time.save(start_time)"></v-time-picker>
+              <v-time-picker :max="end_time" format="24hr" v-if="show_start_time_picker" full-width v-model="start_time"
+                             @click:minute="$refs.start_time.save(start_time)"></v-time-picker>
             </v-menu>
           </v-col>
           <div class="px-1">-</div>
@@ -57,9 +61,11 @@
               min-width="290px"
             >
               <template v-slot:activator="{ on, attrs }">
-                <v-text-field @blur="updateWorkingTime" v-model="end_time" v-bind="attrs" v-on="on" readonly hide-details="true" solo-inverted dense flat/>
+                <v-text-field @blur="updateWorkingTime" v-model="end_time" v-bind="attrs" v-on="on" readonly
+                              hide-details="true" solo-inverted dense flat/>
               </template>
-              <v-time-picker :min="start_time" format="24hr" v-if="show_end_time_picker" full-width v-model="end_time" @click:minute="$refs.end_time.save(end_time)"></v-time-picker>
+              <v-time-picker :min="start_time" format="24hr" v-if="show_end_time_picker" full-width v-model="end_time"
+                             @click:minute="$refs.end_time.save(end_time)"></v-time-picker>
             </v-menu>
           </v-col>
         </v-row>

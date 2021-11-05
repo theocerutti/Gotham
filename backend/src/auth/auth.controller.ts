@@ -5,7 +5,7 @@ import {SkipAuth} from "./skip-auth.decorators";
 import {User} from "../model/user.entity";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
 
-const TOKEN_AUTH_RES_HEADER = "token";
+const TOKEN_AUTH_RES_HEADER = "Authorization";
 
 @Controller("auth")
 @ApiTags("auth")

@@ -1,3 +1,6 @@
+import moment from "moment";
+import {sortObject} from "@/utils/sort";
+
 export default {
   mutations: {
     SET_WORKING_TIMES(state, payload) {
@@ -43,5 +46,18 @@ export default {
       }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
     }
   },
-  getters: {},
+  getters: {
+    workingTimesByDay: state => {
+      if (state.currentUser.workingTimes === null) return null;
+      const wts = {};
+
+      state.currentUser.workingTimes.forEach(wt => {
+        const dateToken = moment(wt.start).format("YYYY-M-d");
+        if (!wts[dateToken])
+          wts[dateToken] = [];
+        wts[dateToken].push(wt);
+      });
+      return sortObject(wts, (wt1, wt2) => moment(wt2[1][0].start).unix() - moment(wt1[1][0].start).unix());
+    }
+  },
 };
