@@ -4,10 +4,39 @@
       <v-app-bar-nav-icon @click.stop="sidebarMenu = !sidebarMenu"></v-app-bar-nav-icon>
       <v-toolbar-title>Gotham</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon href="/my-account" class="mr-5">
-        <v-icon>mdi-account</v-icon>
-      </v-btn>
-      <v-menu offset-y :close-on-content-click="false" :nudge-width="200" v-model="menu">
+      <v-menu offset-y :close-on-content-click="false" :nudge-width="50" v-model="menu1">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon class="mr-5" v-bind="attrs" v-on="on">
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+        </template>
+        <v-card
+          class="mx-auto"
+          max-width="300"
+          tile
+        >
+        <v-list dense>
+          <v-list-item-group
+            v-model="selectedItem"
+            color="primary"
+          >
+            <v-list-item
+              v-for="(itemNav, i) in itemsNav"
+              :key="i"
+              @click="itemNav.action"
+            >
+              <v-list-item-icon>
+                <v-icon v-text="itemNav.icon1"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title v-text="itemNav.text1"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
+      </v-menu>
+      <v-menu offset-y :close-on-content-click="false" :nudge-width="50" v-model="menu">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon class="mr-5" v-bind="attrs" v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -39,6 +68,15 @@
         </v-list-item-group>
       </v-list>
       <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+       <v-divider color="grey"></v-divider>
+        <template v-slot:append>
+        <div class="pa-3">
+          <v-btn block @click="accountLogout">
+            <v-icon left>mdi-logout</v-icon>Logout
+          </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
   </div>
 </template>
@@ -70,7 +108,13 @@ export default {
       ],
       darkMode: null,
       menu: false,
-      sidebarMenu: true
+      menu1: false,
+      sidebarMenu: true,
+      selectedItem: 1,
+      itemsNav: [
+        { text1: 'Account', icon1: 'mdi-account', action: this.redirectToAccount },
+        { text1: 'Logout', icon1: 'mdi-logout', action: this.accountLogout },
+      ],
     };
   },
 
@@ -82,7 +126,18 @@ export default {
     toggle_dark_mode: function () {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
+    },
+    accountLogout() {
+      this.$store.dispatch("logout");
+    },
+    redirectToAccount() {
+      this.$router.push("/my-account")
     }
   }
 };
 </script>
+
+<style scoped>
+.logoutBtn {
+}
+</style>
