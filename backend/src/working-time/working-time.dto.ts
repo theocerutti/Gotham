@@ -8,6 +8,9 @@ export class WorkingTimeRequestQuery {
   @IsDateString()
   @IsOptional()
   public end: Date;
+
+  @IsOptional()
+  public hoursInWeek: Boolean;
 }
 
 export class WorkingTimeDTO {

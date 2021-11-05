@@ -33,6 +33,6 @@ export default {
   getters: {
     currentUser: state => {
       return state.currentUser;
-    }
+    },
   },
 };

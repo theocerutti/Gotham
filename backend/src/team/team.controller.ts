@@ -17,7 +17,13 @@ export class TeamController {
   @ApiOperation({summary: "Get all my teams"})
   @Get()
   async getMeAll(@CurrentUser() user: User): Promise<Team[]> {
-    return await this.teamService.getUserTeams(user.id);
+    return await this.teamService.getUserTeams(129);
+  }
+
+  @ApiOperation({summary: "Get all teams"})
+  @Get("all")
+  async getAll(): Promise<Team[]> {
+    return await this.teamService.getAllTeams();
   }
 
   @ApiOperation({summary: "Get a team by id"})
