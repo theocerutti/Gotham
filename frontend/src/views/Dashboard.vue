@@ -1,22 +1,16 @@
 <template>
-  <v-card class="d-flex flex-wrap justify">
-    <employee-working-time class="ma-2 width-45"/>
-    <team-working-time class="ma-2 width-45"/>
-    <team-working-time class="ma-2 width-45"/>
-    <employee-working-time class="ma-2 width-45"/>
-  </v-card>
+  <user-dashboard v-bind:userId="this.$store.getters.getCurrentUserId"/>
 </template>
 
 <script>
-import EmployeeWorkingTime from "../components/charts/EmployeeWorkingTime.vue";
-import TeamWorkingTime from "../components/charts/TeamWorkingTime.vue";
+import userDashboard from "../components/dashboard/UserDashboard.vue";
 
 export default {
   name: "Dashboard",
   components: {
-    EmployeeWorkingTime,
-    TeamWorkingTime
+    userDashboard,
   },
+
   data: () => ({}),
 };
 </script>

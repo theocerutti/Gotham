@@ -2,3 +2,4 @@
 *.iml
 .vs
 .vscode
+.DS_Store

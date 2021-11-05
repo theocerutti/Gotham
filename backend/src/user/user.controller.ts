@@ -6,6 +6,7 @@ import {CurrentUser} from "../auth/current-user.decorator";
 import {Roles} from "../role/roles.decorator";
 import {Role} from "../role/role.utils";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
+import { SkipAuth } from "src/auth/skip-auth.decorators";
 
 @Controller("users")
 @ApiTags("users")
@@ -19,12 +20,19 @@ export class UserController {
     return user;
   }
 
+  @ApiOperation({summary: "Get all users"})
+  @Get('all')
+  public async getAll(): Promise<User[]> {
+    return this.userService.getAll();
+  }
+
   @ApiOperation({summary: "Update me"})
   @Put()
   public async updateMe(
     @CurrentUser() user: User,
     @Body() userDTO: UserDTO,
   ): Promise<User> {
+    if(userDTO)
     return await this.userService.update(user.id, userDTO);
   }
 

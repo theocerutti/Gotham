@@ -30,5 +30,9 @@ export default {
         });
     },
   },
-  getters: {},
+  getters: {
+    getCurrentUserId: state=>{
+      return state.currentUser.id
+    }
+  },
 };

@@ -13,6 +13,14 @@ export class TeamService {
   ) {
   }
 
+  async getAllTeams(): Promise<Team[]> {
+    try {
+      return await this.TeamRepository.find();
+    } catch (error) {
+      throw new HttpException(`Can't get all user teams: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async getUserTeams(userId: number): Promise<Team[]> {
     try {
       return await this.TeamRepository.getUserTeams(userId);
