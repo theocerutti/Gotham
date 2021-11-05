@@ -15,26 +15,25 @@
           max-width="300"
           tile
         >
-        <v-list dense>
-          <v-list-item-group
-            v-model="selectedItem"
-            color="primary"
-          >
-            <v-list-item
-              v-for="(itemNav, i) in itemsNav"
-              :key="i"
-              @click="itemNav.action"
+          <v-list dense>
+            <v-list-item-group
+              color="primary"
             >
-              <v-list-item-icon>
-                <v-icon v-text="itemNav.icon1"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="itemNav.text1"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-card>
+              <v-list-item
+                v-for="(itemNav, i) in itemsNav"
+                :key="i"
+                @click="itemNav.action"
+              >
+                <v-list-item-icon>
+                  <v-icon v-text="itemNav.icon1"></v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="itemNav.text1"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
       </v-menu>
       <v-menu offset-y :close-on-content-click="false" :nudge-width="50" v-model="menu">
         <template v-slot:activator="{ on, attrs }">
@@ -69,11 +68,12 @@
       </v-list>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
-       <v-divider color="grey"></v-divider>
-        <template v-slot:append>
+      <v-divider color="grey"></v-divider>
+      <template v-slot:append>
         <div class="pa-3">
           <v-btn block @click="accountLogout">
-            <v-icon left>mdi-logout</v-icon>Logout
+            <v-icon left>mdi-logout</v-icon>
+            Logout
           </v-btn>
         </div>
       </template>
@@ -110,10 +110,9 @@ export default {
       menu: false,
       menu1: false,
       sidebarMenu: true,
-      selectedItem: 1,
       itemsNav: [
-        { text1: 'Account', icon1: 'mdi-account', action: this.redirectToAccount },
-        { text1: 'Logout', icon1: 'mdi-logout', action: this.accountLogout },
+        {text1: "Account", icon1: "mdi-account", action: this.redirectToAccount},
+        {text1: "Logout", icon1: "mdi-logout", action: this.accountLogout},
       ],
     };
   },
@@ -131,7 +130,7 @@ export default {
       this.$store.dispatch("logout");
     },
     redirectToAccount() {
-      this.$router.push("/my-account")
+      this.$router.push("/my-account");
     }
   }
 };
