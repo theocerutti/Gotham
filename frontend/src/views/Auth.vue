@@ -2,9 +2,9 @@
   <div class="container">
     <div v-if="action === 'login'">
       <v-container fluid>
-        <v-row dense>
-          <v-col :cols="6">
-            <v-card class="container" width="500px" height="400px">
+        <v-row>
+          <v-col :cols="this.$vuetify.breakpoint.smAndUp ? 6 : 12">
+            <v-card class="container" height="400px">
               <v-card-title>Login</v-card-title>
               <v-card-text align="center">Sign in to your account</v-card-text>
               <v-text-field v-model="username" type="text" solo prepend-inner-icon="mdi-account"
@@ -14,9 +14,12 @@
               <v-btn class="mb-5" @click="signIn" color="blue">
                 sign in
               </v-btn>
+              <v-btn v-if="this.$vuetify.breakpoint.xsOnly" text @click="() => goTo('register')">
+                Register!
+              </v-btn>
             </v-card>
           </v-col>
-          <v-col :cols="6">
+          <v-col :cols="this.$vuetify.breakpoint.smAndUp ? 6 : 12" v-if="this.$vuetify.breakpoint.smAndUp">
             <v-card width="440px" height="400px" class="container" color="blue">
               <v-card-title class="justify-center">Sign up</v-card-title>
               <v-card-text class="text-center">
@@ -33,8 +36,8 @@
     <div v-else>
       <v-container fluid>
         <v-row dense>
-          <v-col :cols="6">
-            <v-card class="container" width="500px" height="500px">
+          <v-col :cols="this.$vuetify.breakpoint.smAndUp ? 6 : 12">
+            <v-card class="container" width="auto" height="550px">
               <v-card-title>Register</v-card-title>
               <v-card-text align="center">Sign up</v-card-text>
               <v-text-field v-model="username" type="text" :rules="rulesUsername" solo prepend-inner-icon="mdi-account"
@@ -48,10 +51,13 @@
               <v-btn class="mb-5" color="blue" @click="signUp">
                 sign up
               </v-btn>
+              <v-btn v-if="this.$vuetify.breakpoint.xsOnly" text @click="() => goTo('login')">
+                Sign In!
+              </v-btn>
             </v-card>
           </v-col>
-          <v-col :cols="6">
-            <v-card width="440px" height="500px" class="container" color="blue">
+          <v-col :cols="this.$vuetify.breakpoint.smAndUp ? 6 : 12" v-if="this.$vuetify.breakpoint.smAndUp">
+            <v-card width="440px" height="550px" class="container" color="blue">
               <v-card-title class="justify-center">Sign in</v-card-title>
               <v-card-text class="text-center">
                 If you already have an account, you can sign in here !

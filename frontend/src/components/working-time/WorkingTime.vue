@@ -1,31 +1,31 @@
 <template>
   <v-card class="mt-5">
     <v-row class="px-2" align="center">
-      <v-col cols="4">
+      <v-col xs="2" md="4">
         <v-text-field @blur="updateWorkingTime" v-model="workingTime.description" placeholder="No description"
                       hide-details="true" solo-inverted dense flat/>
       </v-col>
-      <v-col cols="1">
+      <v-col xs="1" md="1">
         <v-menu offset-y min-width="290px">
           <template v-slot:activator="{ on }">
             <v-row v-on="on" class="project-picker-button">
               <v-icon class="pr-1">mdi-plus-box</v-icon>
-              <div>Team</div>
+              <div v-if="$vuetify.breakpoint.smAndUp">Team</div>
             </v-row>
           </template>
           <div>HERE MODAL TEAM</div>
         </v-menu>
       </v-col>
-      <v-spacer/>
+      <v-spacer v-if="this.$vuetify.breakpoint.smAndUp"/>
       <v-divider vertical/>
-      <v-col cols="1" align="center" class="icon-cell-col">
+      <v-col xs="1" md="1" align="center">
         <v-btn icon @click="workingTime.billable = !workingTime.billable; updateWorkingTime()"
                :color="workingTime.billable ? '#058FCE' : ''">
           <v-icon>mdi-currency-usd</v-icon>
         </v-btn>
       </v-col>
       <v-divider vertical/>
-      <v-col cols="2" align="center">
+      <v-col xs="1" md="2" align="center" v-if="this.$vuetify.breakpoint.smAndUp">
         <v-row align="center">
           <v-col>
             <v-menu
@@ -70,7 +70,10 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="1" class="icon-cell-col">
+      <v-col xs="1" md="2" align="center" v-else>
+        <div>{{ getDiffTime() }}</div>
+      </v-col>
+      <v-col xs="1" md="1">
         <v-btn icon @click="deleteWorkingTime">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
@@ -109,6 +112,9 @@ export default {
     },
   },
   methods: {
+    getDiffTime() {
+      return moment(this.workingTime.start).from(this.workingTime.end, true);
+    },
     updateWorkingTime() {
       this.$store.dispatch("updateWorkingTime", this.workingTime);
     },

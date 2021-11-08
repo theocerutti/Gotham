@@ -6,8 +6,7 @@
       </div>
     </div>
     <div v-else-if="Object.keys(workingTimesGroups).length === 0">
-      <div>You don't have any working times!</div>
-      <div>Use the clock to create one!</div>
+      <NoWorkingTime/>
     </div>
     <div v-else>
       <div v-for="(workingTimes, i) in workingTimesGroups" :key="i">
@@ -19,9 +18,10 @@
 
 <script>
 import WorkingTimesGroup from "@/components/working-time/WorkingTimesGroup";
+import NoWorkingTime from "@/components/working-time/NoWorkingTime";
 
 export default {
-  components: {WorkingTimesGroup},
+  components: {NoWorkingTime, WorkingTimesGroup},
   name: "WorkingTimesGroups",
   data: () => ({}),
   computed: {

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <notifications position="bottom right" width="400" classes="notif-container"/>
+    <notifications
+      position="bottom right"
+      :width="this.$vuetify.breakpoint.smAndUp ? '400': '100%'"
+      :style="marginStyle"
+      classes="notif-container"
+    />
   </div>
 </template>
 
@@ -12,6 +17,13 @@ export default {
   components: {
     VueNotification
   },
+  computed: {
+    marginStyle() {
+      const marginSmAndUp = {"margin-right": "20px", "margin-bottom": "20px"};
+      const marginMobile = {"margin": 0};
+      return this.$vuetify.breakpoint.smAndUp ? marginSmAndUp : marginMobile;
+    }
+  },
   props: {},
 };
 </script>
@@ -19,8 +31,6 @@ export default {
 <style lang="scss">
 .notif-container {
   // styling
-  margin-right: 20px;
-  margin-bottom: 20px;
   padding: 10px;
   font-size: 16px;
   color: #ffffff;

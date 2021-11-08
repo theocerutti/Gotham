@@ -2,13 +2,16 @@
   <div>
     <v-alert
       class="group-title-container"
+      :style="groupSize"
       border="left"
       color="grey"
       dense
       outlined
       text
     >
-      {{ dateTitle() }}
+      <div>
+        {{ dateTitle() }}
+      </div>
     </v-alert>
     <div v-for="(workingTime, i) in workingTimes" :key="i">
       <WorkingTime :workingTime="workingTime" class="mt-4"/>
@@ -25,6 +28,13 @@ export default {
   name: "WorkingTimesGroup",
   props: {
     workingTimes: Array,
+  },
+  computed: {
+    groupSize() {
+      return {
+        width: this.$vuetify.breakpoint.smAndUp ? "8%" : "auto"
+      };
+    },
   },
   methods: {
     dateTitle() {
@@ -54,7 +64,6 @@ export default {
   display: flex;
   height: 20px;
   font-size: 12px;
-  width: 8%;
   margin-right: -5px;
 }
 </style>
