@@ -9,7 +9,7 @@ import * as faker from "faker";
 
 const SEED_USER = 20;
 const SEED_TEAM = 5;
-const SEED_WORKING_TIME_BY_USER = 25;
+const SEED_WORKING_TIME = ['week', 'month', 'year'];
 
 const randomNum = (min, max): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -54,14 +54,55 @@ export class Seeder {
       const user = new User();
       user.username = faker.name.findName();
       user.email = faker.internet.email();
-      user.password = faker.internet.password();
+      user.password = 'userpassword';
       user.role = i % 5 !== 0 ? Role.User : Role.Manager;
       users.push(user);
     }
     return await this.userRepo.save(users);
   }
 
-  createRandomMomentDate(): moment.Moment {
+  // createRandomMomentDate(): moment.Moment {
+  //   const startTime = moment().startOf('isoWeek')
+  //   const endTime = moment().endOf('isoWeek');
+  //   const randomNumber = (to, from) => Math.floor(Math.random() * (to - from) + from);
+  //   return moment(randomNumber(startTime, endTime));
+  // }
+
+  getDays(range){
+    switch(range){
+      case 'week':
+        var start = moment().startOf('isoWeek');
+        var end = moment().endOf('isoWeek').subtract(2, 'd');
+      case 'month':
+        var start = moment().startOf('month');
+        var end = moment().endOf('month').subtract(7, 'd');
+      case 'year':
+        var start = moment().startOf('year');
+        var end = moment().endOf('year').subtract(14, 'd');
+    }
+
+    var days = [];
+    var day = start;
+
+    while (day <= end) {
+      if(day.day() !== 0 && day.day() !== 6){
+        days.push(day.toDate());
+      }
+      day = day.clone().add(1, 'day');
+    }
+
+    return days
+  }
+
+
+  createRandomMomentDateInCurrentMonth(): moment.Moment {
+    const endTime = moment();
+    const randomNumber = (to, from = 0) => Math.floor(Math.random() * (to - from) + from);
+
+    return moment(randomNumber(endTime));
+  }
+
+  createRandomMomentDateInCurrentYear(): moment.Moment {
     const endTime = moment();
     const randomNumber = (to, from = 0) => Math.floor(Math.random() * (to - from) + from);
 
@@ -69,14 +110,18 @@ export class Seeder {
   }
 
   randomizeDurationWt(wt: WorkingTime): WorkingTime {
+
     wt.start = moment(wt.start)
-      .set("hours", randomNum(0, 24))
-      .set("minutes", randomNum(0, 60))
-      .set("seconds", randomNum(0, 60)).toDate();
+      .set("hours", randomNum(0, 23))
+      .set("minutes", randomNum(0, 59))
+      .set("seconds", randomNum(0, 59))
+      .toDate();
+
     wt.end = moment(wt.start)
-      .set("hours", Math.min(wt.start.getHours() + randomNum(0, 24), 24))
-      .set("minutes", Math.min(wt.start.getMinutes() + randomNum(0, 60), 60))
-      .set("seconds", Math.min(wt.start.getSeconds() + randomNum(0, 60), 60)).toDate();
+      .set("hours", wt.start.getHours() + randomNum(0, 23 - wt.start.getHours()))
+      .set("minutes", Math.min(wt.start.getMinutes() + randomNum(0, 59), 59))
+      .set("seconds", Math.min(wt.start.getSeconds() + randomNum(0, 59), 59)).toDate();
+
     return wt;
   }
 
@@ -90,10 +135,9 @@ export class Seeder {
     return workingTime;
   }
 
-  createRandomWorkingTime(user: User): WorkingTime {
+  createRandomWorkingTime(user: User, day): WorkingTime {
     let workingTime = new WorkingTime();
-    const startMoment = this.createRandomMomentDate();
-    workingTime.start = startMoment.toDate();
+    workingTime.start = day;
     workingTime.user = user;
     workingTime.description = faker.lorem.sentences(1);
     workingTime = this.randomizeDurationWt(workingTime);
@@ -105,15 +149,12 @@ export class Seeder {
     this.logger.log("Seed user working times...");
     for (const user of users) {
       const workingTimes = [];
-      for (let i = 0; i < SEED_WORKING_TIME_BY_USER; i++) {
-        const wt = this.createRandomWorkingTime(user);
-        if (i % 4 !== 0) {
+      for (const range of SEED_WORKING_TIME) {
+        const days = this.getDays(range)
+        for(const day of days){
+          const wt = this.createRandomWorkingTime(user, day);
           workingTimes.push(wt);
-          for (let j = 0; i / 5 > j; j++) {
-            workingTimes.push(this.reRandomizeWorkingTimeForGroup(wt));
-          }
-        } else
-          workingTimes.push(wt);
+        }
       }
       await this.workingTimeRepo.save(workingTimes);
     }
