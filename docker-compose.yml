@@ -21,9 +21,6 @@ services:
     build: ./backend
     depends_on:
       - postgres
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     ports:
       - "4000:4000"
     env_file:
@@ -38,9 +35,6 @@ services:
       - backend
     ports:
       - "8080:8080"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     env_file:
       - ./frontend/.env
     networks:
