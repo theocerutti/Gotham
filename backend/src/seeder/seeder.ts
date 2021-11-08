@@ -75,10 +75,10 @@ export class Seeder {
         var end = moment().endOf('isoWeek').subtract(2, 'd');
       case 'month':
         var start = moment().startOf('month');
-        var end = moment().endOf('month');
+        var end = moment().endOf('month').subtract(7, 'd');
       case 'year':
         var start = moment().startOf('year');
-        var end = moment().endOf('year');
+        var end = moment().endOf('year').subtract(14, 'd');
     }
 
     var days = [];
@@ -110,14 +110,18 @@ export class Seeder {
   }
 
   randomizeDurationWt(wt: WorkingTime): WorkingTime {
+
     wt.start = moment(wt.start)
-      .set("hours", randomNum(0, 7))
-      .set("minutes", randomNum(0, 60))
-      .set("seconds", randomNum(0, 60)).toDate();
+      .set("hours", randomNum(0, 23))
+      .set("minutes", randomNum(0, 59))
+      .set("seconds", randomNum(0, 59))
+      .toDate();
+
     wt.end = moment(wt.start)
-      .set("hours", Math.min(wt.start.getHours() + randomNum(0, 24), 24))
-      .set("minutes", Math.min(wt.start.getMinutes() + randomNum(0, 60), 60))
-      .set("seconds", Math.min(wt.start.getSeconds() + randomNum(0, 60), 60)).toDate();
+      .set("hours", wt.start.getHours() + randomNum(0, 23 - wt.start.getHours()))
+      .set("minutes", Math.min(wt.start.getMinutes() + randomNum(0, 59), 59))
+      .set("seconds", Math.min(wt.start.getSeconds() + randomNum(0, 59), 59)).toDate();
+
     return wt;
   }
 
