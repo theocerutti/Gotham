@@ -1,27 +1,18 @@
 <template>
   <v-card elevation="2">
     <v-row align="center" class="pa-1">
-      <v-col class="pa-0 px-4" :cols="manual ? 2 : 3" :md="manual ? 4 : 7">
+      <v-col class="pa-0 px-4" :xs="manual ? 3 : 5" :md="manual ? 4 : 7">
         <v-text-field v-model="description" placeholder="What have you worked on?" hide-details="true" solo-inverted
                       dense flat/>
       </v-col>
-      <v-col cols="2" md="1">
-        <v-menu offset-y min-width="290px">
-          <template v-slot:activator="{ on }">
-            <v-row v-on="on" class="project-picker-button">
-              <v-icon class="pr-1">mdi-plus-box</v-icon>
-              <div v-if="$vuetify.breakpoint.smAndUp">Team</div>
-            </v-row>
-          </template>
-          <div>HERE MODAL TEAM</div>
-        </v-menu>
+      <v-spacer v-if="this.$vuetify.breakpoint.smAndUp"/>
+      <v-divider vertical v-if="this.$vuetify.breakpoint.smAndUp"/>
+      <v-col xs="1" md="1" align="center" class="billable-col">
+        <v-icon @click="billable = !billable" :class="`icon-cell ${billable ? 'active' : ''}`">mdi-currency-usd
+        </v-icon>
       </v-col>
-      <v-divider vertical/>
-      <v-col cols="2" md="1" align="center">
-        <v-icon @click="billable = !billable" :class="`icon-cell ${billable ? 'active' : ''}`">mdi-currency-usd</v-icon>
-      </v-col>
-      <v-divider vertical/>
-      <v-col cols="1" md="3" v-if="manual">
+      <v-divider vertical v-if="this.$vuetify.breakpoint.smAndUp"/>
+      <v-col xs="1" md="3" v-if="manual">
         <v-row align="center">
           <v-col>
             <v-menu
@@ -79,20 +70,19 @@
           </v-menu>
         </v-row>
       </v-col>
-      <v-spacer/>
-      <v-col cols="4" md="auto" class="mr-4">
+      <v-col xs="auto" md="auto" class="mr-4">
         <v-row align="center">
-          <v-col cols="6" md="6">
+          <v-col xs="1" md="6">
             <v-text-field class="centered-input" :value="getTimer" hide-details="true" solo-inverted dense flat
                           readonly/>
           </v-col>
-          <v-col cols="5" md="5">
+          <v-col xs="1" md="5">
             <v-btn style="width: 100%" :color="!manual ? (clockStatus ? 'red' : '#058FCE') : '#058FCE'"
                    @click="switchClock">
               {{ manual ? "ADD" : clockStatus ? "STOP" : "START" }}
             </v-btn>
           </v-col>
-          <v-col v-if="this.$vuetify.breakpoint.smAndUp" cols="1" md="1" class="pa-0 actions-btn-container">
+          <v-col xs="1" md="1" v-if="this.$vuetify.breakpoint.smAndUp" class="pa-0 actions-btn-container">
             <div>
               <v-btn icon @click="manual = false">
                 <v-icon :color="!manual ? '#058FCE' : ''" small>mdi-clock</v-icon>
@@ -196,6 +186,10 @@ export default {
 </script>
 
 <style lang="scss">
+.billable-col {
+  flex: 0 0 0;
+}
+
 .icon-cell {
   &:hover,
   &.active {
