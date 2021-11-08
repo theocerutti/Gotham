@@ -1,28 +1,28 @@
 <template>
   <div class="container">
-    <div v-if="currentAction === 'login'">
+    <div v-if="action === 'login'">
       <v-container fluid>
         <v-row dense>
           <v-col :cols="6">
             <v-card class="container" width="500px" height="400px">
               <v-card-title>Login</v-card-title>
               <v-card-text align="center">Sign in to your account</v-card-text>
-              <v-text-field v-model="username" solo prepend-inner-icon="mdi-account"
+              <v-text-field v-model="username" type="text" solo prepend-inner-icon="mdi-account"
                             placeholder="Username"></v-text-field>
-              <v-text-field v-model="password" solo prepend-inner-icon="mdi-lock"
+              <v-text-field v-model="password" type="password" solo prepend-inner-icon="mdi-lock"
                             placeholder="Password"></v-text-field>
-              <v-btn class="mb-5" @click="signIn" color="#64aacf">
+              <v-btn class="mb-5" @click="signIn" color="blue">
                 sign in
               </v-btn>
             </v-card>
           </v-col>
           <v-col :cols="6">
-            <v-card width="440px" height="400px" class="container" color="#64aacf">
+            <v-card width="440px" height="400px" class="container" color="blue">
               <v-card-title class="justify-center">Sign up</v-card-title>
               <v-card-text class="text-center">
                 If you did not already registered, you can create account by clicking here !
               </v-card-text>
-              <v-btn @click="currentAction = 'register'" color="#497d98">
+              <v-btn @click="() => goTo('register')">
                 Sign up now !
               </v-btn>
             </v-card>
@@ -37,26 +37,26 @@
             <v-card class="container" width="500px" height="500px">
               <v-card-title>Register</v-card-title>
               <v-card-text align="center">Sign up</v-card-text>
-              <v-text-field v-model="username" :rules="rulesUsername" solo prepend-inner-icon="mdi-account"
+              <v-text-field v-model="username" type="text" :rules="rulesUsername" solo prepend-inner-icon="mdi-account"
                             placeholder="Username"></v-text-field>
-              <v-text-field v-model="email" :rules="rulesEmail" solo prepend-inner-icon="mdi-email"
+              <v-text-field v-model="email" type="email" :rules="rulesEmail" solo prepend-inner-icon="mdi-email"
                             placeholder="Email"></v-text-field>
               <v-text-field v-model="password" type='password' solo prepend-inner-icon="mdi-lock"
                             placeholder="Password"></v-text-field>
               <v-text-field v-model="rePassword" type='password' :rules="[passwordConfirmationRule]" solo
                             prepend-inner-icon="mdi-lock" placeholder="Password confirmation"></v-text-field>
-              <v-btn class="mb-5" @click="signUp" color="#64aacf">
+              <v-btn class="mb-5" color="blue" @click="signUp">
                 sign up
               </v-btn>
             </v-card>
           </v-col>
           <v-col :cols="6">
-            <v-card width="440px" height="500px" class="container" color="#64aacf">
+            <v-card width="440px" height="500px" class="container" color="blue">
               <v-card-title class="justify-center">Sign in</v-card-title>
               <v-card-text class="text-center">
                 If you already have an account, you can sign in here !
               </v-card-text>
-              <v-btn @click="currentAction = 'login'" color="#497d98">
+              <v-btn @click="() => goTo('login')">
                 Sign in now !
               </v-btn>
             </v-card>
@@ -68,11 +68,14 @@
 </template>
 
 <script>
+import {router} from "@/main";
 
 export default ({
   name: "Login",
+  props: {
+    action: String,
+  },
   data: () => ({
-    currentAction: "login",
     username: "",
     email: "",
     password: "",
@@ -96,6 +99,9 @@ export default ({
     }
   },
   methods: {
+    goTo(route) {
+      router.push(route);
+    },
     signIn() {
       this.$store.dispatch("loginUser", {
         username: this.username,

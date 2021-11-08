@@ -29,7 +29,7 @@ export default {
     logout({commit}) {
       commit("CLEAR_TOKEN");
       commit("CLEAR_CURRENT_USER");
-      router.push("/auth");
+      router.push("/login");
     }
   },
   getters: {

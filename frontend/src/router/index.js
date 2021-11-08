@@ -1,15 +1,15 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
-import Auth from "@/views/Auth";
 import Container from "@/views/Container";
+import Auth from "@/views/Auth";
 
 Vue.use(VueRouter);
 
 const createRouter = (store) => {
   const authGuard = (to, from, next) => {
     if (!store.getters.isLogged) {
-      next("/auth");
+      next("/login");
     } else {
       next();
     }
@@ -17,9 +17,16 @@ const createRouter = (store) => {
 
   const routes = [
     {
-      path: "/auth",
-      name: "Auth",
-      component: Auth
+      path: "/login",
+      name: "Login",
+      component: Auth,
+      props: () => ({action: "login"})
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: Auth,
+      props: () => ({action: "register"})
     },
     {
       path: "/",
