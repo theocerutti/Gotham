@@ -1,0 +1,6 @@
+{
+  "appId": "com.gotham.app",
+  "appName": "gotham",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
