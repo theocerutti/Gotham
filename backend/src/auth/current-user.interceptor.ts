@@ -10,7 +10,7 @@ export class CurrentUserInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, handler: CallHandler) {
     const request = context.switchToHttp().getRequest();
     if (request.user) {
-      request.currentUser = await this.userService.getById(request.user.sub);
+      request.currentUser = await this.userService.getById(request.user.userId);
     }
     return handler.handle();
   }

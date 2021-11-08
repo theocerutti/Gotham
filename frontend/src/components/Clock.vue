@@ -1,11 +1,11 @@
 <template>
   <v-card elevation="2">
     <v-row align="center" class="pa-1">
-      <v-col class="pa-0 px-4" :cols="manual ? 4 : 7">
+      <v-col class="pa-0 px-4" :xs="4" :md="manual ? 4 : 7">
         <v-text-field v-model="description" placeholder="What have you worked on?" hide-details="true" solo-inverted
                       dense flat/>
       </v-col>
-      <v-col cols="1">
+      <v-col xs="1" md="1">
         <v-menu offset-y min-width="290px">
           <template v-slot:activator="{ on }">
             <v-row v-on="on" class="project-picker-button">
@@ -21,7 +21,7 @@
         <v-icon @click="billable = !billable" :class="`icon-cell ${billable ? 'active' : ''}`">mdi-currency-usd</v-icon>
       </v-col>
       <v-divider vertical/>
-      <v-col cols="3" v-if="manual">
+      <v-col xs="3" md="3" v-if="manual">
         <v-row align="center">
           <v-col>
             <v-menu
@@ -81,19 +81,19 @@
       </v-col>
       <v-divider vertical/>
       <v-spacer/>
-      <v-col cols="auto" class="mr-4">
+      <v-col xs="auto" md="auto" class="mr-4">
         <v-row align="center">
-          <v-col cols="6">
+          <v-col xs="6" md="6">
             <v-text-field class="centered-input" :value="getTimer" hide-details="true" solo-inverted dense flat
                           readonly/>
           </v-col>
-          <v-col cols="5">
+          <v-col xs="5" md="5">
             <v-btn style="width: 100%" :color="!manual ? (clockStatus ? 'red' : '#058FCE') : '#058FCE'"
                    @click="switchClock">
               {{ manual ? "ADD" : clockStatus ? "STOP" : "START" }}
             </v-btn>
           </v-col>
-          <v-col cols="1" class="pa-0 actions-btn-container">
+          <v-col xs="1" md="1" class="pa-0 actions-btn-container">
             <div>
               <v-btn icon @click="manual = false">
                 <v-icon :color="!manual ? '#058FCE' : ''" small>mdi-clock</v-icon>
