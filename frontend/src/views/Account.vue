@@ -3,9 +3,6 @@
     <v-card id="account-container">
       <user/>
     </v-card>
-    <v-card id="team-container" style="margin-top: 50px;">
-      <team-manager/>
-    </v-card>
   </div>
 </template>
 
@@ -25,7 +22,6 @@ export default {
 }
 
 #account-container, #team-container {
-  background-color: rgb(87, 81, 81) !important;
   padding: 30px;
   height: 100%;
 }
