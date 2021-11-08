@@ -22,6 +22,8 @@ export class UserService {
 
   async getById(userID: number): Promise<User> {
     try {
+        
+
       return await this.UserRepo.findOneOrFail(userID);
     } catch (error) {
       throw new HttpException(`Could not find user: ${error.message}`, HttpStatus.NOT_FOUND);
@@ -100,6 +102,7 @@ export class UserService {
     try {
       const user: User = await this.getById(userId);
       user.role = Role.Manager;
+      console.log("user: ", user)
       return await this.UserRepo.save(user);
     } catch (error) {
       throw new HttpException(`Can't promote user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
