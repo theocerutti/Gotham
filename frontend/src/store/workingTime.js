@@ -52,7 +52,7 @@ export default {
       const wts = {};
 
       state.currentUser.workingTimes.forEach(wt => {
-        const dateToken = moment(wt.start).format("YYYY-M-d");
+        const dateToken = moment(wt.start).format("YYYY-M-D");
         if (!wts[dateToken])
           wts[dateToken] = [];
         wts[dateToken].push(wt);

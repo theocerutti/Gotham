@@ -31,8 +31,8 @@ export default {
       const three_days_ago = moment().subtract(3, "days");
       const startDate = new Date(this.workingTimes[0].start);
 
-      if (moment(three_days_ago).isBefore(startDate))
-        return moment([startDate.getFullYear(), startDate.getMonth(), startDate.getDay()]).calendar(null, {
+      if (moment(three_days_ago).isBefore(startDate)) {
+        return moment([startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate()]).calendar(null, {
           sameDay: "[Today]",
           nextDay: "[Tomorrow]",
           nextWeek: "dddd",
@@ -40,7 +40,7 @@ export default {
           lastWeek: "[Last] dddd",
           sameElse: "DD/MM/YYYY"
         });
-      else
+      } else
         return moment(startDate).format("ddd, MMM D yyyy");
     },
   },
