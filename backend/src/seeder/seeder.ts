@@ -143,21 +143,17 @@ export class Seeder {
 
   async seedWorkingTimes(users: User[]) {
     this.logger.log("Seed user working times...");
-    var count = 0
     for (const user of users) {
       const workingTimes = [];
       for (const range of SEED_WORKING_TIME) {
-        console.log('range:', range)
         const days = this.getDays(range)
         for(const day of days){
           const wt = this.createRandomWorkingTime(user, day);
           workingTimes.push(wt);
-          count += 1
         }
       }
       await this.workingTimeRepo.save(workingTimes);
     }
-    console.log('count:', count)
   }
 
   async seedTeams(users: User[]) {
