@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Post} from "@nestjs/common";
 import {TeamService} from "./team.service";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
@@ -11,20 +11,23 @@ import {ApiOperation, ApiTags} from "@nestjs/swagger";
 @Controller("team")
 @ApiTags("team")
 export class TeamController {
+  private readonly logger = new Logger(TeamController.name);
+
   constructor(private teamService: TeamService) {
   }
 
   @ApiOperation({summary: "Get all my teams"})
   @Get()
   async getMeAll(@CurrentUser() user: User): Promise<Team[]> {
+    this.logger.log("Get all my teams userId=", user.id);
     return await this.teamService.getUserTeams(user.id);
   }
-
 
   @ApiOperation({summary: "Get all teams"})
   @Roles(Role.GeneralManager, Role.Manager)
   @Get("all")
   async getAll(): Promise<Team[]> {
+    this.logger.log("Get all teams");
     return await this.teamService.getAllTeams();
   }
 
@@ -34,6 +37,7 @@ export class TeamController {
     @CurrentUser() user: User,
     @Param("teamId", ParseIntPipe) teamId: number,
   ): Promise<Team> {
+    this.logger.log("Get one of my team userId=", user.id, " teamId=", teamId);
     return await this.teamService.getUserTeam(user.id, teamId);
   }
 
@@ -41,6 +45,7 @@ export class TeamController {
   @Roles(Role.GeneralManager, Role.Manager)
   @Get("one/:teamId")
   async getOne(@Param("teamId", ParseIntPipe) teamId: number): Promise<Team> {
+    this.logger.log("Get one team teamId=", teamId);
     return await this.teamService.getTeamById(teamId);
   }
 
@@ -48,6 +53,7 @@ export class TeamController {
   @Roles(Role.GeneralManager, Role.Manager)
   @Get("all/:userId")
   async getOneTeamByUserId(@Param("userId", ParseIntPipe) userId: number): Promise<Team[]> {
+    this.logger.log("Get all teams by userId=", userId);
     return await this.teamService.getUserTeams(userId);
   }
 
@@ -58,6 +64,7 @@ export class TeamController {
     @CurrentUser() user: User,
     @Body() createTeamDTO: CreateTeamDTO
   ): Promise<Team> {
+    this.logger.log("Create a team by userId=", user.id, "with", createTeamDTO);
     return await this.teamService.createTeam(user.id, createTeamDTO);
   }
 
@@ -68,6 +75,7 @@ export class TeamController {
     @CurrentUser() user: User,
     @Param("teamId", ParseIntPipe) teamId: number
   ): Promise<Team> {
+    this.logger.log("Delete a team by userId=", user.id, "teamId=", teamId);
     return await this.teamService.deleteTeam(teamId, user.id);
   }
 
@@ -78,6 +86,7 @@ export class TeamController {
     @Param("teamId", ParseIntPipe) teamId: number,
     @Param("userId", ParseIntPipe) userId: number,
   ): Promise<Team> {
+    this.logger.log("Add a user to a team, teamId=", teamId, "userId=", userId);
     return await this.teamService.addUser(userId, teamId);
   }
 
@@ -89,6 +98,7 @@ export class TeamController {
     @Param("teamId", ParseIntPipe) teamId: number,
     @Param("userId", ParseIntPipe) userId: number,
   ): Promise<Team> {
+    this.logger.log("Remove a user from a team, teamId=", teamId, "userId=", userId);
     return await this.teamService.removeUser(userId, teamId);
   }
 }

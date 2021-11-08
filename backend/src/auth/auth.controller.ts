@@ -1,4 +1,4 @@
-import {Body, Controller, Post, Res} from "@nestjs/common";
+import {Body, Controller, Logger, Post, Res} from "@nestjs/common";
 import {AuthService} from "./auth.service";
 import {CreateUserDTO, LoginUserDTO} from "./auth.dto";
 import {SkipAuth} from "./skip-auth.decorators";
@@ -10,6 +10,8 @@ const TOKEN_AUTH_RES_HEADER = "Authorization";
 @Controller("auth")
 @ApiTags("auth")
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
+
   constructor(private authService: AuthService) {
   }
 
@@ -20,6 +22,7 @@ export class AuthController {
     @Body() body: LoginUserDTO,
     @Res({passthrough: true}) res
   ): Promise<User> {
+    this.logger.log("Login user: ", body);
     const info = await this.authService.login(
       body.username,
       body.password
@@ -35,6 +38,7 @@ export class AuthController {
     @Body() body: CreateUserDTO,
     @Res({passthrough: true}) res
   ): Promise<User> {
+    this.logger.log("Register user: ", body);
     const userPromise = await this.authService.register(body);
     const user = await userPromise;
     const info = await this.authService.login(
