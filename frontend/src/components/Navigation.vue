@@ -105,6 +105,12 @@ export default {
           path: "/my-account",
           active: false
         },
+        {
+          icon: "mdi-account-multiple",
+          title: "Teams",
+          path: "/teams",
+          active: false
+        }
       ],
       darkMode: null,
       menu: false,

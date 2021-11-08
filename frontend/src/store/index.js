@@ -20,11 +20,13 @@ export default new Vuex.Store({
       name: null,
       email: null,
       workingTimes: null,
+      teams: []
     },
     workingTimesFormated: [],
     auth: {
       loginToken: "",
     },
+    allUsers: [],
   },
   mutations: {
     ...userStore.mutations,

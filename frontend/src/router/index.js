@@ -50,6 +50,11 @@ const createRouter = (store) => {
           name: "Time Tracker",
           component: () => import("../views/TimeTracker")
         },
+        {
+          path: "/teams",
+          name: "Teams",
+          component: () => import("../views/Teams")
+        }
       ]
     },
     {
