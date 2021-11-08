@@ -1,3 +1,4 @@
+import { UserDashboardFormater } from './../util/userDashboardFormater';
 import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from "@nestjs/common";
 import {WorkingTime} from "../model/workingtime.entity";
 import {WorkingTimeService} from "./working-time.service";
@@ -22,7 +23,11 @@ export class WorkingTimeController {
   ): Promise<WorkingTime[]> {
     if (query.end && query.start) {
       return await this.workingTimeService.getUserWorkingTimesFromTimeRange(user.id, query);
-    } else {
+    }else if (query.hoursInWeek === "true"){
+      const workingTimes = await this.workingTimeService.getUserWorkingTimes(user.id);
+      return UserDashboardFormater.getHoursInWeek(workingTimes)
+    } 
+    else {
       return await this.workingTimeService.getUserWorkingTimes(user.id);
     }
   }

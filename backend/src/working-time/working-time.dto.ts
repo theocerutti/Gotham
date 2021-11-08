@@ -1,4 +1,5 @@
-import {IsBoolean, IsDateString, IsOptional, IsString} from "class-validator";
+import { Type } from "class-transformer";
+import {IsBoolean, IsBooleanString, IsDateString, IsOptional, IsString} from "class-validator";
 
 export class WorkingTimeRequestQuery {
   @IsDateString()
@@ -10,7 +11,8 @@ export class WorkingTimeRequestQuery {
   public end: Date;
 
   @IsOptional()
-  public hoursInWeek: Boolean;
+  @IsBooleanString()
+  public hoursInWeek: string;
 }
 
 export class WorkingTimeDTO {
