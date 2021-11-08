@@ -6,7 +6,6 @@ import {CurrentUser} from "../auth/current-user.decorator";
 import {Roles} from "../role/roles.decorator";
 import {Role} from "../role/role.utils";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
-import { SkipAuth } from "src/auth/skip-auth.decorators";
 
 @Controller("users")
 @ApiTags("users")
@@ -21,7 +20,7 @@ export class UserController {
   }
 
   @ApiOperation({summary: "Get all users"})
-  @Get('all')
+  @Get("all")
   public async getAll(): Promise<User[]> {
     return this.userService.getAll();
   }
@@ -32,7 +31,6 @@ export class UserController {
     @CurrentUser() user: User,
     @Body() userDTO: UserDTO,
   ): Promise<User> {
-    if(userDTO)
     return await this.userService.update(user.id, userDTO);
   }
 
@@ -49,6 +47,13 @@ export class UserController {
   @Roles(Role.GeneralManager)
   public async promoteUser(@Param("userId", ParseIntPipe) userId: number): Promise<User> {
     return await this.userService.promoteUser(userId);
+  }
+
+  @ApiOperation({summary: "Demote a manager to user (generalManager)"})
+  @Post("demote/:userId")
+  @Roles(Role.GeneralManager)
+  public async demoteUser(@Param("userId", ParseIntPipe) userId: number): Promise<User> {
+    return await this.userService.demoteUser(userId);
   }
 
   @ApiOperation({summary: "Get a user by id (manager/generalManager)"})

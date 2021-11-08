@@ -70,10 +70,9 @@ export class TeamService {
     }
   }
 
-  async addUser(managerUserId: number, userId: number, teamId: number): Promise<Team> {
+  async addUser(userId: number, teamId: number): Promise<Team> {
     try {
-      const teamIds = await this.userService.getUserTeamsIds(userId);
-      const team = await this.TeamRepository.getUserTeam(teamId, teamIds);
+      const team = await this.getTeamById(teamId);
       const user = await this.userService.getById(userId);
       team.addUser(user);
       return await this.TeamRepository.save(team);
@@ -82,9 +81,9 @@ export class TeamService {
     }
   }
 
-  async removeUser(managerUserId: number, userId: number, teamId: number): Promise<Team> {
+  async removeUser(userId: number, teamId: number): Promise<Team> {
     try {
-      const team = await this.getUserTeam(managerUserId, teamId);
+      const team = await this.getTeamById(teamId);
       team.users = team.users.filter(user => user.id != userId);
       return this.TeamRepository.save(team);
     } catch (error) {

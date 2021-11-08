@@ -74,11 +74,10 @@ export class TeamController {
   @Roles(Role.GeneralManager, Role.Manager)
   @Post(":teamId/:userId")
   async addTeamUser(
-    @CurrentUser() user: User,
     @Param("teamId", ParseIntPipe) teamId: number,
     @Param("userId", ParseIntPipe) userId: number,
   ): Promise<Team> {
-    return await this.teamService.addUser(user.id, userId, teamId);
+    return await this.teamService.addUser(userId, teamId);
   }
 
   @ApiOperation({summary: "Remove a user from a team (manager/generalManager)"})
@@ -89,6 +88,6 @@ export class TeamController {
     @Param("teamId", ParseIntPipe) teamId: number,
     @Param("userId", ParseIntPipe) userId: number,
   ): Promise<Team> {
-    return await this.teamService.removeUser(user.id, userId, teamId);
+    return await this.teamService.removeUser(userId, teamId);
   }
 }

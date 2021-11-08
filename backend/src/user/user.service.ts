@@ -105,4 +105,14 @@ export class UserService {
       throw new HttpException(`Can't promote user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  async demoteUser(userId: number): Promise<User> {
+    try {
+      const user: User = await this.getById(userId);
+      user.role = Role.User;
+      return await this.UserRepo.save(user);
+    } catch (error) {
+      throw new HttpException(`Can't demote user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

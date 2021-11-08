@@ -1,13 +1,4 @@
-import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  Entity,
-  ManyToMany,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import {BeforeInsert, Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {WorkingTime} from "./workingtime.entity";
 import {Clock} from "./clock.entity";
 import {Team} from "./team.entity";
@@ -53,7 +44,6 @@ export class User {
   teams: Team[];
 
   @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword() {
     try {
       const saltRounds = bcrypt.getRounds(this.password);
