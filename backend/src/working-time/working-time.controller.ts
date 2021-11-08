@@ -22,8 +22,13 @@ export class WorkingTimeController {
     @Query() query: WorkingTimeRequestQuery
   ): Promise<WorkingTime[]> {
     if (query.end && query.start) {
+      if(query.formatType === "hoursInWeek"){
+        const workingTimes = await this.workingTimeService.getUserWorkingTimesFromTimeRange(user.id, query);
+        return UserDashboardFormater.getHoursInWeek(workingTimes)
+      }
       return await this.workingTimeService.getUserWorkingTimesFromTimeRange(user.id, query);
-    }else if (query.hoursInWeek === "true"){
+
+    }else if (query.formatType === "hoursInWeek"){
       const workingTimes = await this.workingTimeService.getUserWorkingTimes(user.id);
       return UserDashboardFormater.getHoursInWeek(workingTimes)
     } 
@@ -76,9 +81,25 @@ export class WorkingTimeController {
   }
 
   @ApiOperation({summary: "Get all working times from a user (manager, generalManager)"})
-  @Roles(Role.Manager, Role.GeneralManager)
+  // @Roles(Role.Manager, Role.GeneralManager)
   @Get("/user/:userId")
-  public async getAllFromUser(@Param("userId", ParseIntPipe) userId: number) {
-    return await this.workingTimeService.getUserWorkingTimes(userId);
+  public async getAllFromUser(
+    @Param("userId", ParseIntPipe) userId: number,
+    @Query() query: WorkingTimeRequestQuery
+    ) {
+    if (query.end && query.start) {
+      const workingTimes = await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
+      if(query.formatType === "hoursInWeek"){
+        return UserDashboardFormater.getHoursInWeek(workingTimes)
+      }
+      return await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
+      
+    }else if (query.formatType === "hoursInWeek"){
+      const workingTimes = await this.workingTimeService.getUserWorkingTimes(userId);
+      return UserDashboardFormater.getHoursInWeek(workingTimes)
+    } 
+    else {
+      return await this.workingTimeService.getUserWorkingTimes(userId);
+    }
   }
 }

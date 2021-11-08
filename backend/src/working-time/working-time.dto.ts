@@ -11,8 +11,8 @@ export class WorkingTimeRequestQuery {
   public end: Date;
 
   @IsOptional()
-  @IsBooleanString()
-  public hoursInWeek: string;
+  @IsString()
+  public formatType: string;
 }
 
 export class WorkingTimeDTO {

@@ -54,7 +54,7 @@ export class Seeder {
       const user = new User();
       user.username = faker.name.findName();
       user.email = faker.internet.email();
-      user.password = faker.internet.password();
+      user.password = 'userpassword';
       user.role = i % 5 !== 0 ? Role.User : Role.Manager;
       users.push(user);
     }

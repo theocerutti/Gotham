@@ -40,6 +40,17 @@ export default {
     }
   }),
 
+  async mounted() {
+    await this.$store.dispatch('getWorkingTimesWithFormatedData', {
+      userId: this.userId, 
+      start : moment().startOf('isoWeek').toDate(), 
+      end: moment().endOf('isoWeek').toDate(), 
+      formatType: "hoursInWeek"
+    })
+
+    this.datasetHoursInWeek = this.$store.getters.workingTimesFormated
+  },
+
 
   methods:{
     getStringCurrentWeek(){

@@ -6,6 +6,11 @@ export default {
     SET_WORKING_TIMES(state, payload) {
       state.currentUser.workingTimes = payload;
     },
+
+    SET_WORKING_TIMES_FORMATED(state, payload) {
+      state.workingTimesFormated = payload;
+    },
+
     DELETE_WORKING_TIME(state, workingTimeID) {
       state.currentUser.workingTimes = state.currentUser.workingTimes.filter(wt => wt.id !== workingTimeID);
     },
@@ -24,6 +29,12 @@ export default {
     getAllWorkingTimes({commit}) {
       this._vm.$api.get("/api/workingtimes/").then((res) => {
         commit("SET_WORKING_TIMES", res.data);
+      }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
+    },
+
+    getWorkingTimesWithFormatedData({commit}, payload){
+      this._vm.$api.get(`api/workingtimes/user/${payload.userId}`,  { params: { start: payload.start, end: payload.end, formatType: payload.formatType } }).then((res) => {
+        commit("SET_WORKING_TIMES_FORMATED", res.data);
       }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
     },
     createWorkingTime({commit}, workingTime) {
@@ -58,6 +69,11 @@ export default {
         wts[dateToken].push(wt);
       });
       return sortObject(wts, (wt1, wt2) => moment(wt2[1][0].start).unix() - moment(wt1[1][0].start).unix());
+    },
+
+    workingTimesFormated: state =>{
+      if (state.workingTimesFormated === []) return null;
+      return state.workingTimesFormated
     }
   },
 };

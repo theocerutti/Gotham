@@ -21,6 +21,7 @@ export default new Vuex.Store({
       email: null,
       workingTimes: null,
     },
+    workingTimesFormated: [],
     auth: {
       loginToken: "",
     },
