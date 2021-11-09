@@ -46,6 +46,13 @@ export default {
     },
     DELETE_TEAM(state, payload) {
       console.log("payload", payload)
+      console.log("state, ", state.currentUser.teams)
+      var index = state.currentUser.teams.findIndex(function(t){
+        return t.name === payload.data.name;
+      })
+
+      if (index !== -1)
+        state.currentUser.teams.splice(index, 1);
     }
   },
   actions: {
@@ -114,7 +121,7 @@ export default {
       })
     },
     deleteTeam({ commit }, payload) {
-      this._vm.$api.delete("/api/team/", payload)
+      this._vm.$api.delete("/api/team/" + payload)
       .then((response) => {
         commit("DELETE_TEAM", response)
       })
