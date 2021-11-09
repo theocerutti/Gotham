@@ -6,13 +6,13 @@
             {{ team.name }}
             </span>
             
-            <div>
-                <v-btn v-show="currentUser.role === 'generalManager' || currentUser.role === 'manager'" id="team-dashboard-btn" color="#64aacf">
+            <div v-show="currentUser.role === 'generalManager' || currentUser.role === 'manager'">
+                <v-btn id="team-dashboard-btn" color="#64aacf">
                     <v-icon>
                     mdi-chart-bar-stacked
                     </v-icon>
                 </v-btn>
-                <v-btn @click="dialogTeam = !dialogTeam" v-show="currentUser.role === 'generalManager' || currentUser.role === 'manager'" style="margin-left: 5%" id="team-add-user" color="#64aacf">
+                <v-btn @click="dialogTeam = !dialogTeam" style="margin-left: 5%" id="team-add-user" color="#64aacf">
                     <v-icon>
                         mdi-account-plus
                     </v-icon>
