@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-alert
-      class="group-title-container"
+      class="group-title-container text-center"
       :style="groupSize"
       border="left"
       color="grey"
@@ -32,7 +32,9 @@ export default {
   computed: {
     groupSize() {
       return {
-        width: this.$vuetify.breakpoint.smAndUp ? "8%" : "auto"
+        width: this.$vuetify.breakpoint.smAndUp ? "14%" : "auto",
+        'display': 'flex',
+        'justify-content': 'center'
       };
     },
   },
