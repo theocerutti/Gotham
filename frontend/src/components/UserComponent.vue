@@ -75,7 +75,7 @@ export default {
         this.$emit('addUser', this.user.id)
       },
       viewUserDashboard() {
-        this.$router.push({name: 'Dashboard', query: { userId: this.user.id }})
+        this.$router.push({name: 'Dashboard', params: {mode: 'individual'}, query: { userId: this.user.id }})
       }
   }
 };

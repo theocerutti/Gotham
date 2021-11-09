@@ -7,7 +7,7 @@
             </span>
             
             <div v-show="currentUser.role === 'generalManager' || currentUser.role === 'manager'">
-                <v-btn id="team-dashboard-btn" color="#64aacf">
+                <v-btn @click="viewTeamDashboard" id="team-dashboard-btn" color="#64aacf">
                     <v-icon>
                     mdi-chart-bar-stacked
                     </v-icon>
@@ -132,7 +132,10 @@ export default {
             this.$store.dispatch("deleteTeam", this.team.id)
         },
         viewUserDashboard(user) {
-            this.$router.push({name: 'Dashboard', query: { userId: user.id }})
+            this.$router.push({name: 'Dashboard', params: {mode: 'individual'}, query: { userId: user.id }})
+        },
+        viewTeamDashboard() {
+            this.$router.push({name: 'Dashboard', params: {mode: 'team'}, query: { teamId: this.team.id }})
         }
     }
 }

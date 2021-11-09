@@ -2,14 +2,14 @@
   <div>
     <v-card class="mb-6">
       <v-card-title>
-        Hours of work in the current week
+        Hours of work in the current week for the team
       </v-card-title>
       <v-card-subtitle>
         {{getStringCurrentWeek()}}
       </v-card-subtitle>
       <div class="d-flex justify-center">
         <div class="w-80 my-10" relative>
-          <hours-current-week :dataset="datasetHoursCurrentWeek" />
+          <!-- <hours-current-week :dataset="datasetHoursCurrentWeek" /> -->
         </div>
       </div>
     </v-card>
@@ -20,10 +20,10 @@
         </v-card-title>
         <div>
           <v-card-text>
-            Total hours of work: {{totalHours}}h
+            <!-- Total hours of work: {{totalHours}}h -->
           </v-card-text>
           <v-card-text>
-            Total hours of work this month: {{totalHoursThisMonth}}h
+            <!-- Total hours of work this month: {{totalHoursThisMonth}}h -->
           </v-card-text>
         </div>
       </v-card>
@@ -36,11 +36,12 @@
         </v-card-subtitle>
         <div class="d-flex justify-center">
           <div class="my-10 mx-15">
-            <hours-last-weeks :labels="labelsHoursLastWeeks" :dataset="datasetHoursLastWeeks" />
+            <!-- <hours-last-weeks :labels="labelsHoursLastWeeks" :dataset="datasetHoursLastWeeks" /> -->
           </div>
         </div>
       </v-card>
     </div>
+    
   </div>
 </template>
 
@@ -52,68 +53,20 @@
 
 
   export default {
-    name: "DashboardUser",
+    name: "DashboardTeam",
     components: {
       HoursCurrentWeek,
       HoursLastWeeks
     },
 
     props: {
-      userId: Number
+        teamId: Number
     },
 
 
     data: () => ({
-      datasetHoursCurrentWeek: [],
-      datasetHoursLastWeeks: [],
-      labelsHoursLastWeeks: [],
-      totalHours: 0,
-      totalHoursThisMonth: 0,
-      chartOptionsHoursInWeek: {
-        responsive: true,
-        maintainAspectRatio: false
-      },
+        requestResponse: []
     }),
-
-    mounted() {
-      api.get(`api/workingtimes/user/${this.userId}`, {
-          params: {
-            start: moment().startOf('isoWeek').toDate(),
-            end: moment().endOf('isoWeek').toDate(),
-            formatType: "hoursCurrentWeek"
-          }
-        })
-        .then((res) => {
-          this.datasetHoursCurrentWeek = res.data
-        }).catch(err => this._vm.$notify({
-          text: err.message,
-          type: "error"
-        }));
-
-
-      api.get(`api/workingtimes/user/${this.userId}`, {
-          params: {
-            start: moment().subtract(4, 'weeks').startOf('week').toDate(),
-            end: moment().subtract(1, 'weeks').endOf('isoWeek').toDate(),
-            formatType: "hoursLastWeeks"
-          }
-        })
-        .then((res) => {
-          this.datasetHoursLastWeeks = res.data.dataset
-          this.labelsHoursLastWeeks = res.data.labels
-        });
-
-      api.get(`api/workingtimes/user/${this.userId}`, {
-          params: {
-            formatType: "generalMetrics"
-          }
-        })
-        .then((res) => {
-          this.totalHours = res.data.totalHours
-          this.totalHoursThisMonth = res.data.totalHoursThisMonth
-        });
-
-    },
 
 
     methods: {
@@ -122,7 +75,35 @@
         const lastday = moment().endOf('isoWeek').format("DD/MM/YYYY");
         return `${firstday} - ${lastday}`
       },
+      calculateDiffEndStart(start, end) {
+          console.log("a", end, start)
+          return Math.abs(end.valueOf() - start.valueOf()) / 3600000;
+      },
+      parseWt() {
+          console.log("parse wt", this.requestResponse)
+          var allWt = []
+          this.requestResponse.users.forEach(u => {
+              u.workingtimes.forEach(wt => {
+                  allWt.push(wt)
+              })
+          });
+          console.log("ALL WT parse ", allWt)
+          
+        //   const wtThisMonth = workingTimes.filter(workingtime => { // trie les wt entre 2 dates
+        //   return workingtime.start >= moment().startOf('month').toDate() && moment().toDate();
+        //     });
+      }
     },
+    mounted() {
+        console.log(new Date("2018-09-16T00:18:00.000Z"))
+        console.log(this.calculateDiffEndStart(new Date("2018-09-16T10:00:00.000Z"),  new Date("2018-09-16T18:00:00.000Z")));
+
+        api.get(`api/team/one/${this.teamId}/workingtimes`)
+        .then((response) => {
+            this.requestResponse = response.data;
+            this.parseWt()
+        })
+    }
   };
 </script>
 
