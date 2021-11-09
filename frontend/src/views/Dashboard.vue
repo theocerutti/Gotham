@@ -1,5 +1,5 @@
 <template>
-  <user-dashboard v-bind:userId="this.$store.getters.currentUser.id"/>
+  <user-dashboard v-bind:userId="dashboardIdToDisplay"/>
 </template>
 
 <script>
@@ -12,6 +12,11 @@ export default {
   },
 
   data: () => ({}),
+  computed: {
+    dashboardIdToDisplay() {
+      return this.$route.query.userId ? this.$route.query.userId : this.$store.getters.currentUser.id;
+    }
+  }
 };
 </script>
 

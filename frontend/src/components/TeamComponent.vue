@@ -40,7 +40,7 @@
                         </span>
                     <v-divider style="height: 35px; margin-left: 50px;" vertical></v-divider>
                         <span v-if="currentUser.role === 'generalManager' || currentUser.role === 'manager'">
-                            <v-btn id="user-dashboard" color="#64aacf">
+                            <v-btn @click="viewUserDashboard(u)" id="user-dashboard" color="#64aacf">
                                 <v-icon>
                                     mdi-chart-bar
                                 </v-icon>
@@ -130,6 +130,9 @@ export default {
         },
         deleteTeam() {
             this.$store.dispatch("deleteTeam", this.team.id)
+        },
+        viewUserDashboard(user) {
+            this.$router.push({name: 'Dashboard', query: { userId: user.id }})
         }
     }
 }

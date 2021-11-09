@@ -36,8 +36,10 @@ export default {
     createNewTeam() {
       if (!this.createTeam)
         this.createTeam = true;
-      else
+      else {
+        this.createTeam = false;
         this.$store.dispatch('createNewTeam', this.teamName)
+      }
     },
   },
   mounted() {

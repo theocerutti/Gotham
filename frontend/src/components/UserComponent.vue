@@ -73,6 +73,9 @@ export default {
       },
       addUserToTeam() {
         this.$emit('addUser', this.user.id)
+      },
+      viewUserDashboard() {
+        this.$router.push({name: 'Dashboard', query: { userId: this.user.id }})
       }
   }
 };
