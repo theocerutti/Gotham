@@ -2,15 +2,14 @@ import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from "@nestjs
 import {UserService} from "../user/user.service";
 import {User} from "../model/user.entity";
 import * as bcrypt from "bcrypt";
-import {JwtService} from "@nestjs/jwt";
 import {CreateUserDTO} from "./auth.dto";
-import {JwtPayload} from "./auth.utils";
+import {RefreshTokenService} from "./refresh_token.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(forwardRef(() => UserService)) private userService: UserService,
-    @Inject(forwardRef(() => JwtService)) private jwtService: JwtService
+    @Inject(forwardRef(() => RefreshTokenService)) private refreshTokenService: RefreshTokenService,
   ) {
   }
 
@@ -18,14 +17,15 @@ export class AuthService {
     username: string,
     password: string
   ): Promise<{ token: string, user: User }> | undefined {
-    const user: User = await this.userService.getByUsername(username);
+    let user: User = await this.userService.getByUsername(username);
 
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
       throw new HttpException("Bad password", HttpStatus.UNAUTHORIZED);
     }
 
-    const payload: JwtPayload = {username: user.username, userId: user.id, role: user.role};
-    return {token: this.jwtService.sign(payload), user};
+    const access_token = await this.refreshTokenService.generateAccessToken(user);
+    user = await this.refreshTokenService.createOrUpdateRefreshToken(user);
+    return {token: access_token, user};
   }
 
   async register(createUserDTO: CreateUserDTO): Promise<User> {
@@ -44,7 +44,7 @@ export class AuthService {
     user.username = createUserDTO.username;
     user.password = createUserDTO.password;
     user.email = createUserDTO.email;
-    return this.userService.create(user);
+    return await this.userService.create(user);
   }
 
   async validateUser(username: string, password: string): Promise<User | null> {

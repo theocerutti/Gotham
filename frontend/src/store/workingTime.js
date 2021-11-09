@@ -1,5 +1,6 @@
 import moment from "moment";
 import {sortObject} from "@/utils/sort";
+import {extractErrMessage} from "../utils/axiosError";
 
 export default {
   mutations: {
@@ -29,32 +30,31 @@ export default {
     getAllWorkingTimes({commit}) {
       this._vm.$api.get("/api/workingtimes/").then((res) => {
         commit("SET_WORKING_TIMES", res.data);
-      }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
+      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
     },
-
     getWorkingTimesWithFormatedData({commit}, payload) {
       this._vm.$api.get(`api/workingtimes/user/${payload.userId}`, {params: {start: payload.start, end: payload.end, formatType: payload.formatType}}).then((res) => {
         commit("SET_WORKING_TIMES_FORMATED", res.data);
-      }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
+      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
     },
     createWorkingTime({commit}, workingTime) {
       this._vm.$api.post("/api/workingtimes", workingTime).then(res => {
         commit("ADD_WORKING_TIME", res.data);
         this._vm.$notify({text: "Working Time Created!", type: "success"});
-      }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
+      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
     },
     updateWorkingTime({commit}, workingTime) {
       this._vm.$api.put(`/api/workingtimes/${workingTime.id}`, workingTime).then(res => {
         commit("UPDATE_WORKING_TIME", workingTime);
         this._vm.$notify({text: "Working Time Updated!", type: "success"});
-      }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
+      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
     },
     deleteWorkingTime({commit}, workingTimeID) {
       commit("DELETE_WORKING_TIME", workingTimeID);
       this._vm.$api.delete(`/api/workingtimes/${workingTimeID}`).then(res => {
         this._vm.$notify({text: "A working time was successfully deleted!", type: "success"});
         commit("DELETE_WORKING_TIME", workingTimeID);
-      }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
+      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
     }
   },
   getters: {
@@ -69,12 +69,12 @@ export default {
         wts[dateToken].push(wt);
       });
       const sortedWt = sortObject(wts, (wt1, wt2) => moment(wt2[1][0].start).unix() - moment(wt1[1][0].start).unix());
-      return Object.keys(sortedWt).map(wtKey => sortedWt[wtKey]) // object to map
+      return Object.keys(sortedWt).map(wtKey => sortedWt[wtKey]); // object to map
     },
 
     workingTimesFormated: state => {
       if (state.workingTimesFormated === []) return null;
-      return state.workingTimesFormated
+      return state.workingTimesFormated;
     }
   },
 };

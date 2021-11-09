@@ -7,6 +7,7 @@ import * as bcrypt from "bcrypt";
 import {Exclude} from "class-transformer";
 import {IsNotEmpty, Length} from "class-validator";
 import {ApiHideProperty} from "@nestjs/swagger";
+import {RefreshToken} from "./refresh_token.entity";
 
 @Entity()
 export class User {
@@ -42,6 +43,11 @@ export class User {
   @ApiHideProperty()
   @ManyToMany(() => Team, team => team.users)
   teams: Team[];
+
+  @ApiHideProperty()
+  @Exclude()
+  @OneToOne(() => RefreshToken, refresh => refresh.user, {onDelete: "CASCADE"})
+  refresh_token: RefreshToken;
 
   @BeforeInsert()
   async hashPassword() {

@@ -12,7 +12,6 @@ export class TeamRepository extends Repository<Team> {
   async getUserTeam(teamId: number, teamIds: number[]): Promise<Team> {
     const teams = await this.getUserTeams(teamIds);
     const team = teams.find(team => team.id === teamId);
-    console.log("add user team 2", teamIds)
     if (!team)
       throw new EntityNotFoundError(Team, `teamId = ${teamId}`);
     return team;
