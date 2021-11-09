@@ -3,6 +3,7 @@ import {User} from "./user.entity";
 
 @Entity()
 export class Team {
+
   @PrimaryGeneratedColumn()
   id: number;
 

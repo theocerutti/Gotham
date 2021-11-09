@@ -49,6 +49,14 @@ export class TeamController {
     return await this.teamService.getTeamById(teamId);
   }
 
+  @ApiOperation({summary: "Get team Workingtimes"})
+  @Roles(Role.GeneralManager, Role.Manager)
+  @Get("one/:teamId/workingtimes")
+  async getTeamWorkingTimes(@Param("teamId", ParseIntPipe) teamId: number): Promise<Team> {
+    return await this.teamService.getTeamByIdAndWorkingTimes(teamId);
+  }
+
+
   @ApiOperation({summary: "Get all team of a user"})
   @Roles(Role.GeneralManager, Role.Manager)
   @Get("all/:userId")
@@ -61,11 +69,10 @@ export class TeamController {
   @Roles(Role.GeneralManager, Role.Manager)
   @Post()
   async create(
-    @CurrentUser() user: User,
     @Body() createTeamDTO: CreateTeamDTO
   ): Promise<Team> {
-    this.logger.log("Create a team by userId=", user.id, "with", createTeamDTO);
-    return await this.teamService.createTeam(user.id, createTeamDTO);
+    this.logger.log("Create a team with", createTeamDTO);
+    return await this.teamService.createTeam(createTeamDTO);
   }
 
   @ApiOperation({summary: "Delete a team by id (manager/generalManager)"})

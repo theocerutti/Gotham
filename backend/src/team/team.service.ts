@@ -48,8 +48,18 @@ export class TeamService {
       throw new HttpException(`Can't get team by id: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+  
+  async getTeamByIdAndWorkingTimes(teamId: number): Promise<Team> {
+    try {
+      return await this.TeamRepository.findOneOrFail(teamId, {
+        relations: ["users", "users.workingtimes"]
+      });
+    } catch (error) {
+      throw new HttpException(`Can't get team by id: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
-  async createTeam(userId: number, createTeamDTO: CreateTeamDTO): Promise<Team> {
+  async createTeam(createTeamDTO: CreateTeamDTO): Promise<Team> {
     try {
       const users = await this.userService.getByIds(createTeamDTO.userIds);
       const team = new Team();
