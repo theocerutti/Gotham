@@ -1,13 +1,12 @@
 import { UserDashboardFormater } from './../util/userDashboardFormater';
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Post, Put, Query, UnauthorizedException} from "@nestjs/common";
 import {WorkingTime} from "../model/workingtime.entity";
 import {WorkingTimeService} from "./working-time.service";
 import {WorkingTimeDTO, WorkingTimeRequestQuery} from "./working-time.dto";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {User} from "../model/user.entity";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
-import {Roles} from "../role/roles.decorator";
-import {Role} from "../role/role.utils";
+import { Role } from '../role/role.utils';
 
 @Controller("workingtimes")
 @ApiTags("workingtimes")
@@ -22,17 +21,18 @@ export class WorkingTimeController {
     @Query() query: WorkingTimeRequestQuery
   ): Promise<WorkingTime[]> {
     if (query.end && query.start) {
-      if(query.formatType === "hoursInWeek"){
+      if (query.formatType === "hoursCurrentWeek") {
         const workingTimes = await this.workingTimeService.getUserWorkingTimesFromTimeRange(user.id, query);
-        return UserDashboardFormater.getHoursInWeek(workingTimes)
+        this.logger.log("GetHoursInWeek from timerange of me, timerange=", query);
+        return UserDashboardFormater.getHoursCurrentWeek(workingTimes);
       }
       return await this.workingTimeService.getUserWorkingTimesFromTimeRange(user.id, query);
-
-    }else if (query.formatType === "hoursInWeek"){
+    } else if (query.formatType === "hoursCurrentWeek") {
       const workingTimes = await this.workingTimeService.getUserWorkingTimes(user.id);
-      return UserDashboardFormater.getHoursInWeek(workingTimes)
-    } 
-    else {
+      this.logger.log("GetHoursCurrentWeek of me");
+      return UserDashboardFormater.getHoursCurrentWeek(workingTimes);
+    } else {
+      this.logger.log("Get all my workingTimes");
       return await this.workingTimeService.getUserWorkingTimes(user.id);
     }
   }
@@ -81,25 +81,32 @@ export class WorkingTimeController {
   }
 
   @ApiOperation({summary: "Get all working times from a user (manager, generalManager)"})
-  // @Roles(Role.Manager, Role.GeneralManager)
   @Get("/user/:userId")
   public async getAllFromUser(
+    @CurrentUser() currentUser: User,
     @Param("userId", ParseIntPipe) userId: number,
-    @Query() query: WorkingTimeRequestQuery
+    @Query() query: WorkingTimeRequestQuery,
     ) {
-    if (query.end && query.start) {
-      const workingTimes = await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
-      if(query.formatType === "hoursInWeek"){
-        return UserDashboardFormater.getHoursInWeek(workingTimes)
+    if(currentUser.id === userId || currentUser.role === Role.Manager || currentUser.role === Role.GeneralManager){
+      if (query.end && query.start) {
+        const workingTimes = await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
+        if(query.formatType === "hoursCurrentWeek"){
+          return UserDashboardFormater.getHoursCurrentWeek(workingTimes)
+        }
+        if(query.formatType === "hoursLastWeeks"){
+          return UserDashboardFormater.getHoursLastWeek(workingTimes)
+        }
+        return await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
       }
-      return await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
-      
-    }else if (query.formatType === "hoursInWeek"){
-      const workingTimes = await this.workingTimeService.getUserWorkingTimes(userId);
-      return UserDashboardFormater.getHoursInWeek(workingTimes)
-    } 
-    else {
-      return await this.workingTimeService.getUserWorkingTimes(userId);
+      else if(query.formatType === "generalMetrics"){
+        const workingTimes = await this.workingTimeService.getUserWorkingTimes(userId);
+        return UserDashboardFormater.getGeneralMetrics(workingTimes)
+      }
+      else {
+        return await this.workingTimeService.getUserWorkingTimes(userId);
+      }
     }
+    if (currentUser.role === Role.User)
+      throw new UnauthorizedException();
   }
 }
