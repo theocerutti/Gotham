@@ -9,7 +9,7 @@ import * as faker from "faker";
 
 const SEED_USER = 20;
 const SEED_TEAM = 5;
-const SEED_WORKING_TIME = ['week', 'month', 'year'];
+const SEED_WORKING_TIME = ['month'];
 
 const randomNum = (min, max): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -70,15 +70,9 @@ export class Seeder {
 
   getDays(range){
     switch(range){
-      case 'week':
-        var start = moment().startOf('isoWeek');
-        var end = moment().endOf('isoWeek').subtract(2, 'd');
       case 'month':
-        var start = moment().startOf('month');
-        var end = moment().endOf('month').subtract(7, 'd');
-      case 'year':
-        var start = moment().startOf('year');
-        var end = moment().endOf('year').subtract(14, 'd');
+        var start = moment().subtract(1, 'months').startOf('month');
+        var end = moment();
     }
 
     var days = [];
@@ -92,21 +86,6 @@ export class Seeder {
     }
 
     return days
-  }
-
-
-  createRandomMomentDateInCurrentMonth(): moment.Moment {
-    const endTime = moment();
-    const randomNumber = (to, from = 0) => Math.floor(Math.random() * (to - from) + from);
-
-    return moment(randomNumber(endTime));
-  }
-
-  createRandomMomentDateInCurrentYear(): moment.Moment {
-    const endTime = moment();
-    const randomNumber = (to, from = 0) => Math.floor(Math.random() * (to - from) + from);
-
-    return moment(randomNumber(endTime));
   }
 
   randomizeDurationWt(wt: WorkingTime): WorkingTime {
@@ -123,16 +102,6 @@ export class Seeder {
       .set("seconds", Math.min(wt.start.getSeconds() + randomNum(0, 59), 59)).toDate();
 
     return wt;
-  }
-
-  reRandomizeWorkingTimeForGroup(fromWt: WorkingTime): WorkingTime {
-    let workingTime = new WorkingTime();
-    workingTime.start = fromWt.start;
-    workingTime = this.randomizeDurationWt(workingTime);
-    workingTime.user = fromWt.user;
-    workingTime.description = faker.lorem.sentences(1);
-    workingTime.billable = Math.random() > 0.5;
-    return workingTime;
   }
 
   createRandomWorkingTime(user: User, day): WorkingTime {
