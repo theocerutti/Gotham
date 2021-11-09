@@ -1,20 +1,9 @@
 <template>
   <v-card class="mt-5">
     <v-row class="px-2" align="center">
-      <v-col xs="2" md="4">
+      <v-col xs="2" md="6">
         <v-text-field @blur="updateWorkingTime" v-model="workingTime.description" placeholder="No description"
                       hide-details="true" solo-inverted dense flat/>
-      </v-col>
-      <v-col xs="1" md="1">
-        <v-menu offset-y min-width="290px">
-          <template v-slot:activator="{ on }">
-            <v-row v-on="on" class="project-picker-button">
-              <v-icon class="pr-1">mdi-plus-box</v-icon>
-              <div v-if="$vuetify.breakpoint.smAndUp">Team</div>
-            </v-row>
-          </template>
-          <div>HERE MODAL TEAM</div>
-        </v-menu>
       </v-col>
       <v-spacer v-if="this.$vuetify.breakpoint.smAndUp"/>
       <v-divider vertical/>

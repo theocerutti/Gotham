@@ -22,8 +22,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./backend:/app
-      - /app/node_modules
+      - ./backend/src:/app/src
     ports:
       - "4000:4000"
     env_file:
@@ -39,22 +38,11 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - ./frontend/src:/app/src
     env_file:
       - ./frontend/.env
     networks:
       - gotham_network
-
-  pgadmin:
-    container_name: gotham_pgadmin
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - "5050:80"
 
 networks:
   gotham_network:

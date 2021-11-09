@@ -12,6 +12,11 @@
       <div v-for="(workingTimes, i) in workingTimesGroups" :key="i">
         <WorkingTimesGroup :workingTimes="workingTimes" class="mt-10"/>
       </div>
+      <v-pagination
+        v-model="pageIndex"
+        total-visible="8"
+        :length="this.totalPages"
+        class="mt-10"/>
     </div>
   </div>
 </template>
@@ -20,13 +25,21 @@
 import WorkingTimesGroup from "@/components/working-time/WorkingTimesGroup";
 import NoWorkingTime from "@/components/working-time/NoWorkingTime";
 
+const WORKING_GROUP_BY_PAGE = 10;
+
 export default {
   components: {NoWorkingTime, WorkingTimesGroup},
   name: "WorkingTimesGroups",
-  data: () => ({}),
+  data: () => ({
+    pageIndex: 1,
+    totalPages: 0,
+  }),
   computed: {
     workingTimesGroups() {
-      return this.$store.getters.workingTimesByDay;
+      const wts = this.$store.getters.workingTimesByDay;
+      this.totalPages = Math.floor(wts.length / WORKING_GROUP_BY_PAGE);
+      const startItemIndex = (this.pageIndex - 1) * WORKING_GROUP_BY_PAGE;
+      return wts.slice(startItemIndex, startItemIndex + WORKING_GROUP_BY_PAGE);
     }
   },
   mounted() {

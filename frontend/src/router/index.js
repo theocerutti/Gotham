@@ -67,7 +67,7 @@ const createRouter = (store) => {
 
   return new VueRouter({
     mode: "history",
-    base: process.env.BASE_URL, // TODO: get from env?
+    base: process.env.BASE_URL,
     routes
   });
 };

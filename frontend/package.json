@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "android": "npm run build && npx cap sync open android",
+    "android": "npm run build && npx cap add android && npx cap sync && npx cap open android",
     "build": "vue-cli-service build"
   },
   "dependencies": {
