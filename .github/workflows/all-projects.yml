@@ -36,4 +36,6 @@ jobs:
       - run: sudo rm -rf "/home/ubuntu/actions-runner/_work/Gotham/Gotham/backend"
       - uses: actions/checkout@v2
       - run: sed -e "s/API_URL=.*/API_URL=http:\/\/51.68.70.219:4000/g" -i ./frontend/.env
-      - run: docker-compose down -v && docker-compose up --build -d
+      - run: docker-compose down -v && docker-compose up --build backend -d
+      - run: cd frontend && npm run build && rsync -hrvz --delete dist/ /var/www/51.68.70.219
+      - run: sudo systemctl restart apache2
