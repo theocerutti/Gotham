@@ -140,16 +140,21 @@ export default {
     },
   },
   methods: {
+    startCounterInterval() {
+      this.counterInterval = setInterval(() => {
+        this.counter++;
+      }, 1000);
+    },
     switchClock() {
       if (this.manual) {
         this.add();
       } else {
         this.clockStatus = !this.clockStatus;
         if (this.clockStatus) {
-          this.counterInterval = setInterval(() => {
-            this.counter++;
-          }, 1000);
+          localStorage.setItem("user_clock_start", new Date().toString());
+          this.startCounterInterval();
         } else {
+          localStorage.removeItem("user_clock_start");
           clearInterval(this.counterInterval);
           this.add();
         }
@@ -182,6 +187,15 @@ export default {
       Object.keys(defaultClockData).forEach(key => this[key] = defaultClockData[key]);
     }
   },
+  mounted() {
+    const clockStartStorage = localStorage.getItem("user_clock_start");
+    this.counter = clockStartStorage ? ((+new Date()) - (+new Date(clockStartStorage))) / 1000 : 0;
+    this.clockStatus = !!clockStartStorage;
+
+    if (this.clockStatus) {
+      this.startCounterInterval();
+    }
+  }
 };
 </script>
 
