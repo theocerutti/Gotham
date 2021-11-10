@@ -1,14 +1,13 @@
 <script>
 import {Bar} from "vue-chartjs";
+import moment from "moment";
 
 export default {
   name: "HoursCurrentWeek",
   extends: Bar,
-
-  props:{
+  props: {
     dataset: Array
   },
-
   data() {
     return {
       chartData: {
@@ -27,14 +26,22 @@ export default {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        tooltips: {
+          enabled: true,
+          callbacks: {
+            label: ((tooltipItems, data) => {
+              return moment({hour: tooltipItems.value}).format("H [h]");
+            })
+          }
+        },
         scales: {
           yAxes: [{
             display: true,
             ticks: {
-                beginAtZero: true,
-                steps: 24,
-                stepValue: 1,
-                max: 24
+              beginAtZero: true,
+              steps: 24,
+              stepValue: 1,
+              max: 24
             }
           }]
         }
@@ -46,11 +53,11 @@ export default {
   },
   watch: {
     dataset() {
-      this.chartData.datasets[0].data = this.dataset
-      this.renderChart(this.chartData, this.options)
+      this.chartData.datasets[0].data = this.dataset;
+      this.renderChart(this.chartData, this.options);
     }
   }
-  
+
 };
 </script>
 

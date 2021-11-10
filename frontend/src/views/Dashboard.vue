@@ -5,7 +5,7 @@
 
 <script>
 import userDashboard from "../components/dashboard/UserDashboard.vue";
-import teamDashboard from '../components/dashboard/TeamDashboard.vue'
+import teamDashboard from "../components/dashboard/TeamDashboard.vue";
 
 export default {
   name: "Dashboard",
@@ -30,11 +30,4 @@ export default {
 </script>
 
 <style scoped>
-.width-45 {
-  width: 45%
-}
-
-.justify {
-  justify-content: center;
-}
 </style>
