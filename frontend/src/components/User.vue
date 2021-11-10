@@ -3,13 +3,15 @@
     <v-container>
       <v-row>
         <v-col :cols="6">
-          <v-card height="450px"  width="500px" id="card-user-infos" style="padding: 15px;">
+          <v-card height="450px" width="500px" id="card-user-infos" style="padding: 15px;">
             <v-card-title class="justify-center">Welcome {{ username }}</v-card-title>
             <v-text-field :disabled="!isEditing" style="width: 300px; margin-left: 13%" v-model="username" solo
                           prepend-inner-icon="mdi-account" placeholder="Username"></v-text-field>
-            <v-text-field :disabled="!isEditing" style="width: 300px; margin-left: 13%" v-model="email" solo prepend-inner-icon="mdi-email"
+            <v-text-field :disabled="!isEditing" style="width: 300px; margin-left: 13%" v-model="email" solo
+                          prepend-inner-icon="mdi-email"
                           placeholder="Email"></v-text-field>
-            <v-text-field disabled style="width: 300px; margin-left: 13%" v-model="role" solo prepend-inner-icon="mdi-security"
+            <v-text-field disabled style="width: 300px; margin-left: 13%" v-model="role" solo
+                          prepend-inner-icon="mdi-security"
                           placeholder="Role"></v-text-field>
             <v-row dense style="margin-left: 10%">
               <v-col :cols="6">
@@ -42,68 +44,75 @@
           </v-card>
         </v-col>
         <v-col :cols="6">
-            <v-card v-if="role === 'generalManager'" height="450px" width="500px" id="card-user-infos" style="padding: 15px">
-                <v-card-title class="justify-center">Administrator panel</v-card-title>
-                <v-row dense>
-                    <v-col :cols="4">
-                        <v-card width="130px" height="110px">
-                        <v-btn @click="dialogManage = !dialogManage" color="#64aacf" style="margin-left: 33px; margin-top: 33px">
-                            <v-icon>mdi-account-multiple-outline</v-icon>
-                        </v-btn>
-                        </v-card>
-                    </v-col>
-                    <v-col :cols="4">
-                        <v-card width="130px" height="110px">
-                        <v-btn @click="dialogDashboardes = !dialogDashboardes" color="#64aacf" style="margin-left: 33px; margin-top: 33px">
-                            <v-icon>mdi-view-dashboard</v-icon>
-                        </v-btn>
-                        </v-card>
-                    </v-col>
-                    <v-col :cols="4">
-                        <v-card width="130px" height="110px">
-                        <v-btn @click="deleteMe" class="text-center" color="#64aacf" style="margin-left: 33px; margin-top: 33px">
-                            <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                        </v-card>
-                    </v-col>
-                </v-row>
-            </v-card>
-            <v-card v-else-if="role === 'manager'" height="450px" width="500px" id="card-user-infos" style="padding: 15px">
-                <v-card-title>Administrator panel</v-card-title>
-                <v-row dense>
-                    <v-col :cols="4">
-                        <v-card width="130px" height="110px">
-                        <v-btn @click="dialogDashboardes = !dialogDashboardes" color="#64aacf" style="margin-left: 33px; margin-top: 33px">
-                            <v-icon>mdi-view-dashboard</v-icon>
-                        </v-btn>
-                        </v-card>
-                    </v-col>
-                    <v-col :cols="4">
-                        <v-card width="130px" height="110px">
-                        <v-btn @click="deleteMe" class="text-center" color="#64aacf" style="margin-left: 33px; margin-top: 33px">
-                            <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                        </v-card>
-                    </v-col>
-                </v-row>
-            </v-card>
+          <v-card v-if="role === 'generalManager'" height="450px" width="500px" id="card-user-infos"
+                  style="padding: 15px">
+            <v-card-title class="justify-center">Administrator panel</v-card-title>
+            <v-row dense>
+              <v-col :cols="4">
+                <v-card width="130px" height="110px">
+                  <v-btn @click="dialogManage = !dialogManage" color="#64aacf"
+                         style="margin-left: 33px; margin-top: 33px">
+                    <v-icon>mdi-account-multiple-outline</v-icon>
+                  </v-btn>
+                </v-card>
+              </v-col>
+              <v-col :cols="4">
+                <v-card width="130px" height="110px">
+                  <v-btn @click="dialogDashboardes = !dialogDashboardes" color="#64aacf"
+                         style="margin-left: 33px; margin-top: 33px">
+                    <v-icon>mdi-view-dashboard</v-icon>
+                  </v-btn>
+                </v-card>
+              </v-col>
+              <v-col :cols="4">
+                <v-card width="130px" height="110px">
+                  <v-btn @click="deleteMe" class="text-center" color="#64aacf"
+                         style="margin-left: 33px; margin-top: 33px">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card>
+          <v-card v-else-if="role === 'manager'" height="450px" width="500px" id="card-user-infos"
+                  style="padding: 15px">
+            <v-card-title>Administrator panel</v-card-title>
+            <v-row dense>
+              <v-col :cols="4">
+                <v-card width="130px" height="110px">
+                  <v-btn @click="dialogDashboardes = !dialogDashboardes" color="#64aacf"
+                         style="margin-left: 33px; margin-top: 33px">
+                    <v-icon>mdi-view-dashboard</v-icon>
+                  </v-btn>
+                </v-card>
+              </v-col>
+              <v-col :cols="4">
+                <v-card width="130px" height="110px">
+                  <v-btn @click="deleteMe" class="text-center" color="#64aacf"
+                         style="margin-left: 33px; margin-top: 33px">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
 
 
     <v-dialog
-    v-model="dialogManage"
-    width="500">
+      v-model="dialogManage"
+      width="500">
       <v-card>
         <v-card-title class="text-h5">
           Manage users
         </v-card-title>
 
         <div id="manage-users-dialog-container">
-            <div v-for="u in allUsers" :key="u.id">
-                <user-component :page="'account'" v-if="u.role != 'generalManager'" :user="u" />
-            </div>
+          <div v-for="u in allUsers" :key="u.id">
+            <user-component :page="'account'" v-if="u.role != 'generalManager'" :user="u"/>
+          </div>
         </div>
 
         <v-divider></v-divider>
@@ -121,17 +130,17 @@
       </v-card>
     </v-dialog>
     <v-dialog
-    v-model="dialogDashboardes"
-    width="500">
+      v-model="dialogDashboardes"
+      width="500">
       <v-card>
         <v-card-title class="text-h5">
           Users dashboard
         </v-card-title>
 
         <div id="manage-users-dialog-container">
-            <div v-for="u in allUsers" :key="u.id">
-                <user-component :page="'dashboard'" v-if="u.role != 'generalManager'" :user="u" />
-            </div>
+          <div v-for="u in allUsers" :key="u.id">
+            <user-component :page="'dashboard'" v-if="u.role != 'generalManager'" :user="u"/>
+          </div>
         </div>
 
         <v-divider></v-divider>
@@ -152,45 +161,42 @@
 </template>
 
 <script>
-import UserComponent from '../components/UserComponent.vue';
+import UserComponent from "../components/UserComponent.vue";
 
 
 export default {
-  components: { UserComponent },
+  components: {UserComponent},
   name: "User",
   props: {},
   data() {
     return {
-        dialogManage: false,
-        dialogDashboardes: false,
-        isEditing: false,
-        username: '',
-        email: '',
-        role: ''
+      dialogManage: false,
+      dialogDashboardes: false,
+      isEditing: false,
+      username: "",
+      email: "",
+      role: ""
     };
   },
   computed: {
-      allUsers() {
-          return this.$store.getters.getAllUsers;
-      }
+    allUsers() {
+      return this.$store.getters.getAllUsers;
+    }
   },
   methods: {
     editOrSaveUser() {
-        if (!this.isEditing) {
-            this.isEditing = true;
-        } else {
-            this.$store.dispatch("updateUser", {
-                email: this.email,
-                username: this.username
-            }).then(
-                this.isEditing = false
-            )
-        }
+      if (!this.isEditing) {
+        this.isEditing = true;
+      } else {
+        this.$store.dispatch("updateUser", {
+          email: this.email,
+          username: this.username
+        }).then(() => this.isEditing = false);
+      }
     },
     createUser() {
       this.isUser = true;
       this.editUser = false;
-      console.log("user store infos :", this.$store.getters.getterAllUserInfos);
       this.$store.dispatch("setUser", {
         email: this.email,
         username: this.username
@@ -217,11 +223,11 @@ export default {
       this.$store.dispatch("deleteUser");
     },
     deleteMe() {
-      this.$store.dispatch("deleteMe")
+      this.$store.dispatch("deleteMe");
     }
   },
   mounted() {
-    this.$store.dispatch('getAllUsers') // charge la liste de tous les users pour le GeneralManager
+    this.$store.dispatch("getAllUsers"); // charge la liste de tous les users pour le GeneralManager
     const usersInfos = this.$store.getters.currentUser;
 
     this.username = usersInfos.name;
@@ -234,12 +240,12 @@ export default {
 <style scoped>
 
 #card-user-infos {
-    width: 40%;
+  width: 40%;
 }
 
 #manage-users-dialog-container {
-    padding: 20px;
-    overflow-y: auto;
+  padding: 20px;
+  overflow-y: auto;
 }
 
 </style>

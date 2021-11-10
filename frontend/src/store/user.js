@@ -20,34 +20,30 @@ export default {
       state.allUsers = payload.data;
     },
     UPDATE_USER_ROLE(state, payload) {
-      console.log("UPDATE USER ROLE ", payload);
-      var userToUpdate = state.allUsers.find(el => el.id === payload.data.id);
+      const userToUpdate = state.allUsers.find(el => el.id === payload.data.id);
       userToUpdate.role = payload.data.role;
     },
     DELETE_ONE_USER(state, payload) {
-      console.log("DELETE ONE USER ", payload);
       state.allUsers = state.allUsers.filter(u => u.email !== payload.data.email);
     },
     SET_USER_TEAMS(state, payload) {
-      console.log("GET MY teams :", payload);
       state.currentUser.teams = payload.data;
     },
     SET_NEW_TEAM(state, payload) {
-      console.log("SET NEW team : ", payload);
       state.currentUser.teams = [...state.currentUser.teams, payload.data];
     },
     ADD_USER_TO_TEAM(state, payload) {
-      var team = state.currentUser.teams.find(el => el.id === payload.data.id);
+      const team = state.currentUser.teams.find(el => el.id === payload.data.id);
       team.users = payload.data.users;
     },
     REMOVE_USER_FROM_TEAM(state, payload) {
-      var team = state.currentUser.teams.find(el => el.id === payload.data.id);
+      const team = state.currentUser.teams.find(el => el.id === payload.data.id);
       team.users = payload.data.users;
     },
     DELETE_TEAM(state, payload) {
-      var index = state.currentUser.teams.findIndex(function(t){
+      const index = state.currentUser.teams.findIndex(function (t) {
         return t.name === payload.data.name;
-      })
+      });
 
       if (index !== -1)
         state.currentUser.teams.splice(index, 1);
@@ -94,10 +90,9 @@ export default {
       this._vm.$api.post("/api/team", {
         userIds: [this.getters.currentUser.id],
         name: payload
-      })
-        .then((response) => {
-          commit("SET_NEW_TEAM", response);
-        });
+      }).then((response) => {
+        commit("SET_NEW_TEAM", response);
+      });
     },
     addUserToTeam({commit}, payload) {
       this._vm.$api.post("/api/team/" + payload.teamId + "/" + payload.userId)
@@ -113,15 +108,15 @@ export default {
     },
     deleteMe({commit}, payload) {
       this._vm.$api.delete("/api/users")
-        .then((response) => {
+        .then(() => {
           commit("CLEAR_CURRENT_USER");
         });
     },
-    deleteTeam({ commit }, payload) {
+    deleteTeam({commit}, payload) {
       this._vm.$api.delete("/api/team/" + payload)
-      .then((response) => {
-        commit("DELETE_TEAM", response)
-      })
+        .then((response) => {
+          commit("DELETE_TEAM", response);
+        });
     }
   },
   getters: {

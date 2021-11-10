@@ -54,7 +54,6 @@ import HoursCurrentWeek from "../charts/HoursCurrentWeek.vue";
 import HoursLastWeeks from "../charts/HoursLastWeeks.vue";
 import moment from "moment";
 import {api} from "@/config-api";
-import {extractErrMessage} from "@/utils/axiosError";
 
 export default {
   name: "DashboardUser",
@@ -101,10 +100,7 @@ export default {
   mounted() {
     api.get(`/api/users/${this.userId}`).then(res => {
       this.user = res.data;
-    }).catch(err => this._vm.$notify({
-      text: extractErrMessage(err),
-      type: "error"
-    }));
+    });
 
     api.get(`api/workingtimes/user/${this.userId}`, {
       params: {
@@ -114,10 +110,7 @@ export default {
       }
     }).then((res) => {
       this.datasetHoursCurrentWeek = res.data;
-    }).catch(err => this._vm.$notify({
-      text: extractErrMessage(err),
-      type: "error"
-    }));
+    });
 
     api.get(`api/workingtimes/user/${this.userId}`, {
       params: {
@@ -128,10 +121,7 @@ export default {
     }).then((res) => {
       this.datasetHoursLastWeeks = res.data.dataset;
       this.labelsHoursLastWeeks = res.data.labels;
-    }).catch(err => this._vm.$notify({
-      text: extractErrMessage(err),
-      type: "error"
-    }));
+    });
 
     api.get(`api/workingtimes/user/${this.userId}`, {
       params: {
@@ -140,10 +130,7 @@ export default {
     }).then((res) => {
       this.totalHours = res.data.totalHours;
       this.totalHoursThisMonth = res.data.totalHoursThisMonth;
-    }).catch(err => this._vm.$notify({
-      text: extractErrMessage(err),
-      type: "error"
-    }));
+    });
   },
   methods: {
     getStringCurrentWeek() {

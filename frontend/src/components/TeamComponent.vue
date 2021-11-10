@@ -120,7 +120,6 @@ export default {
       });
     },
     removeUserFromTeam(user) {
-      console.log("remove ", user.username, " from team ", this.team.name);
       this.$store.dispatch("removeUserFromTeam", {
         teamId: this.team.id,
         userId: user.id

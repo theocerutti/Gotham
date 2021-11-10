@@ -1,5 +1,4 @@
 import {router} from "@/main";
-import {extractErrMessage} from "@/utils/axiosError";
 
 export default {
   mutations: {
@@ -27,14 +26,14 @@ export default {
         commit("LOGIN", res.data.payload);
         commit("SET_CURRENT_USER", res.data.user);
         commit("GO_TO_DEFAULT_ROUTE_AFTER_AUTH");
-      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
+      });
     },
     loginUser({commit}, payload) {
       this._vm.$api.post("/api/auth/login", payload).then(res => {
         commit("LOGIN", res.data.payload);
         commit("SET_CURRENT_USER", res.data.user);
         commit("GO_TO_DEFAULT_ROUTE_AFTER_AUTH");
-      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
+      });
     },
     logout({commit}) {
       commit("CLEAR_TOKENS");

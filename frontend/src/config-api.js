@@ -1,6 +1,7 @@
 import Axios from "axios";
 import store from "../src/store/index";
 import {router} from "@/main";
+import {extractErrMessage} from "@/utils/axiosError";
 
 const SERVER_URL = process.env.VUE_APP_API_URL;
 
@@ -41,6 +42,7 @@ api.interceptors.response.use((res) => {
       return api(originalRequest);
     });
   }
+  store._vm.$notify({text: extractErrMessage(err), type: "error"});
   return Promise.reject(err);
 });
 
