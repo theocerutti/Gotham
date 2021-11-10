@@ -6,10 +6,12 @@ import {Role} from "src/role/role.utils";
 import {getRepository, Repository} from "typeorm";
 import * as moment from "moment";
 import * as faker from "faker";
+import {RefreshToken} from "../model/refresh_token.entity";
+import {Clock} from "../model/clock.entity";
 
 const SEED_USER = 20;
 const SEED_TEAM = 5;
-const SEED_WORKING_TIME = ['month'];
+const SEED_WORKING_TIME = ["month"];
 
 const randomNum = (min, max): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -22,10 +24,14 @@ export class Seeder {
   userRepo: Repository<User>;
   workingTimeRepo: Repository<WorkingTime>;
   teamRepo: Repository<Team>;
+  refreshTokenRepo: Repository<RefreshToken>;
+  clockRepo: Repository<Clock>;
 
   buildSeeder() {
     this.logger.log("Getting repositories...");
     this.userRepo = getRepository(User);
+    this.clockRepo = getRepository(Clock);
+    this.refreshTokenRepo = getRepository(RefreshToken);
     this.workingTimeRepo = getRepository(WorkingTime);
     this.teamRepo = getRepository(Team);
   }
@@ -33,8 +39,10 @@ export class Seeder {
   async cleanDatabase() {
     this.logger.log("Clean database...");
     await this.teamRepo.delete({});
+    await this.refreshTokenRepo.delete({});
     await this.workingTimeRepo.delete({});
     await this.userRepo.delete({});
+    await this.clockRepo.delete({});
   }
 
   async seedUsers(): Promise<User[]> {
@@ -54,7 +62,7 @@ export class Seeder {
       const user = new User();
       user.username = faker.name.findName();
       user.email = faker.internet.email();
-      user.password = 'userpassword';
+      user.password = "userpassword";
       user.role = i % 5 !== 0 ? Role.User : Role.Manager;
       users.push(user);
     }
@@ -68,10 +76,10 @@ export class Seeder {
   //   return moment(randomNumber(startTime, endTime));
   // }
 
-  getDays(range){
-    switch(range){
-      case 'month':
-        var start = moment().subtract(1, 'months').startOf('month');
+  getDays(range) {
+    switch (range) {
+      case "month":
+        var start = moment().subtract(1, "months").startOf("month");
         var end = moment();
     }
 
@@ -79,13 +87,13 @@ export class Seeder {
     var day = start;
 
     while (day <= end) {
-      if(day.day() !== 0 && day.day() !== 6){
+      if (day.day() !== 0 && day.day() !== 6) {
         days.push(day.toDate());
       }
-      day = day.clone().add(1, 'day');
+      day = day.clone().add(1, "day");
     }
 
-    return days
+    return days;
   }
 
   randomizeDurationWt(wt: WorkingTime): WorkingTime {
@@ -119,8 +127,8 @@ export class Seeder {
     for (const user of users) {
       const workingTimes = [];
       for (const range of SEED_WORKING_TIME) {
-        const days = this.getDays(range)
-        for(const day of days){
+        const days = this.getDays(range);
+        for (const day of days) {
           const wt = this.createRandomWorkingTime(user, day);
           workingTimes.push(wt);
         }

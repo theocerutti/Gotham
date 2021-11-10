@@ -1,12 +1,10 @@
-import { TeamRepository } from './../team/team.repository';
-import { TeamModule } from './../team/team.module';
-import { WorkingTimeRepository } from './../working-time/working-time.repository';
-import { WorkingTimeModule } from './../working-time/working-time.module';
-import { UserRepository } from './../user/user.repository';
-import { Module} from '@nestjs/common';
+import {TeamModule} from "../team/team.module";
+import {WorkingTimeModule} from "../working-time/working-time.module";
+import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {UserModule} from 'src/user/user.module';
-import {Seeder} from './seeder';
+import {UserModule} from "src/user/user.module";
+import {Seeder} from "./seeder";
+import {AuthModule} from "../auth/auth.module";
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -19,9 +17,10 @@ import {Seeder} from './seeder';
     synchronize: true,
     autoLoadEntities: true
   }),
-  UserModule,
-  WorkingTimeModule,
-  TeamModule,
+    UserModule,
+    WorkingTimeModule,
+    TeamModule,
+    AuthModule,
   ],
   providers: [Seeder]
 })
