@@ -82,34 +82,35 @@
 </template>
 
 <script>
+
 export default {
   name: "SideBar",
-
   data() {
     return {
       items: [
         {
-          icon: "mdi-home",
-          title: "Dashboard",
-          path: "/",
-        },
-        {
           icon: "mdi-clock",
           title: "Time Tracker",
           path: "/time-tracker",
-          active: false,
+          active: location.pathname === "/time-tracker",
+        },
+        {
+          icon: "mdi-view-dashboard",
+          title: "Dashboard",
+          path: "/",
+          active: location.pathname === "/",
         },
         {
           icon: "mdi-account",
           title: "My account",
           path: "/my-account",
-          active: false
+          active: location.pathname === "/my-account",
         },
         {
           icon: "mdi-account-multiple",
           title: "Teams",
           path: "/teams",
-          active: false
+          active: location.pathname === "/teams",
         }
       ],
       darkMode: null,
