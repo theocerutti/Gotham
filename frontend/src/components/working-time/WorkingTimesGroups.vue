@@ -37,6 +37,8 @@ export default {
   computed: {
     workingTimesGroups() {
       const wts = this.$store.getters.workingTimesByDay;
+      if (wts === null)
+        return null;
       this.totalPages = Math.floor(wts.length / WORKING_GROUP_BY_PAGE);
       const startItemIndex = (this.pageIndex - 1) * WORKING_GROUP_BY_PAGE;
       return wts.slice(startItemIndex, startItemIndex + WORKING_GROUP_BY_PAGE);

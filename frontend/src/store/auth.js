@@ -1,40 +1,51 @@
 import {router} from "@/main";
-
-const TOKEN_AUTH_RES_HEADER = "authorization";
+import {extractErrMessage} from "@/utils/axiosError";
 
 export default {
   mutations: {
     LOGIN(state, payload) {
-      state.auth.loginToken = payload;
+      state.auth.accessToken = payload.access_token;
+      state.auth.refreshToken = payload.refresh_token;
     },
-    CLEAR_TOKEN(state) {
-      state.auth.loginToken = null;
+    SET_ACCESS_TOKEN(state, token) {
+      state.auth.accessToken = token;
+    },
+    SET_REFRESH_TOKEN(state, token) {
+      state.auth.refreshToken = token;
+    },
+    CLEAR_TOKENS(state) {
+      state.auth.accessToken = null;
+      state.auth.refreshToken = null;
+    },
+    GO_TO_DEFAULT_ROUTE_AFTER_AUTH() {
+      router.push("/time-tracker");
     }
   },
   actions: {
     registerUser({commit}, payload) {
       this._vm.$api.post("/api/auth/register", payload).then(res => {
-        commit("LOGIN", res.headers[TOKEN_AUTH_RES_HEADER]);
-        commit("SET_CURRENT_USER", res.data);
-        router.push("/time-tracker");
-      }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
+        commit("LOGIN", res.data.payload);
+        commit("SET_CURRENT_USER", res.data.user);
+        commit("GO_TO_DEFAULT_ROUTE_AFTER_AUTH");
+      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
     },
     loginUser({commit}, payload) {
       this._vm.$api.post("/api/auth/login", payload).then(res => {
-        commit("LOGIN", res.headers[TOKEN_AUTH_RES_HEADER]);
-        commit("SET_CURRENT_USER", res.data);
-        router.push("/time-tracker");
-      }).catch(err => this._vm.$notify({text: err.message, type: "error"}));
+        commit("LOGIN", res.data.payload);
+        commit("SET_CURRENT_USER", res.data.user);
+        commit("GO_TO_DEFAULT_ROUTE_AFTER_AUTH");
+      }).catch(err => this._vm.$notify({text: extractErrMessage(err), type: "error"}));
     },
     logout({commit}) {
-      commit("CLEAR_TOKEN");
+      commit("CLEAR_TOKENS");
       commit("CLEAR_CURRENT_USER");
       router.push("/login");
     }
   },
   getters: {
     isLogged: state => {
-      return state.auth.loginToken && state.auth.loginToken.length > 0;
+      const refreshToken = state.auth.refreshToken;
+      return refreshToken && refreshToken.length > 0;
     },
   },
 };
