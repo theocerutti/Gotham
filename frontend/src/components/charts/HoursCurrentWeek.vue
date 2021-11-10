@@ -38,10 +38,10 @@ export default {
           yAxes: [{
             display: true,
             ticks: {
-              beginAtZero: true,
-              steps: 24,
-              stepValue: 1,
-              max: 24
+                beginAtZero: true,
+                steps: 24,
+                stepValue: 1,
+                max: 80
             }
           }]
         }
@@ -53,7 +53,17 @@ export default {
   },
   watch: {
     dataset() {
-      this.chartData.datasets[0].data = this.dataset;
+      this.chartData.datasets[0].data = this.dataset
+      this.renderChart(this.chartData, this.options)
+
+      var maxValue = 0
+
+      for (const key in this.dataset) {
+        if (this.dataset[key] > maxValue)
+          maxValue = this.dataset[key]
+      }
+      maxValue += 15;
+      this.options.scales.yAxes[0].ticks.max = parseInt(maxValue)
       this.renderChart(this.chartData, this.options);
     }
   }
