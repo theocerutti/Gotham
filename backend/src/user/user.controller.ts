@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Post, Put, UnauthorizedException} from "@nestjs/common";
 import {User} from "../model/user.entity";
-import {UserDTO} from "./user.dto";
+import {UserUpdateDTO} from "./user.dto";
 import {UserService} from "./user.service";
 import {CurrentUser} from "../auth/current-user.decorator";
 import {Roles} from "../role/roles.decorator";
@@ -34,7 +34,7 @@ export class UserController {
   @Put()
   public async updateMe(
     @CurrentUser() user: User,
-    @Body() userDTO: UserDTO,
+    @Body() userDTO: UserUpdateDTO,
   ): Promise<User> {
     this.logger.log("Update me with userId=", user.id, ", DTO=", userDTO);
     return await this.userService.update(user.id, userDTO);

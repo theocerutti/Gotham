@@ -1,5 +1,4 @@
-import { Type } from "class-transformer";
-import {IsBoolean, IsBooleanString, IsDateString, IsOptional, IsString} from "class-validator";
+import {IsBoolean, IsDateString, IsOptional, IsString} from "class-validator";
 
 export class WorkingTimeRequestQuery {
   @IsDateString()

@@ -1,4 +1,4 @@
-import {UserDTO} from "./user.dto";
+import {UserDTO, UserUpdateDTO} from "./user.dto";
 import {User} from "../model/user.entity";
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -69,7 +69,7 @@ export class UserService {
     }
   }
 
-  async update(userID: number, userDTO: UserDTO): Promise<User> {
+  async update(userID: number, userDTO: UserUpdateDTO): Promise<User> {
     const user: User = await this.getById(userID);
 
     if (userDTO.username) {
@@ -78,7 +78,6 @@ export class UserService {
     if (userDTO.email) {
       user.email = userDTO.email;
     }
-
     try {
       return await this.UserRepo.save(user);
     } catch (error) {
