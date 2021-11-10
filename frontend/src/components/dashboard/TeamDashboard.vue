@@ -138,14 +138,12 @@
       },
       getHoursLastWeeks() {
         var thisweek = moment().isoWeek();
-        console.log("week today", moment().subtract(4, 'week').startOf('isoWeek'))
         var wLastWeeks = []
         var ret = []
         var minWeek = 57;
 
         this.requestResponse.users.forEach(u => {
           u.workingtimes.forEach(w => {
-            console.log("before if", w,  moment().subtract(4, 'week').startOf('isoWeek'))
             if (w.start >= moment().subtract(4, 'week').startOf('isoWeek').toISOString()) {
               wLastWeeks.push(w);
             }
@@ -159,21 +157,15 @@
         })
 
         wLastWeeks.forEach(w => {
-          console.log("wt in 4 last week", moment(w.start).isoWeek(), w.start)
           if (!ret[moment(w.start).isoWeek() - minWeek])
             ret[moment(w.start).isoWeek() - minWeek] = 0
           ret[moment(w.start).isoWeek() - minWeek] += this.calculateDiffEndStart(w.start, w.end)
-          console.log("ret push += ", this.calculateDiffEndStart(w.start, w.end))
         })
-        console.log("result ", ret)
 
         this.hoursLast4weeks = ret;
       }
     },
     mounted() {
-        console.log(new Date("2018-09-16T00:18:00.000Z"))
-        console.log(this.calculateDiffEndStart(new Date("2018-09-16T10:00:00.000Z"),  new Date("2018-09-16T18:00:00.000Z")));
-
         api.get(`api/team/one/${this.teamId}/workingtimes`)
         .then((response) => {
             this.requestResponse = response.data;

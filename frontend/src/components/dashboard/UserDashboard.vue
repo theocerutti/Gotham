@@ -1,6 +1,14 @@
 <template>
   <div>
-    <h1 class="mb-4">{{ dashboardWelcome }}</h1>
+    <h1 class="mb-4">
+      {{ dashboardWelcome }}
+      <v-btn v-if="$route.params.mode" @click="goBack" id="btnGoBack" style="float: right; margin-right: 5%">
+        <v-icon style="margin-right: 10px;">
+          mdi-keyboard-backspace
+        </v-icon>
+        Retour
+      </v-btn>  
+    </h1>
     <v-card class="mb-6">
       <v-card-title>
         Hours of work of the current week - {{ totalHoursWeekFormatted }}
@@ -146,6 +154,9 @@ export default {
     }));
   },
   methods: {
+    goBack() {
+      this.$router.back()
+    },
     getStringCurrentWeek() {
       const firstday = moment().startOf("isoWeek").format("DD/MM/YYYY");
       const lastday = moment().endOf("isoWeek").format("DD/MM/YYYY");
@@ -156,6 +167,12 @@ export default {
 </script>
 
 <style scoped>
+
+#btnGoBack {
+  float: right;
+  margin-right: 5%;
+}
+
 .hours-text {
   font-size: 2rem;
 }

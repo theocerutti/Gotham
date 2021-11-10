@@ -190,7 +190,6 @@ export default {
     createUser() {
       this.isUser = true;
       this.editUser = false;
-      console.log("user store infos :", this.$store.getters.getterAllUserInfos);
       this.$store.dispatch("setUser", {
         email: this.email,
         username: this.username

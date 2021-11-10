@@ -20,20 +20,16 @@ export default {
       state.allUsers = payload.data;
     },
     UPDATE_USER_ROLE(state, payload) {
-      console.log("UPDATE USER ROLE ", payload);
       var userToUpdate = state.allUsers.find(el => el.id === payload.data.id);
       userToUpdate.role = payload.data.role;
     },
     DELETE_ONE_USER(state, payload) {
-      console.log("DELETE ONE USER ", payload);
       state.allUsers = state.allUsers.filter(u => u.email !== payload.data.email);
     },
     SET_USER_TEAMS(state, payload) {
-      console.log("GET MY teams :", payload);
       state.currentUser.teams = payload.data;
     },
     SET_NEW_TEAM(state, payload) {
-      console.log("SET NEW team : ", payload);
       state.currentUser.teams = [...state.currentUser.teams, payload.data];
     },
     ADD_USER_TO_TEAM(state, payload) {

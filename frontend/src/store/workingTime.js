@@ -15,11 +15,13 @@ export default {
       state.currentUser.workingTimes.unshift(workingTime);
     },
     UPDATE_WORKING_TIME(state, workingTime) {
-      state.currentUser.workingTimes = state.currentUser.workingTimes.map(wt => {
-        if (wt.id === workingTime.id)
-          return workingTime;
-        return wt;
-      });
+      state.currentUser.workingTimes.forEach(w => {
+        if (w.id === workingTime.id) {
+          workingTime.start = moment(workingTime.start).toISOString()
+          workingTime.end = moment(workingTime.end).toISOString()
+          w = workingTime
+        }
+      })
     }
   },
   actions: {
