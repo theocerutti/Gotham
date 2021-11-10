@@ -20,7 +20,7 @@ export default {
   computed: {
     marginStyle() {
       const marginSmAndUp = {"margin-right": "20px", "margin-bottom": "20px"};
-      const marginMobile = {"margin": 0};
+      const marginMobile = {"margin": 0, "margin-top": "5px"};
       return this.$vuetify.breakpoint.smAndUp ? marginSmAndUp : marginMobile;
     }
   },
@@ -31,6 +31,7 @@ export default {
 <style lang="scss">
 .notif-container {
   // styling
+  margin-top: 10px;
   padding: 10px;
   font-size: 16px;
   color: #ffffff;

@@ -63,12 +63,10 @@ export default {
   },
   methods: {
     promoteUser() {
-      this.$store.dispatch("promoteUser", this.user.id)
-        .then(() => this.$notify({text: "Successfuly promoted " + this.user.username, type: "success"}));
+      this.$store.dispatch("promoteUser", this.user.id);
     },
     deleteUser() {
-      this.$store.dispatch("deleteUserById", this.user.id)
-        .then(() => this.$notify({text: "Successfuly deleted user " + this.user.username, type: "success"}));
+      this.$store.dispatch("deleteUserById", this.user.id);
     },
     addUserToTeam() {
       this.$emit("addUser", this.user.id);

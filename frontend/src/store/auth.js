@@ -26,6 +26,7 @@ export default {
         commit("LOGIN", res.data.payload);
         commit("SET_CURRENT_USER", res.data.user);
         commit("GO_TO_DEFAULT_ROUTE_AFTER_AUTH");
+        this._vm.$notify({text: "You registered successfully!", type: "success"});
       });
     },
     loginUser({commit}, payload) {
@@ -33,6 +34,7 @@ export default {
         commit("LOGIN", res.data.payload);
         commit("SET_CURRENT_USER", res.data.user);
         commit("GO_TO_DEFAULT_ROUTE_AFTER_AUTH");
+        this._vm.$notify({text: "You are now logged!", type: "success"});
       });
     },
     logout({commit}) {

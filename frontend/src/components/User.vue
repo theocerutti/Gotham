@@ -29,17 +29,6 @@
                   </v-btn>
                 </v-card>
               </v-col>
-              <!-- <v-col :cols="4">
-                <v-card width="145px" height="110px">
-                  <v-btn class="text-center" color="#64aacf" disabled style="margin-left: 33px; margin-top: 33px">
-                    <v-icon>mdi-account</v-icon>
-                    <v-card-text style="text-align: center;" class="text-caption">
-                    {{ role }}
-                    </v-card-text>
-                  </v-btn>
-                  <v-card-text class="text-center">{{ role }}</v-card-text>
-                </v-card>
-              </v-col> -->
             </v-row>
           </v-card>
         </v-col>
@@ -111,7 +100,7 @@
 
         <div id="manage-users-dialog-container">
           <div v-for="u in allUsers" :key="u.id">
-            <user-component :page="'account'" v-if="u.role != 'generalManager'" :user="u"/>
+            <user-component :page="'account'" v-if="u.role !== 'generalManager'" :user="u"/>
           </div>
         </div>
 
@@ -139,7 +128,7 @@
 
         <div id="manage-users-dialog-container">
           <div v-for="u in allUsers" :key="u.id">
-            <user-component :page="'dashboard'" v-if="u.role != 'generalManager'" :user="u"/>
+            <user-component :page="'dashboard'" v-if="u.role !== 'generalManager'" :user="u"/>
           </div>
         </div>
 
@@ -227,7 +216,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("getAllUsers"); // charge la liste de tous les users pour le GeneralManager
+    this.$store.dispatch("getAllUsers");
     const usersInfos = this.$store.getters.currentUser;
 
     this.username = usersInfos.name;

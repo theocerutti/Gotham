@@ -1,3 +1,5 @@
+import {router} from "@/main";
+
 export default {
   mutations: {
     SET_CURRENT_USER(state, payload) {
@@ -59,25 +61,29 @@ export default {
     updateUser({commit}, payload) {
       this._vm.$api.put("/api/users", payload)
         .then((response) => {
-          commit("SET_CURRENT_USER", response);
+          commit("SET_CURRENT_USER", response.data);
+          this._vm.$notify({text: "User updated!", type: "success"});
         });
     },
     deleteUser({commit}) {
       this._vm.$api.delete("/api/users")
-        .then((response) => {
-          commit("CLEAR_CURRENT_USER", response);
+        .then(() => {
+          commit("CLEAR_CURRENT_USER");
+          this._vm.$notify({text: "User deleted!", type: "success"});
         });
     },
     promoteUser({commit}, payload) {
       this._vm.$api.post("/api/users/promote/" + payload)
         .then((response) => {
           commit("UPDATE_USER_ROLE", response);
+          this._vm.$notify({text: "User promoted!", type: "success"});
         });
     },
     deleteUserById({commit}, payload) {
       this._vm.$api.delete("/api/users/" + payload)
         .then((response) => {
           commit("DELETE_ONE_USER", response);
+          this._vm.$notify({text: "User deleted!", type: "success"});
         });
     },
     getMyTeams({commit}, payload) {
@@ -92,30 +98,36 @@ export default {
         name: payload
       }).then((response) => {
         commit("SET_NEW_TEAM", response);
+        this._vm.$notify({text: "Team created!", type: "success"});
       });
     },
     addUserToTeam({commit}, payload) {
       this._vm.$api.post("/api/team/" + payload.teamId + "/" + payload.userId)
         .then((response) => {
           commit("ADD_USER_TO_TEAM", response);
+          this._vm.$notify({text: "User added to the team!", type: "success"});
         });
     },
     removeUserFromTeam({commit}, payload) {
       this._vm.$api.delete("/api/team/" + payload.teamId + "/" + payload.userId)
         .then((response) => {
           commit("REMOVE_USER_FROM_TEAM", response);
+          this._vm.$notify({text: "User removed from the team!", type: "success"});
         });
     },
-    deleteMe({commit}, payload) {
+    deleteMe({commit}) {
       this._vm.$api.delete("/api/users")
         .then(() => {
           commit("CLEAR_CURRENT_USER");
+          this._vm.$notify({text: "You have deleted your own account :(", type: "success"});
+          router.push("/login");
         });
     },
     deleteTeam({commit}, payload) {
       this._vm.$api.delete("/api/team/" + payload)
         .then((response) => {
           commit("DELETE_TEAM", response);
+          this._vm.$notify({text: "Team deleted!", type: "success"});
         });
     }
   },
