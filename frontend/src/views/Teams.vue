@@ -1,6 +1,6 @@
 <template>
-  <div id="team-container">
-      <v-btn style="margin-left: 37%; margin-bottom: 5%;" v-if="currentUser.role != 'user'" @click="createNewTeam" color="#64aacf">
+  <div :class="{ 'team-container' : !isMobile }">
+      <v-btn :class="{'btn-web': !isMobile, 'btn-mob': isMobile}" v-if="currentUser.role != 'user'" @click="createNewTeam" color="#64aacf">
           create new team
       </v-btn>
       <v-text-field style="width: 20%; margin-left: 37%" id="team-name-input" placeholder="Enter team name" v-model="teamName" v-show="createTeam">
@@ -30,6 +30,13 @@ export default {
       },
       currentUser() {
           return this.$store.getters.currentUser;
+      },
+       isMobile() {
+          if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            return true
+          } else {
+            return false
+          }
       }
   },
   methods: {
@@ -51,8 +58,18 @@ export default {
 
 <style scoped>
 
-#team-container {
+.team-container {
     padding: 50px;
+}
+
+.btn-web {
+  margin-left: 37%;
+  margin-bottom: 5%;
+}
+
+.btn-mob {
+  margin-left: 20%;
+  margin-bottom: 5%;
 }
 
 

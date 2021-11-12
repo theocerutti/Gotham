@@ -5,7 +5,7 @@
             {{ team.name }}
             </span>
       <div v-show="currentUser.role === 'generalManager' || currentUser.role === 'manager'">
-        <v-btn @click="viewTeamDashboard" id="team-dashboard-btn" color="#64aacf">
+        <v-btn @click="viewTeamDashboard" :class="{ 'team-dashboard-btn': !isMobile}" color="#64aacf">
           <v-icon>
             mdi-chart-bar-stacked
           </v-icon>
@@ -25,25 +25,25 @@
       <transition name="slide">
         <div style="margin-top: 5%;" v-show="isTeamDetailsShow">
           <v-card style="padding: 10px; margin: 15px; height: auto" v-for="u in team.users" :key="u.id">
-                        <span style="display: inline-block; width: 100px; text-align: center;">
-                            {{ u.username }}
-                        </span>
-            <v-divider style="height: 35px; margin-left: 15px; margin-right: 15px;" vertical></v-divider>
-            <span style="display: inline-block; width: 175px; text-align: center;">
-                            {{ u.email }}
-                        </span>
-            <v-divider style="height: 35px; margin-left: 15px; margin-right: 15px;" vertical></v-divider>
-            <span style="color: gray; display: inline-block; width: 175px; text-align: center;">
-                            {{ u.role }}
-                        </span>
-            <v-divider style="height: 35px; margin-left: 50px;" vertical></v-divider>
+            <span :class="{'spanWeb': !isMobile, 'spanMobile': isMobile}">
+                {{ u.username }}
+            </span>
+            <v-divider v-if="!isMobile" style="height: 35px; margin-left: 15px; margin-right: 15px;" vertical></v-divider>
+            <span :class="{'spanWeb': !isMobile, 'spanMobile': isMobile}">
+              {{ u.email }}
+            </span>
+            <v-divider v-if="!isMobile" style="height: 35px; margin-left: 15px; margin-right: 15px;" vertical></v-divider>
+            <span :class="{'spanWeb': !isMobile, 'spanMobile': isMobile}">
+              {{ u.role }}
+            </span>
+            <v-divider v-if="!isMobile" style="height: 35px; margin-left: 50px;" vertical></v-divider>
             <span v-if="currentUser.role === 'generalManager' || currentUser.role === 'manager'">
-              <v-btn @click="viewUserDashboard(u)" id="user-dashboard" color="#64aacf">
+              <v-btn @click="viewUserDashboard(u)" :class="{'user-dashboard': !isMobile, 'user-dashboard-mobile': isMobile }" color="#64aacf">
                   <v-icon>
                       mdi-chart-bar
                   </v-icon>
               </v-btn>
-              <v-btn id="user-team-kick" @click="removeUserFromTeam(u)" color="#64aacf">
+              <v-btn :class="{'user-team-kick': !isMobile, 'user-team-kick-mobile': isMobile }" @click="removeUserFromTeam(u)" color="#64aacf">
                   <v-icon>
                       mdi-account-minus
                   </v-icon>
@@ -110,7 +110,12 @@ export default {
     allUsers() {
       return this.$store.getters.getAllUsers;
     },
-
+    isMobile() {
+      if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+        return true
+      else
+        return false
+    }
   },
   methods: {
     addUserToTeam(uId) {
@@ -141,19 +146,44 @@ export default {
 
 <style scoped>
 
-#user-dashboard {
+::v-deep .spanWeb {
+  display: inline-block;
+  width: 150px;
+  text-align: center;
+}
+
+::v-deep .spanMobile {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+
+.user-dashboard {
   height: 25px;
   min-width: 40px;
   margin-left: 11%;
 }
 
-#user-team-kick {
+.user-dashboard-mobile {
+  height: 25px;
+  min-width: 40px;
+  margin-left: 25%;
+}
+
+.user-team-kick {
   height: 25px;
   min-width: 40px;
   margin-left: 2%;
 }
 
-#team-dashboard-btn {
+.user-team-kick-mobile {
+  height: 25px;
+  min-width: 40px;
+  margin-left: 2%;
+}
+
+.team-dashboard-btn {
   margin-left: 55%;
 }
 
