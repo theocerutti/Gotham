@@ -1,5 +1,5 @@
 <template>
-  <user-dashboard v-if="mode === 'individual' || mode === undefined" v-bind:userId="dashboardIdToDisplay"/>
+  <user-dashboard  :key="$route" v-if="mode === 'individual' || mode === undefined" v-bind:userId="dashboardIdToDisplay"/>
   <team-dashboard v-else :teamId="dashboardTeamIdToDisplay"/>
 </template>
 

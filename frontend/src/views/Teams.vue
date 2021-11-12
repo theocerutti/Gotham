@@ -1,10 +1,11 @@
 <template>
   <div :class="{ 'team-container' : !isMobile }">
-    <h1>Teams</h1>
-    <v-btn :class="{'btn-web': !isMobile, 'btn-mob': isMobile}" v-if="currentUser.role !== 'user'" @click="createNewTeam" color="primary">
+    <h1 class="mb-4">
+      Your teams
+    </h1>
+    <v-btn :class="{'btn-web': !isMobile, 'btn-mob': isMobile}" v-if="currentUser.role !== 'user'" @click="createTeam = !createTeam" color="primary">
       create new team
     </v-btn>
-    <v-text-field style="width: 20%; margin-left: 37%" id="team-name-input" placeholder="Enter team name" v-model="teamName" v-show="createTeam"/>
     <div v-if="allMyTeams && allMyTeams.length === 0">
       <v-alert class="mt-5" prominent type="warning" shaped>
         <div>You don't belongs to any team!</div>
@@ -12,7 +13,38 @@
       </v-alert>
     </div>
     <team-component v-else :team="team" v-for="team in allMyTeams" :key="team.id"/>
-  </div>
+    <v-dialog
+      v-model="createTeam"
+      :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'"
+      scrollable>
+      <v-card>
+        <v-card-title class="text-h5">
+          Create a new team
+        </v-card-title>
+        <div style="padding: 20px;">
+          <v-text-field  id="team-name-input" placeholder="Enter team name" v-model="teamName">
+          </v-text-field>
+        </div>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="createTeam = false">
+            Close
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="createNewTeam">
+            Create
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>  </div>
 </template>
 
 <script>
@@ -42,12 +74,9 @@ export default {
   },
   methods: {
     createNewTeam() {
-      if (!this.createTeam)
-        this.createTeam = true;
-      else {
-        this.createTeam = false;
-        this.$store.dispatch("createNewTeam", this.teamName);
-      }
+      this.createTeam = false;
+      this.$store.dispatch("createNewTeam", this.teamName);
+      this.teamName = '';
     },
   },
   mounted() {
@@ -58,11 +87,6 @@ export default {
 </script>
 
 <style scoped>
-
-.team-container {
-  padding: 50px;
-}
-
 .btn-web {
   margin-left: 37%;
   margin-bottom: 5%;
@@ -83,6 +107,4 @@ export default {
   width: 20%;
   margin-left: 37%;
 }
-
-
 </style>

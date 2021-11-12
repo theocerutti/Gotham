@@ -1,9 +1,21 @@
 <template>
   <div>
     <v-card class="team-container">
-            <span style="cursor: pointer" @click="isTeamDetailsShow = !isTeamDetailsShow">
-            {{ team.name }}
-            </span>
+      <span class="tooltip" style="cursor: pointer" @click="isTeamDetailsShow = !isTeamDetailsShow">
+        {{ team.name }}
+        <v-icon v-if="!isTeamDetailsShow">
+          mdi-arrow-up-drop-circle-outline
+        </v-icon>
+        <v-icon v-else>
+          mdi-arrow-down-drop-circle-outline
+        </v-icon>
+        <span v-if="!isTeamDetailsShow" class="tooltiptext">
+          Show team details
+        </span>
+        <span v-else class="tooltiptext">
+          Hide team details
+        </span>
+      </span>
       <div v-show="currentUser.role === 'generalManager' || currentUser.role === 'manager'">
         <v-btn @click="viewTeamDashboard" :class="{ 'team-dashboard-btn': !isMobile}" color="primary">
           <v-icon>
@@ -56,7 +68,6 @@
 
     <v-dialog
       v-model="dialogTeam"
-      width="500"
       :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'"
       scrollable
     >
@@ -67,7 +78,7 @@
         <div style="padding: 20px;" id="manage-users-dialog-container" class="manage-team-dialog-container">
           <div v-for="u in allUsers" :key="u.id">
             <user-component
-              v-if="u.role != 'generalManager'"
+              v-if="u.role !== 'generalManager'"
               :page="'team'"
               :user="u"
               @addUser="addUserToTeam"/>
@@ -245,6 +256,47 @@ export default {
 .manage-team-dialog-container {
   padding: 20px;
   overflow-y: auto;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 </style>

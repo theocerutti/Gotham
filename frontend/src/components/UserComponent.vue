@@ -1,13 +1,13 @@
 <template>
   <v-card class="wt mb-5">
     <v-row class="pa-3" align="center">
-      <v-col cols="3">
+      <v-col xs="6" md="3">
         {{ user.username }}
       </v-col>
-      <v-col cols="3">
+      <v-col xs="6" md="3">
         {{ user.role }}
       </v-col>
-      <v-col v-if="page === 'account'" cols="3">
+      <v-col v-if="page === 'account'" xs="8" md="3">
         <v-tooltip bottom v-if="page === 'account'">
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon @click="promoteUser" :disabled="user.role === 'manager'" color="primary" class="mr-2" v-bind="attrs" v-on="on">
@@ -26,7 +26,7 @@
         </v-tooltip>
       </v-col>
       <v-spacer/>
-      <v-col cols="auto">
+      <v-col xs="4" md="3">
         <v-tooltip bottom v-if="page === 'account'">
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon @click="deleteUser" color="primary" v-bind="attrs" v-on="on">
