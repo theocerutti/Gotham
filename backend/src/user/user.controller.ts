@@ -74,13 +74,9 @@ export class UserController {
     this.logger.log("Get user by id=", userId);
     // TODO: manager can get general manager user?
     // can a manager get a user that is not in its team
-    const user = await this.userService.getById(userId);
-    if (currentUser.id === user.id) {
-      return user;
+    if(currentUser.id === userId || currentUser.role === Role.Manager || currentUser.role === Role.GeneralManager){
+      return await this.userService.getById(userId);
     }
-    if (user.role === Role.User)
-      throw new UnauthorizedException();
-    return user;
   }
 
   @ApiOperation({summary: "Delete a user by id (generalManager)"})
