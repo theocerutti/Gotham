@@ -48,8 +48,8 @@
           Compare hours count of lasts weeks
         </v-card-subtitle>
         <div class="d-flex justify-center">
-          <div class="my-10 mx-15">
-            <hours-last-weeks :labels="labels" :dataset="hoursLast4weeks"/>
+          <div class="w-80 my-10 mx-15">
+            <hours-last-weeks :labels="labels" :dataset="hoursLast4weeks" />
           </div>
         </div>
       </v-card>

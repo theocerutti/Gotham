@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-btn v-if="$route.params.mode" @click="goBack" color="secondary" class="mb-5" id="btnGoBack">
-      <v-icon>
-        mdi-keyboard-backspace
-      </v-icon>
-      Back
-    </v-btn>
     <h1 class="mb-4">
+      <v-btn v-if="$route.params.mode" @click="goBack" id="btnGoBack" style="float: left; margin-right: 5%">
+        <v-icon style="margin-right: 10px;">
+          mdi-keyboard-backspace
+        </v-icon>
+        back
+      </v-btn> 
       {{ dashboardWelcome }}
     </h1>
     <div class="d-flex flex-wrap justify-space-between w-100">
@@ -48,7 +48,7 @@
           Compare hours count of lasts weeks
         </v-card-subtitle>
         <div class="d-flex justify-center">
-          <div class="my-10 mx-15">
+          <div class="w-80 my-10 mx-15">
             <hours-last-weeks :labels="labelsHoursLastWeeks" :dataset="datasetHoursLastWeeks"/>
           </div>
         </div>
