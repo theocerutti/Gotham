@@ -1,4 +1,4 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable, Logger} from "@nestjs/common";
+import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {TeamRepository} from "./team.repository";
 import {Team} from "../model/team.entity";
@@ -15,7 +15,7 @@ export class TeamService {
 
   async getAllTeams(): Promise<Team[]> {
     try {
-      return await this.TeamRepository.getAllTeams()
+      return await this.TeamRepository.getAllTeams();
     } catch (error) {
       throw new HttpException(`Can't get all user teams: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -48,7 +48,7 @@ export class TeamService {
       throw new HttpException(`Can't get team by id: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-  
+
   async getTeamByIdAndWorkingTimes(teamId: number): Promise<Team> {
     try {
       return await this.TeamRepository.findOneOrFail(teamId, {
@@ -71,9 +71,18 @@ export class TeamService {
     }
   }
 
-  async deleteTeam(teamId: number, userId: number): Promise<Team> {
+  async deleteMyTeam(teamId: number, userId: number): Promise<Team> {
     try {
       const team = await this.getUserTeam(userId, teamId);
+      return await this.TeamRepository.remove(team);
+    } catch (error) {
+      throw new HttpException(`Can't remove team: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async deleteTeam(teamId: number): Promise<Team> {
+    try {
+      const team = await this.getTeamById(teamId);
       return await this.TeamRepository.remove(team);
     } catch (error) {
       throw new HttpException(`Can't remove team: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -86,14 +86,12 @@ export default {
   },
   async mounted() {
     const user = this.$store.getters.currentUser;
-    console.log('user:', user)
 
-    if (user.role === 'generalManager')
-      await this.$store.dispatch('getAllTeams')
+    if (user.role === "generalManager")
+      await this.$store.dispatch("getAllTeams");
     else
-        await this.$store.dispatch("getMyTeams");
+      await this.$store.dispatch("getMyTeams");
 
-    
     this.$store.dispatch("getAllUsers"); // charge la liste de tous les users pour le GeneralManager
   }
 };

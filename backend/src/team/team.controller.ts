@@ -75,15 +75,23 @@ export class TeamController {
     return await this.teamService.createTeam(createTeamDTO);
   }
 
-  @ApiOperation({summary: "Delete a team by id (manager/generalManager)"})
+  @ApiOperation({summary: "Delete my team by id (manager/generalManager)"})
   @Roles(Role.GeneralManager, Role.Manager)
-  @Delete(":teamId")
-  async delete(
+  @Delete("me/:teamId")
+  async deleteMyTeam(
     @CurrentUser() user: User,
     @Param("teamId", ParseIntPipe) teamId: number
   ): Promise<Team> {
-    this.logger.log("Delete a team by userId=", user.id, "teamId=", teamId);
-    return await this.teamService.deleteTeam(teamId, user.id);
+    this.logger.log("Delete my team by userId=", user.id, "teamId=", teamId);
+    return await this.teamService.deleteMyTeam(teamId, user.id);
+  }
+
+  @ApiOperation({summary: "Delete a team by id (manager/general"})
+  @Roles(Role.GeneralManager, Role.Manager)
+  @Delete(":teamId")
+  async delete(@Param("teamId", ParseIntPipe) teamId: number): Promise<Team> {
+    this.logger.log("Delete team by id", teamId);
+    return await this.teamService.deleteTeam(teamId);
   }
 
   @ApiOperation({summary: "Add a user to a team (manager/generalManager)"})
