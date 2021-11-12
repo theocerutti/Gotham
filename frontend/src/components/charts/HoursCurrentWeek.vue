@@ -1,6 +1,5 @@
 <script>
 import {Bar} from "vue-chartjs";
-import moment from "moment";
 
 export default {
   name: "HoursCurrentWeek",
@@ -31,18 +30,18 @@ export default {
           enabled: true,
           displayColors: false,
           callbacks: {
-              label: function(tooltipItems) { 
-                  return " " + tooltipItems.yLabel + "h";
-              }
+            label: function (tooltipItems) {
+              return " " + tooltipItems.yLabel + "h";
+            }
           }
         },
         scales: {
           yAxes: [{
             display: true,
             ticks: {
-                beginAtZero: true,
-                stepValue: 5,
-                max: 24
+              beginAtZero: true,
+              stepValue: 5,
+              max: 24
             }
           }]
         }
@@ -54,23 +53,21 @@ export default {
   },
   watch: {
     dataset() {
-      this.chartData.datasets[0].data = this.dataset
-      console.log('this.type:', this.type)
-
-      if(this.type == "userDashboard"){
-        this.renderChart(this.chartData, this.options)
-      }else if (this.type == "teamDashboard"){
-        var maxValue = 0
+      this.chartData.datasets[0].data = this.dataset;
+      if (this.type == "userDashboard") {
+        this.renderChart(this.chartData, this.options);
+      } else if (this.type == "teamDashboard") {
+        var maxValue = 0;
         for (const key in this.dataset) {
           if (this.dataset[key] > maxValue)
-            maxValue = this.dataset[key]
+            maxValue = this.dataset[key];
         }
         maxValue += 15;
-        this.options.scales.yAxes[0].ticks.max = parseInt(maxValue)
+        this.options.scales.yAxes[0].ticks.max = parseInt(maxValue);
         this.renderChart(this.chartData, this.options);
       }
     }
-      
+
   }
 
 };

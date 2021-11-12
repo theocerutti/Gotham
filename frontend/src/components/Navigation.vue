@@ -82,7 +82,6 @@
 </template>
 
 <script>
-console.log("LOCATION", location, location.pathname);
 export default {
   name: "SideBar",
   data() {
