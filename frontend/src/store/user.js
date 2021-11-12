@@ -79,6 +79,13 @@ export default {
           this._vm.$notify({text: "User promoted!", type: "success"});
         });
     },
+    demoteUser({commit}, payload) {
+      this._vm.$api.post("/api/users/demote/" + payload)
+        .then((response) => {
+          commit("UPDATE_USER_ROLE", response);
+          this._vm.$notify({text: "User demoted!", type: "success"});
+        });
+    },
     deleteUserById({commit}, payload) {
       this._vm.$api.delete("/api/users/" + payload)
         .then((response) => {

@@ -1,9 +1,5 @@
 <template>
-  <div>
-    <v-card id="account-container">
-      <user/>
-    </v-card>
-  </div>
+  <user/>
 </template>
 
 <script>
@@ -15,14 +11,3 @@ export default {
   name: "MyAccount",
 };
 </script>
-
-<style scoped>
-#team-container {
-  margin-top: 50px !important;
-}
-
-#account-container, #team-container {
-  padding: 30px;
-  height: 100%;
-}
-</style>

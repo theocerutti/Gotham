@@ -1,12 +1,12 @@
 <template>
-  <v-app>
+  <div>
     <navigation/>
     <v-main>
-      <v-container fluid>
+      <v-container class="app-container">
         <router-view></router-view>
       </v-container>
     </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -21,3 +21,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.app-container {
+  min-height: 100%;
+  width: 100%;
+}
+</style>
