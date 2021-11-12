@@ -13,6 +13,7 @@
         <WorkingTimesGroup :workingTimes="workingTimes" class="mt-10"/>
       </div>
       <v-pagination
+        v-if="totalPages > 0"
         v-model="pageIndex"
         total-visible="8"
         :length="this.totalPages"

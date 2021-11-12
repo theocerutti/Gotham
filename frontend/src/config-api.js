@@ -42,7 +42,8 @@ api.interceptors.response.use((res) => {
       return api(originalRequest);
     });
   }
-  store._vm.$notify({text: extractErrMessage(err), type: "error"});
+  if (err.response && err.response.status !== 403) // don't notify error of forbidden errors
+    store._vm.$notify({text: extractErrMessage(err), type: "error"});
   return Promise.reject(err);
 });
 
