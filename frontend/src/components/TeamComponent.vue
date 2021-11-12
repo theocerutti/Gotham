@@ -56,13 +56,15 @@
 
     <v-dialog
       v-model="dialogTeam"
-      width="500">
+      width="500"
+      :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'"
+      scrollable
+       >
       <v-card>
         <v-card-title class="text-h5">
           Add users to team
         </v-card-title>
-
-        <div style="padding: 20px;" id="manage-users-dialog-container">
+        <div style="padding: 20px;" id="manage-users-dialog-container" class="manage-team-dialog-container">
           <div v-for="u in allUsers" :key="u.id">
             <user-component
               v-if="u.role != 'generalManager'"
@@ -232,6 +234,10 @@ export default {
 .slide-enter, .slide-leave-to {
   overflow: hidden;
   max-height: 0;
+}
+.manage-team-dialog-container {
+  padding: 20px;
+  overflow-y: auto;
 }
 
 </style>

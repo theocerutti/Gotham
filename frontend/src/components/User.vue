@@ -79,7 +79,7 @@
       </div>
     </v-card>
 
-    <v-dialog v-model="dialogManage" :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'">
+    <v-dialog v-model="dialogManage" scrollable :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'">
       <v-card>
         <v-card-title class="text-h5">
           Manage users
@@ -102,7 +102,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogDashboard" :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'">
+    <v-dialog v-model="dialogDashboard" scrollable :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'">
       <v-card>
         <v-card-title class="text-h5">
           Users dashboard
