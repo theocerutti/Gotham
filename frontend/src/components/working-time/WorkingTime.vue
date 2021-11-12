@@ -32,8 +32,8 @@
                 <v-text-field @blur="updateWorkingTime" v-model="start_time" v-bind="attrs" v-on="on" readonly
                               hide-details="true" solo-inverted dense flat/>
               </template>
-              <v-time-picker use-seconds :max="end_time" format="24hr" v-if="show_start_time_picker" full-width v-model="start_time"
-                             @click:second="$refs.start_time.save(start_time)"></v-time-picker>
+              <v-time-picker :max="end_time" format="24hr" v-if="show_start_time_picker" full-width v-model="start_time"
+                             @click:minute="$refs.start_time.save(start_time)"></v-time-picker>
             </v-menu>
           </v-col>
           <div class="px-1">-</div>
@@ -53,8 +53,8 @@
                 <v-text-field @blur="updateWorkingTime" v-model="end_time" v-bind="attrs" v-on="on" readonly
                               hide-details="true" solo-inverted dense flat/>
               </template>
-              <v-time-picker use-seconds :min="start_time" format="24hr" v-if="show_end_time_picker" full-width v-model="end_time"
-                             @click:second="$refs.end_time.save(end_time)"></v-time-picker>
+              <v-time-picker :min="start_time" format="24hr" v-if="show_end_time_picker" full-width v-model="end_time"
+                             @click:minute="$refs.end_time.save(end_time)"></v-time-picker>
             </v-menu>
           </v-col>
         </v-row>
