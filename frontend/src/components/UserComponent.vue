@@ -1,5 +1,5 @@
 <template>
-  <v-card class="wt">
+  <v-card class="wt mb-5">
     <v-row class="pa-3" align="center">
       <v-col>
         {{ user.username }}

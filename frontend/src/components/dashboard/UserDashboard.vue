@@ -21,7 +21,7 @@
       </v-card>
       <v-card class="w-59 mb-6 ">
         <v-card-title>
-          Hours of work of the current week - {{ totalHoursWeekFormatted }}
+          Hours of work of the current week: {{ totalHoursWeekFormatted }}
         </v-card-title>
         <v-card-subtitle>
           {{ getStringCurrentWeek }}
