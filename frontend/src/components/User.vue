@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div >
     <h1>Your account</h1>
     <v-card class="card-container mt-6">
       <v-card-title>Personal Information
@@ -16,7 +16,7 @@
               Username:
             </v-subheader>
           </v-col>
-          <v-col cols="auto">
+          <v-col class="ml-3" cols="auto">
             <v-text-field :disabled="!isEditing" :flat="!isEditing" v-model="username" placeholder="Username"></v-text-field>
           </v-col>
         </v-row>
@@ -27,7 +27,7 @@
               Email:
             </v-subheader>
           </v-col>
-          <v-col cols="auto">
+          <v-col class="ml-3" cols="auto">
             <v-text-field :disabled="!isEditing" v-model="email" :flat="!isEditing" placeholder="Email"></v-text-field>
           </v-col>
         </v-row>
@@ -38,7 +38,7 @@
               Role:
             </v-subheader>
           </v-col>
-          <v-col cols="auto">
+          <v-col class="ml-3" cols="auto">
             <v-text-field disabled v-model="role" :flat="!isEditing" placeholder="Role"></v-text-field>
           </v-col>
         </v-row>
@@ -208,11 +208,13 @@ export default {
 </script>
 
 <style scoped>
-.card-container,
-.container {
+.card-container
+{
   height: 100%;
   width: 100%;
 }
+
+
 
 .manage-users-dialog-container {
   padding: 20px;
