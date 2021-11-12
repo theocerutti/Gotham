@@ -9,6 +9,12 @@ export class TeamRepository extends Repository<Team> {
     });
   }
 
+  async getAllTeams(): Promise<Team[]> {
+    return await this.find({
+      relations: ["users"]
+    });
+  }
+
   async getUserTeam(teamId: number, teamIds: number[]): Promise<Team> {
     const teams = await this.getUserTeams(teamIds);
     const team = teams.find(team => team.id === teamId);

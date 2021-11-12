@@ -99,6 +99,12 @@ export default {
           commit("SET_USER_TEAMS", response);
         });
     },
+    getAllTeams({ commit }) {
+      this._vm.$api.get("/api/team/all")
+        .then((response) => {
+          commit("SET_USER_TEAMS", response)
+        })
+    },
     createNewTeam({commit}, payload) {
       this._vm.$api.post("/api/team", {
         userIds: [this.getters.currentUser.id],
