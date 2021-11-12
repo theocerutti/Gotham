@@ -6,7 +6,10 @@
     <v-btn :class="{'btn-web': !isMobile, 'btn-mob': isMobile}" v-if="currentUser.role !== 'user'" @click="createTeam = !createTeam" color="primary">
       create new team
     </v-btn>
-    <div v-if="allMyTeams && allMyTeams.length === 0">
+    <div v-if="allMyTeams === null">
+      <v-progress-circular color="blue" indeterminate/>
+    </div>
+    <div v-else-if="allMyTeams.length === 0">
       <v-alert class="mt-5" prominent type="warning" shaped>
         <div>You don't belongs to any team!</div>
         <div>Wait for your manager to add you in a team!</div>
@@ -22,7 +25,7 @@
           Create a new team
         </v-card-title>
         <div style="padding: 20px;">
-          <v-text-field  id="team-name-input" placeholder="Enter team name" v-model="teamName">
+          <v-text-field id="team-name-input" placeholder="Enter team name" v-model="teamName">
           </v-text-field>
         </div>
 
@@ -44,7 +47,8 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>  </div>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -76,7 +80,7 @@ export default {
     createNewTeam() {
       this.createTeam = false;
       this.$store.dispatch("createNewTeam", this.teamName);
-      this.teamName = '';
+      this.teamName = "";
     },
   },
   mounted() {
@@ -95,12 +99,6 @@ export default {
 .btn-mob {
   margin-left: 20%;
   margin-bottom: 5%;
-}
-
-
-#manage-users-dialog-container {
-  padding: 20px;
-  overflow-y: auto;
 }
 
 #team-name-input {

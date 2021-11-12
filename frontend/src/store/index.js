@@ -29,7 +29,7 @@ export default new Vuex.Store({
       name: null,
       email: null,
       workingTimes: null,
-      teams: []
+      teams: null,
     },
     auth: {
       accessToken: null,
