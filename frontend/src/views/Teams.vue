@@ -1,16 +1,21 @@
 <template>
   <div :class="{ 'team-container' : !isMobile }">
-    <v-btn :class="{'btn-web': !isMobile, 'btn-mob': isMobile}" v-if="currentUser.role != 'user'" @click="createNewTeam" color="primary">
+    <h1>Teams</h1>
+    <v-btn :class="{'btn-web': !isMobile, 'btn-mob': isMobile}" v-if="currentUser.role !== 'user'" @click="createNewTeam" color="primary">
       create new team
     </v-btn>
-    <v-text-field style="width: 20%; margin-left: 37%" id="team-name-input" placeholder="Enter team name" v-model="teamName" v-show="createTeam">
-    </v-text-field>
-    <team-component :team="team" v-for="team in allMyTeams" :key="team.id"/>
+    <v-text-field style="width: 20%; margin-left: 37%" id="team-name-input" placeholder="Enter team name" v-model="teamName" v-show="createTeam"/>
+    <div v-if="allMyTeams && allMyTeams.length === 0">
+      <v-alert class="mt-5" prominent type="warning" shaped>
+        <div>You don't belongs to any team!</div>
+        <div>Wait for your manager to add you in a team!</div>
+      </v-alert>
+    </div>
+    <team-component v-else :team="team" v-for="team in allMyTeams" :key="team.id"/>
   </div>
 </template>
 
 <script>
-
 import TeamComponent from "../components/TeamComponent.vue";
 
 export default {
@@ -32,11 +37,7 @@ export default {
       return this.$store.getters.currentUser;
     },
     isMobile() {
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        return true;
-      } else {
-        return false;
-      }
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
   },
   methods: {
@@ -50,7 +51,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("getAllUsers"); // charge la liste de tous les users pour le GeneralManager
+    this.$store.dispatch("getAllUsers");
     this.$store.dispatch("getMyTeams");
   }
 };
