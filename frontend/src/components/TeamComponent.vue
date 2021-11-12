@@ -134,10 +134,10 @@ export default {
       this.$store.dispatch("deleteTeam", this.team.id);
     },
     viewUserDashboard(user) {
-      this.$router.push({name: "Dashboard", params: {mode: "individual"}, query: {userId: user.id}});
+      this.$router.push({name: "Dashboard", params: {mode: "individual"}, query: {userId: user.id.toString()}});
     },
     viewTeamDashboard() {
-      this.$router.push({name: "Dashboard", params: {mode: "team"}, query: {teamId: this.team.id}});
+      this.$router.push({name: "Dashboard", params: {mode: "team"}, query: {teamId: this.team.id.toString()}});
     }
   }
 };

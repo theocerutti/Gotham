@@ -1,17 +1,17 @@
 <template>
   <div>
+    <v-btn v-if="$route.params.mode" @click="goBack" color="secondary" class="mb-5" id="btnGoBack">
+      <v-icon>
+        mdi-keyboard-backspace
+      </v-icon>
+      Back
+    </v-btn>
     <h1 class="mb-4">
       {{ dashboardWelcome }}
-      <v-btn v-if="$route.params.mode" @click="goBack" id="btnGoBack" style="float: right; margin-right: 5%">
-        <v-icon style="margin-right: 10px;">
-          mdi-keyboard-backspace
-        </v-icon>
-        Retour
-      </v-btn>  
     </h1>
     <div class="d-flex flex-wrap justify-space-between w-100">
       <v-card class="w-100 mb-6">
-        <v-card-title class='mb-12'>
+        <v-card-title>
           General metrics
         </v-card-title>
         <v-card-text>
@@ -84,10 +84,10 @@
             </template>
             <v-date-picker v-model="week2" :min="min" :max="max" range no-title scrollable :first-day-of-week="1">
               <v-spacer></v-spacer>
-              <v-btn text color="accent" @click="menu2 = false, week2 = null">
+              <v-btn text color="accent" @click="menu2 = false; week2 = null">
                 Cancel
               </v-btn>
-              <v-btn text color="accent" @click="menu2 = false, getDatasetWeek2()">
+              <v-btn text color="accent" @click="menu2 = false; getDatasetWeek2()">
                 OK
               </v-btn>
             </v-date-picker>
@@ -116,7 +116,7 @@ export default {
     CompareTwoWeeks
   },
   props: {
-    userId: Number
+    userId: String
   },
   data: () => ({
     user: null,
@@ -205,12 +205,9 @@ export default {
         this.compareLabels.week2 = `${this.week2[0]} - ${this.week2[1]}`;
       }
     },
-
-     goBack() {
-      this.$router.back()
+    goBack() {
+      this.$router.back();
     },
-
-
     getDataset(week) {
       const weekWT = this.workingTimes.filter(workingtime => {
         return workingtime.start >= moment(week[0]).format("YYYY-MM-DD[T]HH:mm:ss") && workingtime.end <= moment(week[1]).format("YYYY-MM-DD[T]HH:mm:ss");
@@ -243,12 +240,6 @@ export default {
 </script>
 
 <style scoped>
-
-#btnGoBack {
-  float: right;
-  margin-right: 5%;
-}
-
 .hours-text {
   font-size: 2rem;
 }
@@ -269,10 +260,6 @@ export default {
   width: 20%;
 }
 
-.min-width-card {
-  min-width: 49%;
-}
-
 .w-59 {
   width: 59%;
 }
@@ -282,10 +269,6 @@ export default {
 }
 
 @media only screen and (max-width: 1000px) {
-  .min-width-card {
-    min-width: 100%;
-  }
-
   .w-20 {
     min-width: 50%;
   }
