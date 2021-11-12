@@ -8,9 +8,6 @@
       <v-card-subtitle>
         {{ getStringCurrentWeek }}
       </v-card-subtitle>
-      <v-card-subtitle>
-        <v-btn @click="test">test</v-btn>
-      </v-card-subtitle>
       <div class="d-flex justify-center">
         <div class="w-80 my-10">
           <hours-current-week :dataset="datasetHoursCurrentWeek" :userId="user.id" :key="componentKey"/>
@@ -221,10 +218,6 @@
         }
         return hoursInWeek
       },
-
-      test(){
-        this.datasetHoursCurrentWeek = [1, 2, 6, 7, 8]
-      }
 
     },
     watch: {
