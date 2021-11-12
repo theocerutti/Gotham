@@ -1,43 +1,43 @@
 <template>
   <div :class="{ 'team-container' : !isMobile }">
-      <v-btn :class="{'btn-web': !isMobile, 'btn-mob': isMobile}" v-if="currentUser.role != 'user'" @click="createNewTeam" color="#64aacf">
-          create new team
-      </v-btn>
-      <v-text-field style="width: 20%; margin-left: 37%" id="team-name-input" placeholder="Enter team name" v-model="teamName" v-show="createTeam">
-      </v-text-field>
-      <team-component :team="team" v-for="team in allMyTeams" :key="team.id"/>
+    <v-btn :class="{'btn-web': !isMobile, 'btn-mob': isMobile}" v-if="currentUser.role != 'user'" @click="createNewTeam" color="primary">
+      create new team
+    </v-btn>
+    <v-text-field style="width: 20%; margin-left: 37%" id="team-name-input" placeholder="Enter team name" v-model="teamName" v-show="createTeam">
+    </v-text-field>
+    <team-component :team="team" v-for="team in allMyTeams" :key="team.id"/>
   </div>
 </template>
 
 <script>
 
-import TeamComponent from '../components/TeamComponent.vue'
+import TeamComponent from "../components/TeamComponent.vue";
 
 export default {
   name: "Teams",
-  components: { TeamComponent },
+  components: {TeamComponent},
   props: {},
   data() {
     return {
-        isTeamDetailsShow: false,
-        createTeam: false,
-        teamName: '',
+      isTeamDetailsShow: false,
+      createTeam: false,
+      teamName: "",
     };
   },
   computed: {
-      allMyTeams() {
-          return this.$store.getters.getMyTeams;
-      },
-      currentUser() {
-          return this.$store.getters.currentUser;
-      },
-       isMobile() {
-          if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            return true
-          } else {
-            return false
-          }
+    allMyTeams() {
+      return this.$store.getters.getMyTeams;
+    },
+    currentUser() {
+      return this.$store.getters.currentUser;
+    },
+    isMobile() {
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true;
+      } else {
+        return false;
       }
+    }
   },
   methods: {
     createNewTeam() {
@@ -45,13 +45,13 @@ export default {
         this.createTeam = true;
       else {
         this.createTeam = false;
-        this.$store.dispatch('createNewTeam', this.teamName)
+        this.$store.dispatch("createNewTeam", this.teamName);
       }
     },
   },
   mounted() {
-    this.$store.dispatch('getAllUsers') // charge la liste de tous les users pour le GeneralManager
-    this.$store.dispatch('getMyTeams')
+    this.$store.dispatch("getAllUsers"); // charge la liste de tous les users pour le GeneralManager
+    this.$store.dispatch("getMyTeams");
   }
 };
 </script>
@@ -59,7 +59,7 @@ export default {
 <style scoped>
 
 .team-container {
-    padding: 50px;
+  padding: 50px;
 }
 
 .btn-web {
@@ -74,8 +74,8 @@ export default {
 
 
 #manage-users-dialog-container {
-    padding: 20px;
-    overflow-y: auto;
+  padding: 20px;
+  overflow-y: auto;
 }
 
 #team-name-input {

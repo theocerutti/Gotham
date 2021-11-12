@@ -9,7 +9,7 @@
       <v-divider vertical/>
       <v-col xs="1" md="1" align="center">
         <v-btn icon @click="workingTime.billable = !workingTime.billable; updateWorkingTime()"
-               :color="workingTime.billable ? '#058FCE' : ''">
+               :color="workingTime.billable ? 'primary' : ''">
           <v-icon>mdi-currency-usd</v-icon>
         </v-btn>
       </v-col>
