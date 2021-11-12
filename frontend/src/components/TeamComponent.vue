@@ -108,7 +108,17 @@ export default {
       return this.$store.getters.currentUser;
     },
     allUsers() {
-      return this.$store.getters.getAllUsers;
+      const allUsrs = this.$store.getters.getAllUsers
+      var usersAvailable = []
+      var usersAlreadyInTeam = []
+
+      this.team.users.forEach(u => {
+        usersAlreadyInTeam.push(u)
+      });
+    
+      usersAvailable = allUsrs.filter((u) => !usersAlreadyInTeam.find(({ id }) => u.id === id))
+
+      return usersAvailable;
     },
     isMobile() {
       if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
