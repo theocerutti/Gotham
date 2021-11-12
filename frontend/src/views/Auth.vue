@@ -44,11 +44,11 @@
                             placeholder="Username"></v-text-field>
               <v-text-field v-model="email" type="email" :rules="rulesEmail" solo prepend-inner-icon="mdi-email"
                             placeholder="Email"></v-text-field>
-              <v-text-field v-model="password" type='password' solo prepend-inner-icon="mdi-lock"
+              <v-text-field v-model="password" type='password' :rules="rulesPwd" solo prepend-inner-icon="mdi-lock"
                             placeholder="Password"></v-text-field>
-              <v-text-field v-model="rePassword" type='password' :rules="[passwordConfirmationRule]" solo
+              <v-text-field v-model="rePassword" type='password' :rules="[passwordConfirmationRule]"  solo
                             prepend-inner-icon="mdi-lock" placeholder="Password confirmation"></v-text-field>
-              <v-btn class="mb-5" color="blue" @click="signUp">
+              <v-btn class="mb-5" color="blue" @click="signUp" :disabled="rePassword.length == 0">
                 sign up
               </v-btn>
               <v-btn v-if="this.$vuetify.breakpoint.xsOnly" text @click="() => goTo('login')">
@@ -98,10 +98,18 @@ export default ({
       value => !!value || "Required.",
       value => (value || "").length >= 3 || "Min 3 characters"
     ],
+    rulesPwd: [
+      value => !!value || "Required."
+    ]
   }),
   computed: {
     passwordConfirmationRule() {
       return () => (this.password === this.rePassword) || "Password must match";
+    },
+    emptyFields() {
+      if(username.length == 0) {
+        return empty
+      }
     }
   },
   methods: {
