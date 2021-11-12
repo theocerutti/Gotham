@@ -150,14 +150,14 @@ export default {
       return "";
     },
     totalHoursWeekFormatted() {
-      const totalHoursWeek = this.datasetHoursCurrentWeek.reduce((a, b) => parseInt(a) + parseInt(b), 0);
-      return `${Math.floor(totalHoursWeek)} h`;
+      const totalHoursWeek = this.datasetHoursCurrentWeek.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
+      return `${totalHoursWeek} h`;
     },
     totalHoursFormatted() {
-      return `${Math.floor(this.totalHours)} h`;
+      return `${this.totalHours} h`;
     },
     totalHoursMonthFormatted() {
-      return `${Math.floor(this.totalHoursThisMonth)} h`;
+      return `${this.totalHoursThisMonth} h`;
     },
     getStringCurrentWeek() {
       const firstday = moment().startOf("isoWeek").format("DD/MM/YYYY");

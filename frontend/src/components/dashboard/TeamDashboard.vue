@@ -120,13 +120,12 @@ export default {
         i += 1;
         hoursPerDay[i] = 0;
         for (const wt in workingTimesSortedByDays[key]) {
-          hoursPerDay[i] += parseInt(this.calculateDiffEndStart(workingTimesSortedByDays[key][wt].start, workingTimesSortedByDays[key][wt].end).toFixed(2));
+          hoursPerDay[i] += parseFloat(this.calculateDiffEndStart(workingTimesSortedByDays[key][wt].start, workingTimesSortedByDays[key][wt].end).toFixed(1));
         }
       }
 
-      this.labels = [47, 48, 49, 50];
-
       this.datasetHoursCurrentWeek = hoursPerDay;
+      console.log('this.datasetHoursCurrentWeek:', this.datasetHoursCurrentWeek)
     },
     getTotalHours() {
       var totalHours = 0;
@@ -136,7 +135,7 @@ export default {
           totalHours += this.calculateDiffEndStart(w.start, w.end);
         });
       });
-      this.totalHours = totalHours.toFixed();
+      this.totalHours = totalHours.toFixed(1);
     },
     getTotalHoursMonth() {
       var totalHours = 0;
@@ -147,7 +146,7 @@ export default {
           }
         });
       });
-      this.totalHoursMonth = totalHours.toFixed();
+      this.totalHoursMonth = totalHours.toFixed(1);
     },
     getHoursLastWeeks() {
       var workingTimes = [];
@@ -179,9 +178,9 @@ export default {
       for (const week in workingTimesSortedByWeeks) {
         var hours = 0;
         for (const wt of workingTimesSortedByWeeks[week]) {
-          hours += parseInt(this.calculateDiffEndStart(wt.start, wt.end).toFixed());
+          hours += parseInt(this.calculateDiffEndStart(wt.start, wt.end).toFixed(1));
         }
-        hoursInMonth.push(hours.toFixed());
+        hoursInMonth.push(hours.toFixed(1));
       }
       this.labels = labels;
       this.hoursLast4weeks = hoursInMonth;

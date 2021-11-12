@@ -41,7 +41,7 @@ export class UserDashboardFormater {
       for(const wt of workingTimesSortedByDays[day]){
         hours += Math.abs(wt.start.getTime() - wt.end.getTime() ) / 36e5
       }
-      hoursInWeek.push(hours.toFixed())
+      hoursInWeek.push(hours.toFixed(1))
     }
     return hoursInWeek
   }
@@ -70,7 +70,7 @@ export class UserDashboardFormater {
       for(const wt of workingTimesSortedByWeeks[week]){
         hours += Math.abs(wt.start.getTime() - wt.end.getTime() ) / 36e5
       }
-      hoursInMonth.push(hours.toFixed())
+      hoursInMonth.push(hours.toFixed(1))
     }
     return {labels: labels, dataset: hoursInMonth}
   }
@@ -91,7 +91,7 @@ export class UserDashboardFormater {
       totalHoursThisMonth += (Math.abs(wt.start.getTime() - wt.end.getTime() ) / 36e5)
     }
 
-    return {totalHours: totalHours.toFixed(), totalHoursThisMonth: totalHoursThisMonth.toFixed()}
+    return {totalHours: totalHours.toFixed(1), totalHoursThisMonth: totalHoursThisMonth.toFixed(1)}
   }
 
   static getStringCurrentWeek(date: Date){
