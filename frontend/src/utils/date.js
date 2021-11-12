@@ -14,5 +14,6 @@ export const mergeDateAndDuration = (date, duration) => {
   const time = getDateFromTime(duration);
   d.setHours(time.getHours());
   d.setMinutes(time.getMinutes());
+  d.setSeconds(time.getSeconds());
   return d;
 };

@@ -56,7 +56,7 @@
     <v-navigation-drawer app v-model="sidebarMenu">
       <v-list>
         <v-list-item-group>
-          <v-list-item v-for="(item, i) in items" :key="i" :to="item.path">
+          <v-list-item v-for="(item, i) in items" :key="i" :to="item.path" exact-path>
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -82,7 +82,6 @@
 </template>
 
 <script>
-
 export default {
   name: "SideBar",
   data() {
@@ -92,25 +91,21 @@ export default {
           icon: "mdi-clock",
           title: "Time Tracker",
           path: "/time-tracker",
-          active: location.pathname === "/time-tracker",
         },
         {
           icon: "mdi-view-dashboard",
           title: "Dashboard",
           path: "/",
-          active: location.pathname === "/",
         },
         {
           icon: "mdi-account",
           title: "My account",
           path: "/my-account",
-          active: location.pathname === "/my-account",
         },
         {
           icon: "mdi-account-multiple",
           title: "Teams",
           path: "/teams",
-          active: location.pathname === "/teams",
         }
       ],
       darkMode: null,
@@ -123,11 +118,9 @@ export default {
       ],
     };
   },
-
   mounted() {
     this.darkMode = JSON.parse(localStorage.getItem("dark_theme"));
   },
-
   methods: {
     toggle_dark_mode: function () {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
@@ -139,11 +132,14 @@ export default {
     redirectToAccount() {
       this.$router.push("/my-account");
     }
+  },
+  watch: {
+    locationItemsActive: () => {
+      this.items = this.items.map(item => {
+        item.active = location.pathname === item.path;
+        return item;
+      });
+    }
   }
 };
 </script>
-
-<style scoped>
-.logoutBtn {
-}
-</style>

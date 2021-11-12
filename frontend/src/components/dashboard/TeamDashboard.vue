@@ -1,8 +1,17 @@
 <template>
   <div>
+    <v-btn @click="goBack" color="secondary" class="mb-5" id="btnGoBack">
+      <v-icon>
+        mdi-keyboard-backspace
+      </v-icon>
+      Back
+    </v-btn>
+    <h1 class="mb-4">
+      {{ dashboardWelcome() }}
+    </h1>
     <div class="d-flex flex-wrap justify-space-between w-100">
       <v-card class="w-100 mb-6">
-        <v-card-title class='mb-12'>
+        <v-card-title>
           General metrics
         </v-card-title>
         <v-card-text>
@@ -39,7 +48,7 @@
           Compare hours count of lasts weeks
         </v-card-subtitle>
         <div class="d-flex justify-center">
-          <div class="my-10 mx-15">
+          <div class="w-80 my-10 mx-15">
             <hours-last-weeks :labels="labels" :dataset="hoursLast4weeks" />
           </div>
         </div>
@@ -52,7 +61,7 @@
 import HoursCurrentWeek from "../charts/HoursCurrentWeek.vue";
 import HoursLastWeeks from "../charts/HoursLastWeeks.vue";
 import moment from "moment";
-import {api} from "../../config-api.js";
+import {api} from "@/config-api";
 
 
 export default {
@@ -67,7 +76,7 @@ export default {
   },
 
   data: () => ({
-    requestResponse: [],
+    teamData: null,
     datasetHoursCurrentWeek: [],
     totalHours: 0,
     totalHoursMonth: 0,
@@ -76,10 +85,11 @@ export default {
   }),
 
   methods: {
-    getStringCurrentWeek() {
-      const firstday = moment().startOf("isoWeek").format("DD/MM/YYYY");
-      const lastday = moment().endOf("isoWeek").format("DD/MM/YYYY");
-      return `${firstday} - ${lastday}`;
+    goBack() {
+      this.$router.back();
+    },
+    dashboardWelcome() {
+      return this.teamData ? `Dashboard of ${this.teamData.name} team` : "";
     },
     calculateDiffEndStart(start, end) {
       return Math.abs(new Date(end).valueOf() - new Date(start).valueOf()) / 3600000;
@@ -90,7 +100,7 @@ export default {
       var hoursPerDay = [];
       var i = -1;
 
-      this.requestResponse.users.forEach(u => {
+      this.teamData.users.forEach(u => {
         u.workingtimes.forEach(wt => {
           allWt.push(wt);
         });
@@ -120,7 +130,7 @@ export default {
     },
     getTotalHours() {
       var totalHours = 0;
-      const allUsers = this.requestResponse.users;
+      const allUsers = this.teamData.users;
       allUsers.forEach(u => {
         u.workingtimes.forEach(w => {
           totalHours += this.calculateDiffEndStart(w.start, w.end);
@@ -130,7 +140,7 @@ export default {
     },
     getTotalHoursMonth() {
       var totalHours = 0;
-      this.requestResponse.users.forEach(u => {
+      this.teamData.users.forEach(u => {
         u.workingtimes.forEach(w => {
           if (w.start >= moment().startOf("month").toDate().toISOString()) {
             totalHours += this.calculateDiffEndStart(w.start, w.end);
@@ -142,51 +152,51 @@ export default {
     getHoursLastWeeks() {
       var workingTimes = [];
 
-      this.requestResponse.users.forEach(u => {
+      this.teamData.users.forEach(u => {
         u.workingtimes.forEach(w => {
             workingTimes.push(w);
           }
         );
-      })
+      });
 
       const lastWeeksWT = workingTimes.filter(workingtime => {
-        return workingtime.start >= moment().subtract(4, "weeks").startOf("week").toISOString() &&  workingtime.start <= moment().subtract(1, "weeks").endOf('isoWeek').toISOString();
-      })
+        return workingtime.start >= moment().subtract(4, "weeks").startOf("week").toISOString() && workingtime.start <= moment().subtract(1, "weeks").endOf("isoWeek").toISOString();
+      });
       //group by week
-      const workingTimesSortedByWeeks = {}
-      const labels = []
+      const workingTimesSortedByWeeks = {};
+      const labels = [];
 
-      for(const wt of lastWeeksWT){
+      for (const wt of lastWeeksWT) {
         const dateKey = moment(wt.start).week();
-        if (!workingTimesSortedByWeeks[dateKey]){
+        if (!workingTimesSortedByWeeks[dateKey]) {
           workingTimesSortedByWeeks[dateKey] = [];
-          labels.push(this.getStringCurrentWeek(wt.start))
+          labels.push(this.getStringCurrentWeek(wt.start));
         }
         workingTimesSortedByWeeks[dateKey].push(wt);
       }
 
-      var hoursInMonth = []
-      for(const week in workingTimesSortedByWeeks){
-        var hours = 0
-        for(const wt of workingTimesSortedByWeeks[week]){
+      var hoursInMonth = [];
+      for (const week in workingTimesSortedByWeeks) {
+        var hours = 0;
+        for (const wt of workingTimesSortedByWeeks[week]) {
           hours += parseInt(this.calculateDiffEndStart(wt.start, wt.end).toFixed());
         }
-        hoursInMonth.push(hours.toFixed())
+        hoursInMonth.push(hours.toFixed());
       }
-      this.labels = labels
-      this.hoursLast4weeks = hoursInMonth
+      this.labels = labels;
+      this.hoursLast4weeks = hoursInMonth;
     },
 
     getStringCurrentWeek() {
-        const firstday = moment().startOf("isoWeek").format("DD/MM/YYYY");
-        const lastday = moment().endOf("isoWeek").format("DD/MM/YYYY");
-        return `${firstday} - ${lastday}`;
-      },
+      const firstday = moment().startOf("isoWeek").format("DD/MM/YYYY");
+      const lastday = moment().endOf("isoWeek").format("DD/MM/YYYY");
+      return `${firstday} - ${lastday}`;
+    },
   },
   mounted() {
     api.get(`api/team/one/${this.teamId}/workingtimes`)
       .then((response) => {
-        this.requestResponse = response.data;
+        this.teamData = response.data;
         this.parseWt();
         this.getTotalHours();
         this.getTotalHoursMonth();
@@ -206,68 +216,37 @@ export default {
   width: 80%;
 }
 
-.min-width-card {
-  min-width: 49%;
+@media only screen and (max-width: 1000px) {
+}
+
+.hours-text {
+  font-size: 2rem;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.w-80 {
+  width: 80%;
+}
+
+.w-59 {
+  width: 59%;
+}
+
+.w-39 {
+  width: 39%;
 }
 
 @media only screen and (max-width: 1000px) {
-  .min-width-card {
-    min-width: 100%;
+  .w-59 {
+    width: 100%;
+  }
+
+  .w-39 {
+    width: 100%;
   }
 }
-
-  .hours-text {
-    font-size: 2rem;
-  }
-
-  .w-100 {
-    width: 100%;
-  }
-
-  .w-80 {
-    width: 80%;
-  }
-
-  .w-60 {
-    width: 60%;
-  }
-
-  .w-20 {
-    width: 20%;
-  }
-
-  .min-width-card {
-    min-width: 49%;
-  }
-
-  .w-59{
-    width: 59%;
-  }
-
-  .w-39{
-    width: 39%;
-  }
-
-  @media only screen and (max-width: 1000px) {
-    .min-width-card {
-      min-width: 100%;
-    }
-
-    .w-20{
-      min-width: 50%;
-    }
-
-    .w-60{
-      width: 100%
-    }
-
-    .w-59{
-    width: 100%;
-    }
-
-    .w-39{
-      width: 100%;
-    }
-  }
 
 </style>

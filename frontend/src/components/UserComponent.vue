@@ -25,6 +25,7 @@
           <span>Demote User</span>
         </v-tooltip>
       </v-col>
+      <v-spacer/>
       <v-col cols="auto">
         <v-tooltip bottom v-if="page === 'account'">
           <template v-slot:activator="{ on, attrs }">
@@ -76,7 +77,7 @@ export default {
       this.$emit("addUser", this.user.id);
     },
     viewUserDashboard() {
-      this.$router.push({name: "Dashboard", params: {mode: "individual"}, query: {userId: this.user.id}});
+      this.$router.push({name: "Dashboard", params: {mode: "individual"}, query: {userId: this.user.id.toString()}});
     }
   }
 };
