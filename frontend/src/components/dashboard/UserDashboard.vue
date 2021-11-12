@@ -183,13 +183,23 @@
     },
     methods: {
       getDatasetWeek1(){
-        this.compareDatasets.week1 = this.getDataset(this.week1);
-        this.compareLabels.week1 = `${this.week1[0]}/${this.week1[1]}`;
+        if(moment(this.week1[0]).toDate().getDay() != 1 || moment(this.week1[1]).toDate().getDay() != 0){
+          this.week1 = []
+          this.$store._vm.$notify({text: "Please select a week from Monday to Sunday" })
+        }else {
+          this.compareDatasets.week1 = this.getDataset(this.week1);
+          this.compareLabels.week1 = `${this.week1[0]}/${this.week1[1]}`;
+        }
       },
 
       getDatasetWeek2(){
-        this.compareDatasets.week2 = this.getDataset(this.week2)
-        this.compareLabels.week2 = `${this.week2[0]} - ${this.week2[1]}`
+        if(moment(this.week2[0]).toDate().getDay() != 1 || moment(this.week2[1]).toDate().getDay() != 0){
+          this.week2 = []
+          this.$store._vm.$notify({text: "Please select a week from Monday to Sunday" })
+        }else{
+          this.compareDatasets.week2 = this.getDataset(this.week2)
+          this.compareLabels.week2 = `${this.week2[0]} - ${this.week2[1]}`
+        }
       },
 
 
