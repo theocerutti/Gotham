@@ -9,7 +9,7 @@
       </v-card-subtitle>
       <div class="d-flex justify-center">
         <div class="w-80 my-10" relative>
-          <hours-current-week :dataset="datasetHoursCurrentWeek"/>
+          <hours-current-week :dataset="datasetHoursCurrentWeek" type="teamDashboard"/>
         </div>
       </div>
     </v-card>

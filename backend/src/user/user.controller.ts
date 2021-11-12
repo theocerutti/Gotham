@@ -76,6 +76,8 @@ export class UserController {
     // can a manager get a user that is not in its team
     if(currentUser.id === userId || currentUser.role === Role.Manager || currentUser.role === Role.GeneralManager){
       return await this.userService.getById(userId);
+    }else {
+      throw new UnauthorizedException();
     }
   }
 

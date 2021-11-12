@@ -17,11 +17,12 @@ export default {
             label: "Hours",
             data: this.dataset,
             backgroundColor: [
-              "#ff6384",
-              "#36a2eb",
-              "#cc65fe",
-              "#ffce56"
+              "#11324D",
+              "#6B7AA1",
+              "#C1CFC0",
+              "#3A6351"
             ],
+            borderWidth: 0,
             hoverOffset: 4
           },
         ]

@@ -41,7 +41,7 @@ export class UserDashboardFormater {
       for(const wt of workingTimesSortedByDays[day]){
         hours += Math.abs(wt.start.getTime() - wt.end.getTime() ) / 36e5
       }
-      hoursInWeek.push(hours.toFixed(2))
+      hoursInWeek.push(hours.toFixed())
     }
     return hoursInWeek
   }
@@ -49,8 +49,8 @@ export class UserDashboardFormater {
   static getHoursLastWeeks(workingTimes: Array<WorkingTime>){
 
     const lastWeeksWT = workingTimes.filter(workingtime => {
-      return workingtime.start >= moment().subtract(4, "weeks").startOf("week").toDate() && moment().subtract(1, "weeks").endOf("isoWeek").toDate();
-    });
+      return workingtime.start >= moment().subtract(4, "weeks").startOf("week").toDate() &&  workingtime.start <= moment().subtract(1, "weeks").endOf('isoWeek').toDate();
+    })
     //group by week
     const workingTimesSortedByWeeks = {}
     const labels = []
@@ -70,7 +70,7 @@ export class UserDashboardFormater {
       for(const wt of workingTimesSortedByWeeks[week]){
         hours += Math.abs(wt.start.getTime() - wt.end.getTime() ) / 36e5
       }
-      hoursInMonth.push(hours.toFixed(2))
+      hoursInMonth.push(hours.toFixed())
     }
     return {labels: labels, dataset: hoursInMonth}
   }
@@ -91,7 +91,7 @@ export class UserDashboardFormater {
       totalHoursThisMonth += (Math.abs(wt.start.getTime() - wt.end.getTime() ) / 36e5)
     }
 
-    return {totalHours: totalHours.toFixed(2), totalHoursThisMonth: totalHoursThisMonth.toFixed(2)}
+    return {totalHours: totalHours.toFixed(), totalHoursThisMonth: totalHoursThisMonth.toFixed()}
   }
 
   static getStringCurrentWeek(date: Date){

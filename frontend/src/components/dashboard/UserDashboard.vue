@@ -1,24 +1,56 @@
 <template>
   <div>
     <h1 class="mb-4">{{ dashboardWelcome }}</h1>
-    <v-card class="mb-6">
-      <v-card-title>
-        Hours of work of the current week - {{ totalHoursWeekFormatted }}
-      </v-card-title>
-      <v-card-subtitle>
-        {{ getStringCurrentWeek }}
-      </v-card-subtitle>
-      <div class="d-flex justify-center">
-        <div class="w-80 my-10">
-          <hours-current-week :dataset="datasetHoursCurrentWeek" :userId="user.id" :key="componentKey"/>
+    <div class="d-flex flex-wrap justify-space-between w-100">
+      <v-card class="w-100 mb-6">
+        <v-card-title class='mb-12'>
+          General metrics
+        </v-card-title>
+        <v-card-text>
+          <v-row align="center">
+            <v-col align="center">
+              <div class="hours-text">{{ totalHoursFormatted }}</div>
+              <div>Total hours of work</div>
+            </v-col>
+            <v-col align="center">
+              <div class="hours-text">{{ totalHoursMonthFormatted }}</div>
+              <div>Total hours of work this month</div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+      <v-card class="w-59 mb-6 ">
+        <v-card-title>
+          Hours of work of the current week - {{ totalHoursWeekFormatted }}
+        </v-card-title>
+        <v-card-subtitle>
+          {{ getStringCurrentWeek }}
+        </v-card-subtitle>
+        <div class="d-flex justify-center">
+          <div class="w-80 my-10">
+            <hours-current-week :dataset="datasetHoursCurrentWeek" type="userDashboard"/>
+          </div>
         </div>
-      </div>
-    </v-card>
+      </v-card>
+      <v-card class="w-39 mb-6">
+        <v-card-title>
+          Hours of work of last weeks
+        </v-card-title>
+        <v-card-subtitle>
+          Compare hours count of lasts weeks
+        </v-card-subtitle>
+        <div class="d-flex justify-center">
+          <div class="my-10 mx-15">
+            <hours-last-weeks :labels="labelsHoursLastWeeks" :dataset="datasetHoursLastWeeks" />
+          </div>
+        </div>
+      </v-card>
+    </div>
     <v-card class="mb-6">
       <v-card-title>
         Compare two weeks
       </v-card-title>
-      <div class="d-flex justify-space-around">
+      <div class="d-flex flex-wrap justify-space-around align-center">
         <div class="w-20">
           <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
             transition="scale-transition" offset-y min-width="auto">
@@ -52,45 +84,12 @@
               </v-btn> 
             </v-date-picker>
           </v-menu>
-
         </div>
-        <div class="w-60 my-10">
+        <div class="my-10 w-60">
           <compare-two-weeks :datasets="compareDatasets" :labels="compareLabels" />
         </div>
       </div>
     </v-card>
-    <div class="d-flex flex-wrap justify-space-between w-100">
-      <v-card class="min-width-card mb-6">
-        <v-card-title class='mb-12'>
-          General metrics
-        </v-card-title>
-        <v-card-text>
-          <v-row align="center">
-            <v-col align="center">
-              <div class="hours-text">{{ totalHoursFormatted }}</div>
-              <div>Total hours of work</div>
-            </v-col>
-            <v-col align="center">
-              <div class="hours-text">{{ totalHoursMonthFormatted }}</div>
-              <div>Total hours of work this month</div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-      <v-card class="min-width-card mb-6">
-        <v-card-title>
-          Hours of work of last weeks
-        </v-card-title>
-        <v-card-subtitle>
-          Compare hours count of lasts weeks
-        </v-card-subtitle>
-        <div class="d-flex justify-center">
-          <div class="my-10 mx-15">
-            <hours-last-weeks :labels="labelsHoursLastWeeks" :dataset="datasetHoursLastWeeks" />
-          </div>
-        </div>
-      </v-card>
-    </div>
   </div>
 </template>
 
@@ -133,7 +132,6 @@
       week2: null,
       compareDatasets: {week1: [], week2: []},
       compareLabels: {week1: "", week2: ""},
-      componentKey: 0
     }),
     computed: {
       dashboardWelcome() {
@@ -216,16 +214,13 @@
           }
           hoursInWeek.push(hours.toFixed())
         }
+        if (hoursInWeek.length == 5){
+          hoursInWeek.push(0) //saturday
+          hoursInWeek.push(0) //sunday
+        }
         return hoursInWeek
       },
-
     },
-    watch: {
-      compareDatasets() {
-        this.componentKey += 1;
-        console.log('this.componentKey:', this.componentKey)
-      },
-    }
   };
 </script>
 
@@ -254,9 +249,33 @@
     min-width: 49%;
   }
 
+  .w-59{
+    width: 59%;
+  }
+
+  .w-39{
+    width: 39%;
+  }
+
   @media only screen and (max-width: 1000px) {
     .min-width-card {
       min-width: 100%;
+    }
+
+    .w-20{
+      min-width: 50%;
+    }
+
+    .w-60{
+      width: 100%
+    }
+
+    .w-59{
+    width: 100%;
+    }
+
+    .w-39{
+      width: 100%;
     }
   }
 </style>

@@ -49,7 +49,16 @@ export default {
                 max: 24
             }
           }]
-        }
+        },
+        tooltips: {
+          enabled: true,
+          displayColors: false,
+          callbacks: {
+              label: function(tooltipItems) { 
+                  return " " + tooltipItems.yLabel + "h";
+              }
+          }
+        },
       }
     };
   },

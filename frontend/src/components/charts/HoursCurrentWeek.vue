@@ -7,7 +7,7 @@ export default {
   extends: Bar,
   props: {
     dataset: Array,
-    userId: Number
+    type: String
   },
   data() {
     return {
@@ -29,10 +29,11 @@ export default {
         maintainAspectRatio: false,
         tooltips: {
           enabled: true,
+          displayColors: false,
           callbacks: {
-            label: ((tooltipItems, data) => {
-              return moment({hour: tooltipItems.value}).format("H [h]");
-            })
+              label: function(tooltipItems) { 
+                  return " " + tooltipItems.yLabel + "h";
+              }
           }
         },
         scales: {
@@ -40,8 +41,7 @@ export default {
             display: true,
             ticks: {
                 beginAtZero: true,
-                steps: 24,
-                stepValue: 1,
+                stepValue: 5,
                 max: 24
             }
           }]
@@ -55,9 +55,11 @@ export default {
   watch: {
     dataset() {
       this.chartData.datasets[0].data = this.dataset
-      if(this.userId === this.$store.getters.currentUser.id){
+      console.log('this.type:', this.type)
+
+      if(this.type == "userDashboard"){
         this.renderChart(this.chartData, this.options)
-      }else{
+      }else if (this.type == "teamDashboard"){
         var maxValue = 0
         for (const key in this.dataset) {
           if (this.dataset[key] > maxValue)
