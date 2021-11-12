@@ -50,7 +50,7 @@
                             prepend-inner-icon="mdi-lock" placeholder="Password confirmation"></v-text-field>
               <v-btn class="mb-5" color="blue" @click="signUp" :disabled="rePassword.length == 0">
                 sign up
-              </v-btn>
+              </v-btn> 
               <v-btn v-if="this.$vuetify.breakpoint.xsOnly" text @click="() => goTo('login')">
                 Sign In!
               </v-btn>
@@ -106,11 +106,6 @@ export default ({
     passwordConfirmationRule() {
       return () => (this.password === this.rePassword) || "Password must match";
     },
-    emptyFields() {
-      if(username.length == 0) {
-        return empty
-      }
-    }
   },
   methods: {
     goTo(route) {
@@ -123,11 +118,13 @@ export default ({
       });
     },
     signUp() {
-      this.$store.dispatch("registerUser", {
-        username: this.username,
-        password: this.password,
-        email: this.email,
-      });
+        if(this.password == this.rePassword && this.rePassword.length > 0) {
+            this.$store.dispatch("registerUser", {
+            username: this.username,
+            password: this.password,
+            email: this.email,
+          });
+        }
     }
   }
 });
