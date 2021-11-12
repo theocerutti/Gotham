@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>Save your times!</h1>
     <Clock class="mt-5"/>
     <v-divider class="mt-10"/>
     <WorkingTimesGroups/>

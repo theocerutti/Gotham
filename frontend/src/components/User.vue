@@ -10,7 +10,7 @@
       </v-card-title>
       <v-card-text>
         <v-row align="center">
-          <v-col cols="1">
+          <v-col cols="1" v-if="$vuetify.breakpoint.smAndUp">
             <v-subheader>
               <v-icon class="mr-2">mdi-account</v-icon>
               Username:
@@ -21,7 +21,7 @@
           </v-col>
         </v-row>
         <v-row align="center">
-          <v-col cols="1">
+          <v-col cols="1" v-if="$vuetify.breakpoint.smAndUp">
             <v-subheader>
               <v-icon class="mr-2">mdi-email</v-icon>
               Email:
@@ -32,7 +32,7 @@
           </v-col>
         </v-row>
         <v-row align="center">
-          <v-col cols="1">
+          <v-col cols="1" v-if="$vuetify.breakpoint.smAndUp">
             <v-subheader>
               <v-icon class="mr-2">mdi-security</v-icon>
               Role:
@@ -46,7 +46,7 @@
       <v-card-title>Delete your account</v-card-title>
       <v-card-text>
         <v-row align="center">
-          <v-col cols="3">
+          <v-col :cols="$vuetify.breakpoint.smAndUp ? 3 : 12">
             <div>If you want to delete your account type DELETE in this area:</div>
           </v-col>
           <v-col cols="auto">
@@ -79,7 +79,7 @@
       </div>
     </v-card>
 
-    <v-dialog v-model="dialogManage" width="50%">
+    <v-dialog v-model="dialogManage" :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'">
       <v-card>
         <v-card-title class="text-h5">
           Manage users
@@ -102,7 +102,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogDashboard" width="50%">
+    <v-dialog v-model="dialogDashboard" :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'">
       <v-card>
         <v-card-title class="text-h5">
           Users dashboard
