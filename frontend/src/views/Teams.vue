@@ -12,7 +12,8 @@
     <div v-else-if="allMyTeams.length === 0">
       <v-alert class="mt-5" prominent type="warning" shaped>
         <div>You don't belongs to any team!</div>
-        <div>Wait for your manager to add you in a team!</div>
+        <div v-if="currentUser.role === 'user'">Wait for your manager to add you in a team!</div>
+        <div v-else>Try to add a team!</div>
       </v-alert>
     </div>
     <team-component v-else :team="team" v-for="team in allMyTeams" :key="team.id"/>
