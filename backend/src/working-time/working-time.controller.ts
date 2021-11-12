@@ -23,16 +23,8 @@ export class WorkingTimeController {
     @Query() query: WorkingTimeRequestQuery
   ): Promise<WorkingTime[]> {
     if (query.end && query.start) {
-      if (query.formatType === "hoursCurrentWeek") {
-        const workingTimes = await this.workingTimeService.getUserWorkingTimesFromTimeRange(user.id, query);
-        this.logger.log("GetHoursInWeek from timerange of me, timerange=", query);
-        return UserDashboardFormater.getHoursCurrentWeek(workingTimes);
-      }
+      this.logger.log("GetHoursInWeek from timerange of me, timerange=", query);
       return await this.workingTimeService.getUserWorkingTimesFromTimeRange(user.id, query);
-    } else if (query.formatType === "hoursCurrentWeek") {
-      const workingTimes = await this.workingTimeService.getUserWorkingTimes(user.id);
-      this.logger.log("GetHoursCurrentWeek of me");
-      return UserDashboardFormater.getHoursCurrentWeek(workingTimes);
     } else {
       this.logger.log("Get all my workingTimes");
       return await this.workingTimeService.getUserWorkingTimes(user.id);
@@ -95,21 +87,12 @@ export class WorkingTimeController {
     @Query() query: WorkingTimeRequestQuery,
     ) {
     if(currentUser.id === userId || currentUser.role === Role.Manager || currentUser.role === Role.GeneralManager){
-      if (query.end && query.start) {
-        const workingTimes = await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
-        if(query.formatType === "hoursCurrentWeek"){
-          return UserDashboardFormater.getHoursCurrentWeek(workingTimes)
-        }
-        if(query.formatType === "hoursLastWeeks"){
-          return UserDashboardFormater.getHoursLastWeek(workingTimes)
-        }
-        return await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
-      }
-      else if(query.formatType === "generalMetrics"){
+      if(query.formatType === "userDashboard"){
         const workingTimes = await this.workingTimeService.getUserWorkingTimes(userId);
-        return UserDashboardFormater.getGeneralMetrics(workingTimes)
-      }
-      else {
+        return UserDashboardFormater.format(workingTimes)
+      }else if(query.end && query.start){
+        return await this.workingTimeService.getUserWorkingTimesFromTimeRange(userId, query);
+      }else{
         return await this.workingTimeService.getUserWorkingTimes(userId);
       }
     }

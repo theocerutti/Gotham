@@ -6,7 +6,8 @@ export default {
   name: "HoursCurrentWeek",
   extends: Bar,
   props: {
-    dataset: Array
+    dataset: Array,
+    userId: Number
   },
   data() {
     return {
@@ -41,7 +42,7 @@ export default {
                 beginAtZero: true,
                 steps: 24,
                 stepValue: 1,
-                max: 80
+                max: 24
             }
           }]
         }
@@ -54,18 +55,20 @@ export default {
   watch: {
     dataset() {
       this.chartData.datasets[0].data = this.dataset
-      this.renderChart(this.chartData, this.options)
-
-      var maxValue = 0
-
-      for (const key in this.dataset) {
-        if (this.dataset[key] > maxValue)
-          maxValue = this.dataset[key]
+      if(this.userId === this.$store.getters.currentUser.id){
+        this.renderChart(this.chartData, this.options)
+      }else{
+        var maxValue = 0
+        for (const key in this.dataset) {
+          if (this.dataset[key] > maxValue)
+            maxValue = this.dataset[key]
+        }
+        maxValue += 15;
+        this.options.scales.yAxes[0].ticks.max = parseInt(maxValue)
+        this.renderChart(this.chartData, this.options);
       }
-      maxValue += 15;
-      this.options.scales.yAxes[0].ticks.max = parseInt(maxValue)
-      this.renderChart(this.chartData, this.options);
     }
+      
   }
 
 };
