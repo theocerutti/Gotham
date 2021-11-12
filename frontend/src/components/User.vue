@@ -10,7 +10,7 @@
       </v-card-title>
       <v-card-text>
         <v-row align="center">
-          <v-col cols="1" v-if="$vuetify.breakpoint.smAndUp">
+          <v-col cols="2" v-if="$vuetify.breakpoint.smAndUp">
             <v-subheader>
               <v-icon class="mr-2">mdi-account</v-icon>
               Username:
@@ -21,7 +21,7 @@
           </v-col>
         </v-row>
         <v-row align="center">
-          <v-col cols="1" v-if="$vuetify.breakpoint.smAndUp">
+          <v-col cols="2" v-if="$vuetify.breakpoint.smAndUp">
             <v-subheader>
               <v-icon class="mr-2">mdi-email</v-icon>
               Email:
@@ -32,7 +32,7 @@
           </v-col>
         </v-row>
         <v-row align="center">
-          <v-col cols="1" v-if="$vuetify.breakpoint.smAndUp">
+          <v-col cols="2" v-if="$vuetify.breakpoint.smAndUp">
             <v-subheader>
               <v-icon class="mr-2">mdi-security</v-icon>
               Role:

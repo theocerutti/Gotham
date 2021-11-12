@@ -15,7 +15,7 @@ export class TeamService {
 
   async getAllTeams(): Promise<Team[]> {
     try {
-      return await this.TeamRepository.find();
+      return await this.TeamRepository.getAllTeams()
     } catch (error) {
       throw new HttpException(`Can't get all user teams: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }

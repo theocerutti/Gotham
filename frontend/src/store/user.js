@@ -22,7 +22,7 @@ export default {
       state.allUsers = payload.data;
     },
     UPDATE_USER_ROLE(state, payload) {
-      var userToUpdate = state.allUsers.find(el => el.id === payload.data.id);
+      const userToUpdate = state.allUsers.find(el => el.id === payload.data.id);
       userToUpdate.role = payload.data.role;
     },
     DELETE_ONE_USER(state, payload) {
@@ -98,6 +98,12 @@ export default {
         .then((response) => {
           commit("SET_USER_TEAMS", response);
         });
+    },
+    getAllTeams({ commit }) {
+      this._vm.$api.get("/api/team/all")
+        .then((response) => {
+          commit("SET_USER_TEAMS", response)
+        })
     },
     createNewTeam({commit}, payload) {
       this._vm.$api.post("/api/team", {

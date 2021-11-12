@@ -69,7 +69,8 @@
     <v-dialog
       v-model="dialogTeam"
       :width="$vuetify.breakpoint.smAndUp ? '50%' : '100%'"
-      scrollable>
+      scrollable
+    >
       <v-card>
         <v-card-title class="text-h5">
           Add users to team
@@ -77,7 +78,7 @@
         <div style="padding: 20px;" id="manage-users-dialog-container" class="manage-team-dialog-container">
           <div v-for="u in allUsers" :key="u.id">
             <user-component
-              v-if="u.role != 'generalManager'"
+              v-if="u.role !== 'generalManager'"
               :page="'team'"
               :user="u"
               @addUser="addUserToTeam"/>
@@ -89,19 +90,19 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-          color="primary"
-          text
-          @click="dialogTeam = false">
+            color="primary"
+            text
+            @click="dialogTeam = false"
+          >
             Close
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>  
+  </div>
 </template>
 
 <script lang="ts">
-
 import UserComponent from "../components/UserComponent.vue";
 
 export default {
@@ -119,23 +120,20 @@ export default {
       return this.$store.getters.currentUser;
     },
     allUsers() {
-      const allUsrs = this.$store.getters.getAllUsers
-      var usersAvailable = []
-      var usersAlreadyInTeam = []
+      const allUsrs = this.$store.getters.getAllUsers;
+      let usersAvailable = [];
+      let usersAlreadyInTeam = [];
 
       this.team.users.forEach(u => {
-        usersAlreadyInTeam.push(u)
+        usersAlreadyInTeam.push(u);
       });
-    
-      usersAvailable = allUsrs.filter((u) => !usersAlreadyInTeam.find(({ id }) => u.id === id))
+
+      usersAvailable = allUsrs.filter((u) => !usersAlreadyInTeam.find(({id}) => u.id === id));
 
       return usersAvailable;
     },
     isMobile() {
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
-        return true;
-      else
-        return false;
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
   },
   methods: {
@@ -254,6 +252,7 @@ export default {
   overflow: hidden;
   max-height: 0;
 }
+
 .manage-team-dialog-container {
   padding: 20px;
   overflow-y: auto;
