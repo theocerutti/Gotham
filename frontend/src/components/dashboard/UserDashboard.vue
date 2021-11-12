@@ -1,12 +1,12 @@
 <template>
   <div>
+    <v-btn v-if="$route.params.mode" @click="goBack" class="mb-5" id="btnGoBack">
+      <v-icon style="margin-right: 10px;">
+        mdi-keyboard-backspace
+      </v-icon>
+      back
+    </v-btn>
     <h1 class="mb-4">
-      <v-btn v-if="$route.params.mode" @click="goBack" id="btnGoBack" style="float: left; margin-right: 5%">
-        <v-icon style="margin-right: 10px;">
-          mdi-keyboard-backspace
-        </v-icon>
-        back
-      </v-btn> 
       {{ dashboardWelcome }}
     </h1>
     <div class="d-flex flex-wrap justify-space-between w-100">
