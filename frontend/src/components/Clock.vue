@@ -77,7 +77,7 @@
                           readonly/>
           </v-col>
           <v-col xs="1" md="5">
-            <v-btn style="width: 100%" :color="!manual ? (clockStatus ? 'red' : '#058FCE') : '#058FCE'"
+            <v-btn style="width: 100%" :color="!manual ? (clockStatus ? 'red' : 'primary') : 'primary'"
                    @click="switchClock">
               {{ manual ? "ADD" : clockStatus ? "STOP" : "START" }}
             </v-btn>
@@ -85,12 +85,12 @@
           <v-col xs="1" md="1" v-if="this.$vuetify.breakpoint.smAndUp" class="pa-0 actions-btn-container">
             <div>
               <v-btn icon @click="manual = false">
-                <v-icon :color="!manual ? '#058FCE' : ''" small>mdi-clock</v-icon>
+                <v-icon :color="!manual ? 'primary' : ''" small>mdi-clock</v-icon>
               </v-btn>
             </div>
             <div>
               <v-btn icon @click="manual = true">
-                <v-icon :color="manual ? '#058FCE' : ''" small>mdi-playlist-edit</v-icon>
+                <v-icon :color="manual ? 'primary' : ''" small>mdi-playlist-edit</v-icon>
               </v-btn>
             </div>
           </v-col>

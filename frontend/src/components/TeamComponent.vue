@@ -5,17 +5,17 @@
             {{ team.name }}
             </span>
       <div v-show="currentUser.role === 'generalManager' || currentUser.role === 'manager'">
-        <v-btn @click="viewTeamDashboard" :class="{ 'team-dashboard-btn': !isMobile}" color="#64aacf">
+        <v-btn @click="viewTeamDashboard" :class="{ 'team-dashboard-btn': !isMobile}" color="primary">
           <v-icon>
             mdi-chart-bar-stacked
           </v-icon>
         </v-btn>
-        <v-btn @click="dialogTeam = !dialogTeam" style="margin-left: 5%" id="team-add-user" color="#64aacf">
+        <v-btn @click="dialogTeam = !dialogTeam" style="margin-left: 5%" id="team-add-user" color="primary">
           <v-icon>
             mdi-account-plus
           </v-icon>
         </v-btn>
-        <v-btn style="margin-left: 5%" @click="deleteTeam" color="#64aacf">
+        <v-btn style="margin-left: 5%" @click="deleteTeam" color="primary">
           <v-icon>
             mdi-delete
           </v-icon>
@@ -38,12 +38,12 @@
             </span>
             <v-divider v-if="!isMobile" style="height: 35px; margin-left: 50px;" vertical></v-divider>
             <span v-if="currentUser.role === 'generalManager' || currentUser.role === 'manager'">
-              <v-btn @click="viewUserDashboard(u)" :class="{'user-dashboard': !isMobile, 'user-dashboard-mobile': isMobile }" color="#64aacf">
+              <v-btn @click="viewUserDashboard(u)" :class="{'user-dashboard': !isMobile, 'user-dashboard-mobile': isMobile }" color="primary">
                   <v-icon>
                       mdi-chart-bar
                   </v-icon>
               </v-btn>
-              <v-btn :class="{'user-team-kick': !isMobile, 'user-team-kick-mobile': isMobile }" @click="removeUserFromTeam(u)" color="#64aacf">
+              <v-btn :class="{'user-team-kick': !isMobile, 'user-team-kick-mobile': isMobile }" @click="removeUserFromTeam(u)" color="primary">
                   <v-icon>
                       mdi-account-minus
                   </v-icon>
@@ -111,10 +111,10 @@ export default {
       return this.$store.getters.getAllUsers;
     },
     isMobile() {
-      if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
-        return true
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+        return true;
       else
-        return false
+        return false;
     }
   },
   methods: {
