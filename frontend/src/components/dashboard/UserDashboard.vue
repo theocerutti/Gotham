@@ -1,6 +1,27 @@
 <template>
   <div>
-    <h1 class="mb-4">{{ dashboardWelcome }}</h1>
+    <h1 class="mb-4">
+      {{ dashboardWelcome }}
+      <v-btn v-if="$route.params.mode" @click="goBack" id="btnGoBack" style="float: right; margin-right: 5%">
+        <v-icon style="margin-right: 10px;">
+          mdi-keyboard-backspace
+        </v-icon>
+        Retour
+      </v-btn>  
+    </h1>
+    <v-card class="mb-6">
+      <v-card-title>
+        Hours of work of the current week - {{ totalHoursWeekFormatted }}
+      </v-card-title>
+      <v-card-subtitle>
+        {{ getStringCurrentWeek() }}
+      </v-card-subtitle>
+      <div class="d-flex justify-center">
+        <div class="w-80 my-10">
+          <hours-current-week :dataset="datasetHoursCurrentWeek"/>
+        </div>
+      </div>
+    </v-card>
     <div class="d-flex flex-wrap justify-space-between w-100">
       <v-card class="w-100 mb-6">
         <v-card-title class='mb-12'>
@@ -198,6 +219,10 @@ export default {
       }
     },
 
+     goBack() {
+      this.$router.back()
+    },
+
 
     getDataset(week) {
       const weekWT = this.workingTimes.filter(workingtime => {
@@ -231,6 +256,12 @@ export default {
 </script>
 
 <style scoped>
+
+#btnGoBack {
+  float: right;
+  margin-right: 5%;
+}
+
 .hours-text {
   font-size: 2rem;
 }

@@ -153,15 +153,44 @@ export default {
   },
   methods: {
     editOrSaveUser() {
-      if (!this.isEditing) {
-        this.isEditing = true;
-      } else {
-        this.$store.dispatch("updateUser", {
-          email: this.email,
-          username: this.username
-        });
-        this.isEditing = false;
-      }
+        if (!this.isEditing) {
+            this.isEditing = true;
+        } else {
+            this.$store.dispatch("updateUser", {
+                email: this.email,
+                username: this.username
+            }).then(
+                this.isEditing = false
+            )
+        }
+    },
+    createUser() {
+      this.isUser = true;
+      this.editUser = false;
+      this.$store.dispatch("setUser", {
+        email: this.email,
+        username: this.username
+      });
+      this.$emit("saveUser", this.lastName);
+    },
+    saveUpdateUser() {
+      this.editUser = false;
+      this.$store.dispatch("updateUser", {
+        email: this.email,
+        username: this.username
+      });
+    },
+    updateUser() {
+      this.editUser = true;
+    },
+    getUser() {
+
+    },
+    deleteUser() {
+      this.username = "";
+      this.email = "";
+      this.isUser = false;
+      this.$store.dispatch("deleteUser");
     },
     deleteMe() {
       this.$store.dispatch("deleteMe");

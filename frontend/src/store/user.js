@@ -22,7 +22,7 @@ export default {
       state.allUsers = payload.data;
     },
     UPDATE_USER_ROLE(state, payload) {
-      const userToUpdate = state.allUsers.find(el => el.id === payload.data.id);
+      var userToUpdate = state.allUsers.find(el => el.id === payload.data.id);
       userToUpdate.role = payload.data.role;
     },
     DELETE_ONE_USER(state, payload) {
