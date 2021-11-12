@@ -1,47 +1,50 @@
 <template>
   <div>
-    <v-card class="mb-6">
-      <v-card-title>
-        Hours of work in the current week for the team
-      </v-card-title>
-      <v-card-subtitle>
-        {{ getStringCurrentWeek() }}
-      </v-card-subtitle>
-      <div class="d-flex justify-center">
-        <div class="w-80 my-10" relative>
-          <hours-current-week :dataset="datasetHoursCurrentWeek" type="teamDashboard"/>
-        </div>
-      </div>
-    </v-card>
     <div class="d-flex flex-wrap justify-space-between w-100">
-      <v-card class="min-width-card mb-6">
+      <v-card class="w-100 mb-6">
         <v-card-title class='mb-12'>
           General metrics
         </v-card-title>
-        <div>
-          <v-card-text>
-            Total hours of work: {{ totalHours }}h
-          </v-card-text>
-          <v-card-text>
-            Total hours of work this month: {{ totalHoursMonth }}h
-          </v-card-text>
+        <v-card-text>
+          <v-row align="center">
+            <v-col align="center">
+              <div class="hours-text">{{ totalHours }} h</div>
+              <div>Total hours of work</div>
+            </v-col>
+            <v-col align="center">
+              <div class="hours-text">{{ totalHoursMonth }} h</div>
+              <div>Total hours of work this month</div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+      <v-card class="w-59 mb-6 ">
+        <v-card-title>
+          Hours of work of the current week
+        </v-card-title>
+        <v-card-subtitle>
+          {{ getStringCurrentWeek() }}
+        </v-card-subtitle>
+        <div class="d-flex justify-center">
+          <div class="w-80 my-10">
+            <hours-current-week :dataset="datasetHoursCurrentWeek" type="teamDashboard"/>
+          </div>
         </div>
       </v-card>
-      <v-card class="min-width-card mb-6">
+      <v-card class="w-39 mb-6">
         <v-card-title>
-          Hours of work last for weeks
+          Hours of work of last weeks
         </v-card-title>
         <v-card-subtitle>
           Compare hours count of lasts weeks
         </v-card-subtitle>
         <div class="d-flex justify-center">
           <div class="my-10 mx-15">
-            <hours-last-weeks :labels="labels" :dataset="hoursLast4weeks"/>
+            <hours-last-weeks :labels="labels" :dataset="hoursLast4weeks" />
           </div>
         </div>
       </v-card>
     </div>
-
   </div>
 </template>
 
@@ -123,7 +126,7 @@ export default {
           totalHours += this.calculateDiffEndStart(w.start, w.end);
         });
       });
-      this.totalHours = totalHours.toFixed(2);
+      this.totalHours = totalHours.toFixed();
     },
     getTotalHoursMonth() {
       var totalHours = 0;
@@ -134,34 +137,51 @@ export default {
           }
         });
       });
-      this.totalHoursMonth = totalHours.toFixed(2);
+      this.totalHoursMonth = totalHours.toFixed();
     },
     getHoursLastWeeks() {
-      var wLastWeeks = [];
-      var ret = [];
-      var minWeek = 57;
+      var workingTimes = [];
 
       this.requestResponse.users.forEach(u => {
         u.workingtimes.forEach(w => {
-          if (w.start >= moment().subtract(4, "week").startOf("isoWeek").toISOString()) {
-            wLastWeeks.push(w);
+            workingTimes.push(w);
           }
-        });
-      });
+        );
+      })
 
-      wLastWeeks.forEach(w => {
-        if (moment(w.start).isoWeek() < minWeek) {
-          minWeek = moment(w.start).isoWeek();
+      const lastWeeksWT = workingTimes.filter(workingtime => {
+        return workingtime.start >= moment().subtract(4, "weeks").startOf("week").toISOString() &&  workingtime.start <= moment().subtract(1, "weeks").endOf('isoWeek').toISOString();
+      })
+      //group by week
+      const workingTimesSortedByWeeks = {}
+      const labels = []
+
+      for(const wt of lastWeeksWT){
+        const dateKey = moment(wt.start).week();
+        if (!workingTimesSortedByWeeks[dateKey]){
+          workingTimesSortedByWeeks[dateKey] = [];
+          labels.push(this.getStringCurrentWeek(wt.start))
         }
-      });
+        workingTimesSortedByWeeks[dateKey].push(wt);
+      }
 
-      wLastWeeks.forEach(w => {
-        if (!ret[moment(w.start).isoWeek() - minWeek])
-          ret[moment(w.start).isoWeek() - minWeek] = 0;
-        ret[moment(w.start).isoWeek() - minWeek] += this.calculateDiffEndStart(w.start, w.end);
-      });
-      this.hoursLast4weeks = ret;
-    }
+      var hoursInMonth = []
+      for(const week in workingTimesSortedByWeeks){
+        var hours = 0
+        for(const wt of workingTimesSortedByWeeks[week]){
+          hours += parseInt(this.calculateDiffEndStart(wt.start, wt.end).toFixed());
+        }
+        hoursInMonth.push(hours.toFixed())
+      }
+      this.labels = labels
+      this.hoursLast4weeks = hoursInMonth
+    },
+
+    getStringCurrentWeek() {
+        const firstday = moment().startOf("isoWeek").format("DD/MM/YYYY");
+        const lastday = moment().endOf("isoWeek").format("DD/MM/YYYY");
+        return `${firstday} - ${lastday}`;
+      },
   },
   mounted() {
     api.get(`api/team/one/${this.teamId}/workingtimes`)
@@ -195,5 +215,59 @@ export default {
     min-width: 100%;
   }
 }
+
+  .hours-text {
+    font-size: 2rem;
+  }
+
+  .w-100 {
+    width: 100%;
+  }
+
+  .w-80 {
+    width: 80%;
+  }
+
+  .w-60 {
+    width: 60%;
+  }
+
+  .w-20 {
+    width: 20%;
+  }
+
+  .min-width-card {
+    min-width: 49%;
+  }
+
+  .w-59{
+    width: 59%;
+  }
+
+  .w-39{
+    width: 39%;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    .min-width-card {
+      min-width: 100%;
+    }
+
+    .w-20{
+      min-width: 50%;
+    }
+
+    .w-60{
+      width: 100%
+    }
+
+    .w-59{
+    width: 100%;
+    }
+
+    .w-39{
+      width: 100%;
+    }
+  }
 
 </style>
