@@ -37,5 +37,5 @@ jobs:
       - uses: actions/checkout@v2
       - run: sed -e "s/API_URL=.*/API_URL=http:\/\/51.68.70.219:4000/g" -i ./frontend/.env
       - run: docker-compose down -v && docker-compose up --build -d backend
-      - run: cd frontend && npm install && npm run build && rm -rf /var/www/html/* && cp -r ./dist/. /var/www/html
+      - run: cd frontend && npm install && npm run build && rm -rf /var/www/api-selenium.ovh/* && cp -r ./dist/. /var/www/api-selenium.ovh
       - run: sudo systemctl restart apache2
