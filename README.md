@@ -26,6 +26,9 @@ Create a build of the mobile app by running the following command in ./frontend:
   npm install && npm run android
 ```
 
+![image](https://user-images.githubusercontent.com/44285344/144260469-0be17de8-45e5-40cb-a4b4-1df5e2425bee.png)
+
+
 ## Seeds
 
 For dev purpose you can the run seed command in ./backend:
