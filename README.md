@@ -10,6 +10,9 @@ Start the backend, frontend and db services with the following docker command:</
 ```
 
 Visit <a href="http://localhost:8080">localhost:8080</a>
+
+![image](https://user-images.githubusercontent.com/44285344/144260469-0be17de8-45e5-40cb-a4b4-1df5e2425bee.png)
+
 ## Mobile app
 
 Start the backend, frontend and db services with the following docker command:</br>
@@ -25,8 +28,6 @@ Create a build of the mobile app by running the following command in ./frontend:
 ```sh
   npm install && npm run android
 ```
-
-![image](https://user-images.githubusercontent.com/44285344/144260469-0be17de8-45e5-40cb-a4b4-1df5e2425bee.png)
 
 
 ## Seeds
